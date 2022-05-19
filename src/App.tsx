@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import { Route, Link as RouterLink, Routes } from 'react-router-dom';
 import BlockchainVariants from './pages/BlockchainVariants';
-import Button from 'react-bootstrap/Button';
 import UnprocessedVariants from './pages/UnprocessedVariants';
+import { Button, CssBaseline } from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
+    <>
+      <CssBaseline />
       <RouterLink to="/blockchain">
         <Button variant="contained">Blockchain</Button>
       </RouterLink>
@@ -17,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/blockchain" element={<BlockchainVariants />} />
       </Routes>
-    </div>
+    </>
   );
 }
 

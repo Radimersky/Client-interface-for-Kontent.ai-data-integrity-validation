@@ -1,0 +1,497 @@
+{
+    "items": [
+      {
+        "system": {
+          "id": "50613e08-130a-40c9-b106-4e5093b41cf4",
+          "name": "blabla",
+          "codename": "blabla",
+          "language": "default",
+          "type": "le_only_7e78a77",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T08:47:30.2609716Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "xxx"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "fb28f941-b118-4797-90d9-0e55f96a3f26",
+          "name": "cg test this22",
+          "codename": "cg_test_this",
+          "language": "non_default",
+          "type": "cg_test",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-03-09T11:32:15.2978027Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "pp": {
+            "type": "number",
+            "name": "pp",
+            "value": 44
+          },
+          "cc": {
+            "type": "text",
+            "name": "cc",
+            "value": "bruh"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "8b32931a-2f08-4702-a06e-b07df5d684a4",
+          "name": "cmon",
+          "codename": "cmon",
+          "language": "default",
+          "type": "le_2",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T09:15:39.072072Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_number": {
+            "type": "number",
+            "name": "Untitled number",
+            "value": null
+          },
+          "untitled_text": {
+            "type": "text",
+            "name": "Untitled text",
+            "value": ""
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "1735e452-1450-432c-9731-effe3db354b6",
+          "name": "deliver 1",
+          "codename": "deliver_1",
+          "language": "default",
+          "type": "deliver",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-22T12:02:11.6663254Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "a": {
+            "type": "text",
+            "name": "a",
+            "value": "xxx"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "4fc56ff9-58c3-47f4-94e9-6b6d4a116a9c",
+          "name": "delvier 2 test",
+          "codename": "delvier_2_test",
+          "language": "non_default",
+          "type": "deliver_2",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-22T12:17:52.7710239Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "txt": {
+            "type": "text",
+            "name": "txt",
+            "value": "bbb"
+          },
+          "rt": {
+            "type": "rich_text",
+            "name": "rt",
+            "images": {},
+            "links": {},
+            "modular_content": [],
+            "value": "<p>ccc</p>"
+          },
+          "a": {
+            "type": "number",
+            "name": "a",
+            "value": 5
+          },
+          "b": {
+            "type": "date_time",
+            "name": "b",
+            "value": "2022-02-15T00:00:00Z"
+          },
+          "c": {
+            "type": "multiple_choice",
+            "name": "c",
+            "value": [
+              {
+                "name": "a",
+                "codename": "a"
+              }
+            ]
+          },
+          "d": {
+            "type": "text",
+            "name": "d",
+            "value": "blabla"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "3706bcde-1d09-4b8d-903c-159984b7acd2",
+          "name": "le only 1",
+          "codename": "le_only_1",
+          "language": "default",
+          "type": "le_only_7e78a77",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-25T13:54:25.9648999Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "xxx"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "38515e01-0f43-4d38-b0db-c93bf283fcac",
+          "name": "12345",
+          "codename": "n12345",
+          "language": "default",
+          "type": "le_only_7e78a77",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T09:10:03.6244236Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "cc"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "2aae17ae-f75e-49cc-be7e-548a1d507d5d",
+          "name": "nle le",
+          "codename": "nle_le",
+          "language": "default",
+          "type": "n1_nle_1_le",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-25T10:40:25.1804231Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "req_num_nle": {
+            "type": "number",
+            "name": "req num nle",
+            "value": null
+          },
+          "nle": {
+            "type": "text",
+            "name": "nle",
+            "value": "pepa"
+          },
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "lele"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "45cba78c-409f-4b12-9735-e01b4acbdd2a",
+          "name": "nle le 2",
+          "codename": "nle_le_2",
+          "language": "non_default",
+          "type": "n1_nle_1_le",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-25T13:41:57.8792265Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "req_num_nle": {
+            "type": "number",
+            "name": "req num nle",
+            "value": null
+          },
+          "nle": {
+            "type": "text",
+            "name": "nle",
+            "value": ""
+          },
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "xxx"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "6d3fefe1-5c28-4ccb-9d20-b48dd58c3c4e",
+          "name": "tada",
+          "codename": "tada",
+          "language": "default",
+          "type": "le_only_7e78a77",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T08:52:56.9597769Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "aaaa"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "e94398c6-8270-48e8-bf82-81cedb7836d4",
+          "name": "tst1",
+          "codename": "tst1",
+          "language": "default",
+          "type": "n1_nle_1_le",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-03-01T08:53:11.4536469Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "req_num_nle": {
+            "type": "number",
+            "name": "req num nle",
+            "value": null
+          },
+          "nle": {
+            "type": "text",
+            "name": "nle",
+            "value": "pepa"
+          },
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "z depa"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "5e9e3fd9-4887-499c-80e1-6a9d23e951f8",
+          "name": "txt item name",
+          "codename": "txt_item_name",
+          "language": "non_default",
+          "type": "txt",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-05-20T12:06:52.7194415Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_linked_items": {
+            "type": "modular_content",
+            "name": "Untitled linked items",
+            "value": []
+          },
+          "untitled_text": {
+            "type": "text",
+            "name": "Untitled text",
+            "value": "varianta pls"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "26ada29d-3969-4885-a6e6-a32c050c1cd2",
+          "name": "should be z",
+          "codename": "untitled_content_item_26ada29",
+          "language": "default",
+          "type": "radio_nle",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-22T12:49:17.1096449Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_multiple_choice": {
+            "type": "multiple_choice",
+            "name": "Untitled multiple choice",
+            "value": [
+              {
+                "name": "z",
+                "codename": "z"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "54f63d23-0de6-48f2-87de-6c6c196ac089",
+          "name": "nnnnnn",
+          "codename": "untitled_content_item_54f63d2",
+          "language": "default",
+          "type": "without_nle",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T08:59:56.9523617Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_date___time": {
+            "type": "date_time",
+            "name": "Untitled date & time",
+            "value": null
+          },
+          "untitled_text": {
+            "type": "text",
+            "name": "Untitled text",
+            "value": ""
+          },
+          "untitled_number": {
+            "type": "number",
+            "name": "Untitled number",
+            "value": null
+          },
+          "untitled_rich_text": {
+            "type": "rich_text",
+            "name": "Untitled rich text",
+            "images": {},
+            "links": {},
+            "modular_content": [],
+            "value": "<p><br></p>"
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "afa5ac48-c788-4f9c-b12e-4b29902497b9",
+          "name": "Untitled content item",
+          "codename": "untitled_content_item_afa5ac4",
+          "language": "default",
+          "type": "cb",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-22T12:52:36.2778323Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "c": {
+            "type": "multiple_choice",
+            "name": "c",
+            "value": [
+              {
+                "name": "b",
+                "codename": "b"
+              },
+              {
+                "name": "c",
+                "codename": "c"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "c2a50d94-9a24-434c-bf3d-86db20ee862b",
+          "name": "Untitled content item",
+          "codename": "untitled_content_item_c2a50d9",
+          "language": "non_default",
+          "type": "txt",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-03-01T09:47:56.1884884Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_linked_items": {
+            "type": "modular_content",
+            "name": "Untitled linked items",
+            "value": [
+              "nle_le_2"
+            ]
+          },
+          "untitled_text": {
+            "type": "text",
+            "name": "Untitled text",
+            "value": ""
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "f7dc39d8-0360-4a1b-abd2-55e25a99c854",
+          "name": "csd",
+          "codename": "untitled_content_item_f7dc39d",
+          "language": "non_default",
+          "type": "txt",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-03-01T09:27:29.2408447Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "untitled_linked_items": {
+            "type": "modular_content",
+            "name": "Untitled linked items",
+            "value": []
+          },
+          "untitled_text": {
+            "type": "text",
+            "name": "Untitled text",
+            "value": ""
+          }
+        }
+      },
+      {
+        "system": {
+          "id": "ee1cb2cf-ab81-461d-9c98-c996da2a0a81",
+          "name": "xx",
+          "codename": "xx",
+          "language": "default",
+          "type": "n1_nle_1_le",
+          "collection": "default",
+          "sitemap_locations": [],
+          "last_modified": "2022-02-28T08:44:49.5765826Z",
+          "workflow_step": "published"
+        },
+        "elements": {
+          "req_num_nle": {
+            "type": "number",
+            "name": "req num nle",
+            "value": null
+          },
+          "nle": {
+            "type": "text",
+            "name": "nle",
+            "value": "fff"
+          },
+          "le": {
+            "type": "text",
+            "name": "le",
+            "value": "aaa"
+          }
+        }
+      }
+    ],
+    "modular_content": {}
+  }

@@ -1,5 +1,6 @@
 import { Grid, Paper, Box, Button } from '@mui/material';
-//import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from './StyledCardRow';
 
 interface IVariantCardProps {
@@ -36,8 +37,10 @@ const VariantCard: React.FC<IVariantCardProps> = ({
           <StyledCardRow name="Language" value={language} />
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
-          <Button variant="contained">Detail</Button>
-          <Button variant="contained" color="error">
+          <Button variant="contained" startIcon={<ReadMoreIcon />}>
+            Detail
+          </Button>
+          <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
             Delete
           </Button>
         </Box>

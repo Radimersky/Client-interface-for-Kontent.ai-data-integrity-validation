@@ -4,11 +4,13 @@ import { Route, Routes } from 'react-router-dom';
 import BlockchainVariants from './pages/BlockchainVariants';
 import UnprocessedVariants from './pages/UnprocessedVariants';
 import { CssBaseline } from '@mui/material';
+import NavigationMenu from './components/NavigationMenu';
 
 function App() {
   return (
     <>
       <CssBaseline />
+      <NavigationMenu />
       <Routes>
         <Route path="/" element={<UnprocessedVariants />} />
       </Routes>

@@ -23,7 +23,7 @@ const VariantCard: React.FC<IVariantCardProps> = ({
   type,
   language
 }) => (
-  <Grid item xs={4}>
+  <Grid item xs={4} sx={{ minWidth: 400 }}>
     <Paper elevation={3}>
       <Box padding={2}>
         <h2>

@@ -44,3 +44,7 @@ p {
 body {
   background-color: #fafafa !important;
 }
+
+.wallet-adapter-button-trigger {
+  background-color: #F93943 !important;
+}

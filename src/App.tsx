@@ -6,10 +6,14 @@ import UnprocessedVariants from './pages/UnprocessedVariants';
 import { CssBaseline } from '@mui/material';
 import NavigationMenu from './components/NavigationMenu';
 import {
+  ExodusWalletAdapter,
   GlowWalletAdapter,
+  MathWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
+  SolletWalletAdapter,
+  SolongWalletAdapter,
   TorusWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
@@ -33,7 +37,11 @@ function App() {
       new GlowWalletAdapter(),
       new SlopeWalletAdapter(),
       new SolflareWalletAdapter({ network }),
-      new TorusWalletAdapter()
+      new TorusWalletAdapter(),
+      new SolletWalletAdapter(),
+      new SolongWalletAdapter(),
+      new ExodusWalletAdapter(),
+      new MathWalletAdapter()
     ],
     [network]
   );

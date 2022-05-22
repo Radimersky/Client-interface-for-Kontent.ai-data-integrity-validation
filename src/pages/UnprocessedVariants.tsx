@@ -6,7 +6,7 @@ import variants from '../variants.json';
 
 const UnprocessedVariants = () => {
   const variantCards = variants.items.map((variantData) => (
-    <VariantCard {...variantData.system} key={variantData.system.id} />
+    <VariantCard {...variantData} key={variantData.system.id} />
   ));
 
   return (

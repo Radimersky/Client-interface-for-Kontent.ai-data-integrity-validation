@@ -5,7 +5,7 @@ import StyledCardRow from './StyledCardRow';
 import VariantDialog from '../VariantDetail';
 import React from 'react';
 
-interface IVariantCardProps {
+export type System = {
   readonly id: string;
   readonly name: string;
   readonly codename: string;
@@ -15,16 +15,14 @@ interface IVariantCardProps {
   readonly sitemap_locations: never[];
   readonly last_modified: string;
   readonly workflow_step: string;
+};
+
+interface IVariantCardProps {
+  readonly system: System;
+  readonly elements: any;
 }
 
-const VariantCard: React.FC<IVariantCardProps> = ({
-  id,
-  name,
-  codename,
-  last_modified,
-  type,
-  language
-}) => {
+const VariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -41,14 +39,14 @@ const VariantCard: React.FC<IVariantCardProps> = ({
         <Paper elevation={3}>
           <Box padding={2}>
             <h2>
-              <b>{name}</b>
+              <b>{system.name}</b>
             </h2>
             <Box marginY={1}>
-              <StyledCardRow name="Variant ID" value={id} />
-              <StyledCardRow name="Codename" value={codename} />
-              <StyledCardRow name="Last modified" value={last_modified} />
-              <StyledCardRow name="Type" value={type} />
-              <StyledCardRow name="Language" value={language} />
+              <StyledCardRow name="Variant ID" value={system.id} />
+              <StyledCardRow name="Codename" value={system.codename} />
+              <StyledCardRow name="Last modified" value={system.last_modified} />
+              <StyledCardRow name="Type" value={system.type} />
+              <StyledCardRow name="Language" value={system.language} />
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>
@@ -61,7 +59,7 @@ const VariantCard: React.FC<IVariantCardProps> = ({
           </Box>
         </Paper>
       </Grid>
-      <VariantDialog open={open} handleClose={handleClose} />
+      <VariantDialog open={open} handleClose={handleClose} system={system} elements={elements} />
     </>
   );
 };

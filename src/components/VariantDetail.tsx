@@ -5,25 +5,32 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { System } from './variantCard/VariantCard';
 
 interface IVariantDialogProps {
   readonly open: boolean;
   readonly handleClose: () => void;
+  readonly system: System;
+  readonly elements: any;
 }
 
-const VariantDialog: React.FC<IVariantDialogProps> = ({ open, handleClose }) => {
+const VariantDialog: React.FC<IVariantDialogProps> = ({ open, handleClose, system, elements }) => {
   return (
     <div>
       <Dialog
         open={open}
         onClose={handleClose}
+        scroll={'paper'}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {system.name + ' (' + system.codename + ')'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            <div>
+              <pre>{JSON.stringify({ system, elements }, null, 2)}</pre>
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

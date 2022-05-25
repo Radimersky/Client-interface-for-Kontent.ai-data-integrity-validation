@@ -1,13 +1,20 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
+  // eslint-disable-next-line no-unused-vars
+  User,
   getAuth,
   signOut as authSignOut,
   onAuthStateChanged,
-  User,
   signInAnonymously
 } from 'firebase/auth';
-import { addDoc, collection, CollectionReference, doc, DocumentReference, getFirestore } from 'firebase/firestore';
+import {
+  collection,
+  CollectionReference,
+  doc,
+  DocumentReference,
+  getFirestore
+} from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +29,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+//const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 // Authentication
 const auth = getAuth();
@@ -49,10 +57,7 @@ export type Variant = {
   //description?: string;
 };
 
-export const variantsCollection = collection(
-  db,
-  'variants'
-) as CollectionReference<Variant>;
+export const variantsCollection = collection(db, 'variants') as CollectionReference<Variant>;
 
 export const variantsDocument = (id: string) =>
   doc(db, 'variants', id) as DocumentReference<Variant>;

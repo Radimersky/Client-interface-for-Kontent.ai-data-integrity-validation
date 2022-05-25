@@ -71,11 +71,13 @@ function App() {
           <Route path="/" element={<UnprocessedVariants />} />
         </Routes>
         <Routes>
-          <Route path="/blockchain" element={<BlockchainVariants />} />
+          <Route path={blockchainPage} element={<BlockchainVariants />} />
         </Routes>
       </WalletProvider>
     </ConnectionProvider>
   );
 }
+
+export const blockchainPage = '/blockchain';
 
 export default App;

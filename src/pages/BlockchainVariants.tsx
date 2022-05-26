@@ -1,13 +1,18 @@
 import { Container } from '@mui/material';
+import useWorkspace from '../utils/useWorkspace';
 
-const BlockchainVariants = () => (
-  <Container>
-    Tic-tac-toe (American English), noughts and crosses (Commonwealth English), or Xs and Os (Irish
-    English) is a paper-and-pencil game for two players who take turns marking the spaces in a
-    three-by-three grid with X or O. The player who succeeds in placing three of their marks in a
-    horizontal, vertical, or diagonal row is the winner. It is a solved game, with a forced draw
-    assuming best play from both players.
-  </Container>
-);
+const BlockchainVariants = () => {
+  const workspace = useWorkspace();
+  return (
+    <Container>
+      <>
+        <p>{workspace.wallet?.publicKey.toString()}</p>
+        <p>{workspace.connection.commitment}</p>
+        <p>{workspace.program.programId.toString()}</p>
+        <p>{workspace.provider.wallet.publicKey.toString()}</p>
+      </>
+    </Container>
+  );
+};
 
 export default BlockchainVariants;

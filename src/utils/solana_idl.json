@@ -1,0 +1,109 @@
+{
+    "version": "0.1.0",
+    "name": "solana_kontent",
+    "instructions": [
+      {
+        "name": "saveVariant",
+        "accounts": [
+          {
+            "name": "variant",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "author",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "variantId",
+            "type": "string"
+          },
+          {
+            "name": "itemId",
+            "type": "string"
+          },
+          {
+            "name": "projectId",
+            "type": "string"
+          },
+          {
+            "name": "variantHash",
+            "type": "string"
+          },
+          {
+            "name": "variantHashSignature",
+            "type": "string"
+          },
+          {
+            "name": "lastModified",
+            "type": "i64"
+          }
+        ]
+      }
+    ],
+    "accounts": [
+      {
+        "name": "Variant",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "author",
+              "type": "publicKey"
+            },
+            {
+              "name": "variantId",
+              "type": "string"
+            },
+            {
+              "name": "itemId",
+              "type": "string"
+            },
+            {
+              "name": "projectId",
+              "type": "string"
+            },
+            {
+              "name": "variantHash",
+              "type": "string"
+            },
+            {
+              "name": "variantHashSignature",
+              "type": "string"
+            },
+            {
+              "name": "lastModified",
+              "type": "i64"
+            },
+            {
+              "name": "accountCreated",
+              "type": "i64"
+            }
+          ]
+        }
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "InvalidHash",
+        "msg": "The hash should be 66 chracters long."
+      },
+      {
+        "code": 6001,
+        "name": "InvalidGuid",
+        "msg": "The GUID should be 36 characters long."
+      }
+    ],
+    "metadata": {
+      "address": "4C9v8ZmgtEbx8dDGb7YDXrsLbNswU3HAzhqBCKzUn21N"
+    }
+  }

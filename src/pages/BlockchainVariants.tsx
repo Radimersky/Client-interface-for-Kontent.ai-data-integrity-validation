@@ -6,8 +6,6 @@ const BlockchainVariants = () => {
   return (
     <Container>
       <>
-        <p>{workspace.wallet?.publicKey.toString()}</p>
-        <p>{workspace.connection.commitment}</p>
         <p>{workspace.program.programId.toString()}</p>
         <p>{workspace.provider.wallet.publicKey.toString()}</p>
       </>

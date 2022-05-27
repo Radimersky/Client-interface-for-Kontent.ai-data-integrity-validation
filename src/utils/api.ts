@@ -2,6 +2,5 @@
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 
 export const fetchVariants = async (program: Program) => {
-  const variants = await program.account.variant.all();
-  return variants;
+  return await program.account.variant.all();
 };

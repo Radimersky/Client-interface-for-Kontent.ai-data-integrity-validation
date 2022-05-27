@@ -66,8 +66,6 @@ function App() {
         )}
         <Routes>
           <Route path="/" element={<UnprocessedVariants />} />
-        </Routes>
-        <Routes>
           <Route path={blockchainPage} element={<BlockchainVariants />} />
         </Routes>
       </WalletProvider>

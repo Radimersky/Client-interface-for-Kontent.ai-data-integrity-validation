@@ -8,24 +8,24 @@ import { PublicKey } from '@solana/web3.js';
 import dayjs from 'dayjs';
 
 export type Variant = {
-  readonly projectId: String;
-  readonly itemId: String;
-  readonly variantId: String;
-  readonly variantHash: String;
-  readonly variantHashSignature: String;
-  readonly publicKey: String;
-  readonly shortAuthor: String;
-  readonly author: String;
-  readonly lastModified: String;
-  readonly accountCreated: String;
+  readonly projectId: string;
+  readonly itemId: string;
+  readonly variantId: string;
+  readonly variantHash: string;
+  readonly variantHashSignature: string;
+  readonly publicKey: string;
+  readonly shortAuthor: string;
+  readonly author: string;
+  readonly lastModified: string;
+  readonly accountCreated: string;
 };
 
 export type ServerVariant = {
-  readonly projectId: String;
-  readonly itemId: String;
-  readonly variantId: String;
-  readonly variantHash: String;
-  readonly variantHashSignature: String;
+  readonly projectId: string;
+  readonly itemId: string;
+  readonly variantId: string;
+  readonly variantHash: string;
+  readonly variantHashSignature: string;
   readonly publicKey: PublicKey;
   readonly author: PublicKey;
   readonly lastModified: number;

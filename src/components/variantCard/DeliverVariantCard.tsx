@@ -22,7 +22,7 @@ interface IVariantCardProps {
   readonly elements: any;
 }
 
-const VariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
+const DeliverVariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -35,7 +35,7 @@ const VariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
 
   return (
     <>
-      <Grid item xs={4} sx={{ minWidth: 400 }}>
+      <Grid item xs={3} sx={{ minWidth: 300 }}>
         <Paper elevation={3}>
           <Box padding={2}>
             <h2>
@@ -64,4 +64,4 @@ const VariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
   );
 };
 
-export default VariantCard;
+export default DeliverVariantCard;

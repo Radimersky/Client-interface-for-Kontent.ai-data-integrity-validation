@@ -1,19 +1,33 @@
 // eslint-disable-next-line no-unused-vars
 import { AnchorProvider, BN, web3 } from '@project-serum/anchor';
+// eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 
-// Stores variant on blockchain
-export const sendVariant = async (program: Program, provider: AnchorProvider) => {
-  // Create key pair for new variant account
-  const variant = web3.Keypair.generate()
+export type SendVariant = {
+  lastModified: BN;
+  variantId: string;
+  itemId: string;
+  projectId: string;
+  variantHash: string;
+  variantHashSignature: string;
+};
 
-  await program.methods.saveVariant(
-    'bb1439d5-4ee2-4895-a4e4-5b0d9d8c754e',
-    'ad1439d5-4ee2-4895-a4e4-5b0d9d8c754e',
-    'bd1439d5-4ee2-4895-a4e4-5b0d9d8c754e',
-    '0x7368b03bea99c5525aa7a9ba0b121fc381a4134f90d0f1b4f436266ad0f2b43b',
-    '0x7368b03bea99c5525aa7a9ba0b121fc381a4134f90d0f1b4f436266ad0f2b43b',
-    new BN(1551041404),
+// Stores variant on blockchain
+export const sendVariant = async (
+  program: Program,
+  provider: AnchorProvider,
+  sendVariant: SendVariant
+) => {
+  // Create key pair for new variant account
+  const variant = web3.Keypair.generate();
+
+  await program.rpc.saveVariant(
+    sendVariant.variantId,
+    sendVariant.itemId,
+    sendVariant.projectId,
+    sendVariant.variantHash,
+    sendVariant.variantHashSignature,
+    sendVariant.lastModified,
     {
       accounts: {
         variant: variant.publicKey,
@@ -24,9 +38,9 @@ export const sendVariant = async (program: Program, provider: AnchorProvider) =>
     }
   );
 
+  console.log(variant.publicKey.toBase58());
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
   console.log(variantAccount);
 
   return variantAccount;
 };
-

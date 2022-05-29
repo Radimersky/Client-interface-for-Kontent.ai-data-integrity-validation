@@ -33,22 +33,25 @@ export type ServerVariant = {
 };
 
 export const Variant = {
-  fromServerModel(serverModel: ProgramAccount<TypeDef<IdlAccountDef, IdlTypes<Idl>>>): Variant {
-    const castedModel = serverModel as ProgramAccount<ServerVariant>;
+  fromServerModel(
+    serverAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
+    publicKey: PublicKey
+  ): Variant {
+    const account = serverAccount as ServerVariant;
 
-    const author = castedModel.publicKey.toBase58();
+    const author = publicKey.toBase58();
 
     return {
-      projectId: castedModel.account.projectId,
-      itemId: castedModel.account.itemId,
-      variantId: castedModel.account.variantId,
-      variantHash: castedModel.account.variantHash,
-      variantHashSignature: castedModel.account.variantHashSignature,
-      publicKey: castedModel.publicKey.toBase58(),
+      projectId: account.projectId,
+      itemId: account.itemId,
+      variantId: account.variantId,
+      variantHash: account.variantHash,
+      variantHashSignature: account.variantHashSignature,
+      publicKey: publicKey.toBase58(),
       author: author,
       shortAuthor: author.slice(0, 4) + '..' + author.slice(-4),
-      lastModified: dayjs.unix(castedModel.account.lastModified).format('YYYY-MM-DDTHH:mmZ'),
-      accountCreated: dayjs.unix(castedModel.account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
+      lastModified: dayjs.unix(account.lastModified).format('YYYY-MM-DDTHH:mmZ'),
+      accountCreated: dayjs.unix(account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
     };
   }
 };

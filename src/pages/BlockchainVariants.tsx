@@ -26,7 +26,7 @@ const BlockchainVariants = () => {
     fetchVariants(program)
       .then((fetchedVariants) => {
         const variantCards = fetchedVariants.map((variant) => {
-          const mappedVariant = Variant.fromServerModel(variant);
+          const mappedVariant = Variant.fromServerModel(variant.account, variant.publicKey);
           return <BlockchainVariantCard {...mappedVariant} key={mappedVariant.publicKey} />;
         });
         setVariantCards(variantCards);
@@ -48,6 +48,14 @@ const BlockchainVariants = () => {
     variantHashSignature: '0x7368b03bea99c5525aa7a9ba0b121fc381a4134f90d0f1b4f436266ad0f2b43b'
   };
 
+  const sendVariantToBlockchain = async () => {
+    const variant = await sendVariant(program, provider, variantData);
+    setVariantCards([
+      ...variantCards,
+      <BlockchainVariantCard {...variant} key={variant.publicKey} />
+    ]);
+  };
+
   return (
     <Container maxWidth={false}>
       {connected && (
@@ -57,10 +65,7 @@ const BlockchainVariants = () => {
           <Grid container spacing={4}>
             {variantCards}
           </Grid>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => sendVariant(program, provider, variantData)}>
+          <Button variant="contained" color="error" onClick={sendVariantToBlockchain}>
             Delete
           </Button>
         </>

@@ -2,6 +2,7 @@
 import { AnchorProvider, BN, web3 } from '@project-serum/anchor';
 // eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
+import { Variant } from '../models/Variant';
 
 export type SendVariant = {
   lastModified: BN;
@@ -38,9 +39,8 @@ export const sendVariant = async (
     }
   );
 
-  console.log(variant.publicKey.toBase58());
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
   console.log(variantAccount);
 
-  return variantAccount;
+  return Variant.fromServerModel(variantAccount, variant.publicKey);
 };

@@ -5,16 +5,21 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { System } from './variantCard/DeliverVariantCard';
+import { System } from './DeliverVariantCard';
 
-interface IVariantDialogProps {
+interface IDeliverVariantModalProps {
   readonly open: boolean;
   readonly handleClose: () => void;
   readonly system: System;
   readonly elements: any;
 }
 
-const VariantDialog: React.FC<IVariantDialogProps> = ({ open, handleClose, system, elements }) => {
+const DeliverVariantModal: React.FC<IDeliverVariantModalProps> = ({
+  open,
+  handleClose,
+  system,
+  elements
+}) => {
   return (
     <div>
       <Dialog
@@ -44,4 +49,4 @@ const VariantDialog: React.FC<IVariantDialogProps> = ({ open, handleClose, syste
   );
 };
 
-export default VariantDialog;
+export default DeliverVariantModal;

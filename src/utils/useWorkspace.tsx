@@ -23,8 +23,7 @@ const useWorkspace = (): IWorkspaceProps => {
     preflightCommitment: preflightCommitment,
     commitment: commitment
   });
-  const program = new Program(idl as Idl, programID, provider);
-
+  const program = new Program(idl as any, programID, provider);
   return {
     //wallet,
     //connection,

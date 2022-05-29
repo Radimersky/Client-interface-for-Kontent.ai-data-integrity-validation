@@ -19,11 +19,10 @@ const BlockchainVariants = () => {
     if (!connected) {
       return;
     }
-    // Add asi filter to fetchVariants when rdy
-    // eslint-disable-next-line no-unused-vars
+
     const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
 
-    fetchVariants(program)
+    fetchVariants(program, filter)
       .then((fetchedVariants) => {
         const variantCards = fetchedVariants.map((variant) => {
           const mappedVariant = Variant.fromServerModel(variant.account, variant.publicKey);
@@ -60,13 +59,11 @@ const BlockchainVariants = () => {
     <Container maxWidth={false}>
       {connected && (
         <>
-          <p>{program.programId.toString()}</p>
-          <p>{provider.wallet.publicKey.toString()}</p>
           <Grid container spacing={4}>
             {variantCards}
           </Grid>
           <Button variant="contained" color="error" onClick={sendVariantToBlockchain}>
-            Delete
+            Send variant to BC
           </Button>
         </>
       )}

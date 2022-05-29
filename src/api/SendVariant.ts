@@ -40,7 +40,6 @@ export const sendVariant = async (
   );
 
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
-  console.log(variantAccount);
 
   return Variant.fromServerModel(variantAccount, variant.publicKey);
 };

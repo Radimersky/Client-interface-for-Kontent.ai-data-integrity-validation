@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 
-export const fetchVariants = async (program: Program, filters = []) => {
+// Fetches variants from blockchain.
+export const fetchVariants = async (program: Program, filters: any[] = []) => {
   return await program.account.variant.all(filters);
 };
 

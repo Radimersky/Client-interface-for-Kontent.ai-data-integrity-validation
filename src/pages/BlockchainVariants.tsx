@@ -3,7 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCard';
 import { Variant } from '../models/Variant';
-import { fetchVariants } from '../utils/api';
+import { authorFilter, fetchVariants } from '../utils/api';
 import useWorkspace from '../utils/useWorkspace';
 
 const BlockchainVariants = () => {
@@ -16,6 +16,9 @@ const BlockchainVariants = () => {
     if (!connected) {
       return;
     }
+    // Add asi filter to fetchVariants when rdy
+    // eslint-disable-next-line no-unused-vars
+    const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
 
     fetchVariants(program)
       .then((fetchedVariants) => {

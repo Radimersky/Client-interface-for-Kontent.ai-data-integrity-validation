@@ -1,14 +1,18 @@
 import { AppBar, Container, Toolbar, Box, Typography, MenuItem, Button } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { blockchainPage } from '../App';
+import { blockchainVariantsPage, localVariantsPage } from '../App';
 import MyWallet from './MyWallet';
 import { useNavigate } from 'react-router';
-
-const pages = ['Blockchain variants'];
 
 const NavigationMenu = () => {
   const { connected } = useWallet();
   const navigate = useNavigate();
+
+  const pages = [
+    { name: 'Local variants', path: localVariantsPage },
+    { name: 'Blockchain variants', path: blockchainVariantsPage }
+  ];
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -16,9 +20,9 @@ const NavigationMenu = () => {
           <Toolbar>
             {connected &&
               pages.map((page) => (
-                <MenuItem key={page} onClick={() => navigate(blockchainPage)}>
+                <MenuItem key={page.path} onClick={() => navigate(page.path)}>
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} textAlign="center">
-                    {page}
+                    {page.name}
                   </Typography>
                 </MenuItem>
               ))}

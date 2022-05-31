@@ -65,14 +65,15 @@ function App() {
           </Typography>
         )}
         <Routes>
-          <Route path="/" element={<LocalVariants />} />
-          <Route path={blockchainPage} element={<BlockchainVariants />} />
+          <Route path={localVariantsPage} element={<LocalVariants />} />
+          <Route path={blockchainVariantsPage} element={<BlockchainVariants />} />
         </Routes>
       </WalletProvider>
     </ConnectionProvider>
   );
 }
 
-export const blockchainPage = '/blockchain';
+export const blockchainVariantsPage = '/blockchainVariants';
+export const localVariantsPage = '/';
 
 export default App;

@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import DeliverVariantCard from '../components/variantCard/DeliverVariantCard';
 import variants from '../variants.json';
 
-const UnprocessedVariants = () => {
+const LocalVariants = () => {
   const variantCards = variants.items.map((variantData) => (
     <DeliverVariantCard {...variantData} key={variantData.system.id} />
   ));
@@ -25,4 +25,4 @@ const UnprocessedVariants = () => {
   );
 };
 
-export default UnprocessedVariants;
+export default LocalVariants;

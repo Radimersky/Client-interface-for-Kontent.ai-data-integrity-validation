@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import BlockchainVariants from './pages/BlockchainVariants';
-import UnprocessedVariants from './pages/UnprocessedVariants';
 import { CssBaseline, Typography } from '@mui/material';
 import NavigationMenu from './components/NavigationMenu';
 import {
@@ -20,6 +19,7 @@ import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { signIn } from './utils/firebase';
+import LocalVariants from './pages/LocalVariants';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 function App() {
@@ -65,7 +65,7 @@ function App() {
           </Typography>
         )}
         <Routes>
-          <Route path="/" element={<UnprocessedVariants />} />
+          <Route path="/" element={<LocalVariants />} />
           <Route path={blockchainPage} element={<BlockchainVariants />} />
         </Routes>
       </WalletProvider>

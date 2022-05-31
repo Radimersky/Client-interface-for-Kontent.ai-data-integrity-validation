@@ -3,16 +3,22 @@ import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
 import DeliverVariantCard from '../components/variantCard/DeliverVariantCard';
 import variants from '../variants.json';
+import DeliverVariantImport from '../components/DeliverVariantImport';
 
 const LocalVariants = () => {
   const variantCards = variants.items.map((variantData) => (
     <DeliverVariantCard {...variantData} key={variantData.system.id} />
   ));
 
+  const loadVariantsByProjectId = (projectId: string) => {
+    console.log(projectId);
+  };
+
   return (
     <Container maxWidth={false}>
-      <Box marginBottom={3}>
-        <h1>Unprocessed variants</h1>
+      <DeliverVariantImport onSubmit={loadVariantsByProjectId} error={false} importing={false} />
+      <Box marginY={3}>
+        <h1>Local variants</h1>
       </Box>
       <Grid container spacing={4}>
         {variantCards}

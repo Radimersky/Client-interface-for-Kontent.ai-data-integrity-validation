@@ -4,7 +4,7 @@ import { blockchainPage } from '../App';
 import MyWallet from './MyWallet';
 import { useNavigate } from 'react-router';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Blockchain variants'];
 
 const NavigationMenu = () => {
   const { connected } = useWallet();

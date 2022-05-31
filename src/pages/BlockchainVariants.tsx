@@ -1,4 +1,4 @@
-import { Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCard';
@@ -57,6 +57,9 @@ const BlockchainVariants = () => {
 
   return (
     <Container maxWidth={false}>
+      <Box marginY={3}>
+        <h1>Blockchain variants</h1>
+      </Box>
       {connected && (
         <>
           <Grid container spacing={4}>

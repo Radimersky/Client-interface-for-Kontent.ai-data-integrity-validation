@@ -17,12 +17,12 @@ export type System = {
   readonly workflow_step: string;
 };
 
-interface IVariantCardProps {
+export type DeliverVariant = {
   readonly system: System;
   readonly elements: any;
-}
+};
 
-const DeliverVariantCard: React.FC<IVariantCardProps> = ({ system, elements }) => {
+const DeliverVariantCard: React.FC<DeliverVariant> = ({ system, elements }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

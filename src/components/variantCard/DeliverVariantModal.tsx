@@ -33,9 +33,7 @@ const DeliverVariantModal: React.FC<IDeliverVariantModalProps> = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <div>
-              <pre>{JSON.stringify({ system, elements }, null, 2)}</pre>
-            </div>
+            <pre>{JSON.stringify({ system, elements }, null, 2)}</pre>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

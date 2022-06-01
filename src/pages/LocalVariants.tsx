@@ -1,17 +1,39 @@
 import { Button, Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
-import DeliverVariantCard from '../components/variantCard/DeliverVariantCard';
-import variants from '../variants.json';
+// eslint-disable-next-line no-unused-vars
+import DeliverVariantCard, { DeliverVariant } from '../components/variantCard/DeliverVariantCard';
 import DeliverVariantImport from '../components/DeliverVariantImport';
+import { useState } from 'react';
 
 const LocalVariants = () => {
-  const variantCards = variants.items.map((variantData) => (
-    <DeliverVariantCard {...variantData} key={variantData.system.id} />
-  ));
+  const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
+  // const variantCardsX = variants.items.map((variantData) => (
+  //   <DeliverVariantCard {...variantData} key={variantData.system.id} />
+  // ));
+
+  //const deliverBaseUrl = "https://deliver.kontent.ai/";
+  const deliverBaseUrl = 'https://qa-deliver.freetls.fastly.net/';
 
   const loadVariantsByProjectId = (projectId: string) => {
-    console.log(projectId);
+    fetch(deliverBaseUrl + projectId + '/items')
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((data) => {
+        const cards = data.items.map((variantData: DeliverVariant) => (
+          <DeliverVariantCard {...variantData} key={variantData.system.id} />
+        ));
+
+        setVariantCards(cards);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
   };
 
   return (

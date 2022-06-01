@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { System } from './DeliverVariantCard';
 
@@ -32,9 +31,7 @@ const DeliverVariantModal: React.FC<IDeliverVariantModalProps> = ({
           {system.name + ' (' + system.codename + ')'}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <pre>{JSON.stringify({ system, elements }, null, 2)}</pre>
-          </DialogContentText>
+          <pre>{JSON.stringify({ system, elements }, null, 2)}</pre>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>

@@ -4,23 +4,7 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from './StyledCardRow';
 import LocalVariantCardDetail from './LocalVariantCardDetail';
 import React from 'react';
-
-export type System = {
-  readonly id: string;
-  readonly name: string;
-  readonly codename: string;
-  readonly language: string;
-  readonly type: string;
-  readonly collection: string;
-  readonly sitemap_locations: never[];
-  readonly last_modified: string;
-  readonly workflow_step: string;
-};
-
-export type DeliverVariant = {
-  readonly system: System;
-  readonly elements: any;
-};
+import { DeliverVariant } from '../../models/Variant';
 
 export type ILocalVariantCardProps = {
   readonly deliverVariant: DeliverVariant;

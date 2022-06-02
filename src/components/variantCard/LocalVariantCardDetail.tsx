@@ -1,9 +1,9 @@
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { DeliverVariant } from './LocalVariantCard';
-import SendVariantToBlockchain from '../SendVariantToBlockchain';
 import { Box } from '@mui/material';
+import { DeliverVariant } from '../../models/Variant';
+import SendVariantToBlockchain from '../SendVariantToBlockchain';
 
 type ILocalVariantCardDetailProps = {
   readonly open: boolean;

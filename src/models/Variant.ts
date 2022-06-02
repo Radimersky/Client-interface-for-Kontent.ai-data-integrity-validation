@@ -6,6 +6,7 @@ import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
 import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
 import { PublicKey } from '@solana/web3.js';
 import dayjs from 'dayjs';
+import { BN } from '@project-serum/anchor';
 
 export type Variant = {
   readonly projectId: string;
@@ -32,8 +33,45 @@ export type ServerVariant = {
   readonly accountCreated: number;
 };
 
+export type BlockchainVariant = {
+  lastModified: BN;
+  variantId: string;
+  itemId: string;
+  projectId: string;
+  variantHash: string;
+  variantHashSignature: string;
+};
+
+export type System = {
+  readonly id: string;
+  readonly name: string;
+  readonly codename: string;
+  readonly language: string;
+  readonly type: string;
+  readonly collection: string;
+  readonly sitemap_locations: never[];
+  readonly last_modified: string;
+  readonly workflow_step: string;
+};
+
+export type DeliverVariant = {
+  readonly system: System;
+  readonly elements: any;
+};
+
+export type KontentSignature = {
+  readonly hash: string;
+  readonly signature: string;
+};
+
+const toTimestamp = (strDate: string) => {
+  const dt = new Date(strDate).getTime();
+  // From millis to seconds
+  return dt / 1000;
+};
+
 export const Variant = {
-  fromServerModel(
+  fromDeliverModel(
     serverAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
     publicKey: PublicKey
   ): Variant {
@@ -53,5 +91,23 @@ export const Variant = {
       lastModified: dayjs.unix(account.lastModified).format('YYYY-MM-DDTHH:mmZ'),
       accountCreated: dayjs.unix(account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
     };
+  },
+
+  toBlockchainModel(
+    deliverVariant: DeliverVariant,
+    projectId: string,
+    signatureData: KontentSignature
+  ): BlockchainVariant {
+    const lastModifiedTimestamp = toTimestamp(deliverVariant.system.last_modified);
+    const variantData: BlockchainVariant = {
+      lastModified: new BN(lastModifiedTimestamp),
+      variantId: deliverVariant.system.id,
+      itemId: deliverVariant.system.language,
+      projectId: projectId,
+      variantHash: signatureData.hash,
+      variantHashSignature: signatureData.signature
+    };
+
+    return variantData;
   }
 };

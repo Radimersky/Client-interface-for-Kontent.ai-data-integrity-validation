@@ -1,16 +1,14 @@
 import { Button, Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
-import LocalVariantCard, { DeliverVariant } from '../components/variantCard/LocalVariantCard';
+import LocalVariantCard from '../components/variantCard/LocalVariantCard';
 import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { DeliverVariant } from '../models/Variant';
 
 const LocalVariants = () => {
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
-  // const variantCardsX = variants.items.map((variantData) => (
-  //   <DeliverVariantCard {...variantData} key={variantData.system.id} />
-  // ));
 
   //const deliverBaseUrl = "https://deliver.kontent.ai/";
   const deliverBaseUrl = 'https://qa-deliver.freetls.fastly.net/';

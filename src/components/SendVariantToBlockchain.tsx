@@ -1,4 +1,3 @@
-import { DeliverVariant } from './variantCard/LocalVariantCard';
 import hash from 'object-hash';
 import { Box, Button, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -7,19 +6,15 @@ import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import useWorkspace from '../utils/useWorkspace';
 // eslint-disable-next-line no-unused-vars
-import { BlockchainVariantData, sendVariant } from '../api/SendVariant';
-import { BN } from '@project-serum/anchor';
+import { sendVariant } from '../api/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
+// eslint-disable-next-line no-unused-vars
+import { BlockchainVariant, DeliverVariant, Variant, KontentSignature } from '../models/Variant';
 
 type ISendVariantToBlockchainProps = {
   readonly deliverVariant: DeliverVariant;
   readonly projectId: string;
-};
-
-type KontentSignature = {
-  readonly hash: string;
-  readonly signature: string;
 };
 
 enum State {
@@ -38,7 +33,7 @@ const boxStyling = {
   minHeight: '150px',
   backgroundColor: '#C5C5C5',
   borderRadius: '8px',
-  padding: '10px',
+  padding: '15px',
   minWidth: '00px'
 };
 
@@ -99,14 +94,14 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   };
 
   const handleSendingState = () => {
-    const sendVariantToBlockchain = async (variantData: BlockchainVariantData) => {
+    const sendVariantToBlockchain = async (variantData: BlockchainVariant) => {
       await sendVariant(program, provider, variantData);
     };
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const variantData = createBlockchainVariantData(deliverVariant, projectId);
-    console.log(variantData);
+    const variantData = Variant.toBlockchainModel(deliverVariant, projectId, signatureData);
+
     sendVariantToBlockchain(variantData)
       .then(() => {
         setState(State.Completed);
@@ -133,30 +128,6 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   const startProcess = () => {
     setLoading(true);
     setState(State.Signing);
-  };
-
-  const toTimestamp = (strDate: string) => {
-    const dt = new Date(strDate).getTime();
-    // From millis to seconds
-    return dt / 1000;
-  };
-
-  const createBlockchainVariantData = (
-    deliverVariant: DeliverVariant,
-    projectId: string
-  ): BlockchainVariantData => {
-    const lastModifiedTimestamp = toTimestamp(deliverVariant.system.last_modified);
-    console.log(signatureData);
-    const variantData: BlockchainVariantData = {
-      lastModified: new BN(lastModifiedTimestamp),
-      variantId: deliverVariant.system.id,
-      itemId: deliverVariant.system.language,
-      projectId: projectId,
-      variantHash: signatureData.hash,
-      variantHashSignature: signatureData.signature
-    };
-
-    return variantData;
   };
 
   return (

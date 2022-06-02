@@ -23,11 +23,10 @@ const BlockchainVariants = () => {
     fetchVariants(program, filter)
       .then((fetchedVariants) => {
         const variantCards = fetchedVariants.map((variant) => {
-          const mappedVariant = Variant.fromServerModel(variant.account, variant.publicKey);
+          const mappedVariant = Variant.fromDeliverModel(variant.account, variant.publicKey);
           return <BlockchainVariantCard {...mappedVariant} key={mappedVariant.publicKey} />;
         });
         setVariantCards(variantCards);
-        console.log(variantCards);
         setLoading(false);
       })
       .catch((e) => {

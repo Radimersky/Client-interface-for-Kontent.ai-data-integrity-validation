@@ -2,22 +2,14 @@
 import { AnchorProvider, BN, web3 } from '@project-serum/anchor';
 // eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
-import { Variant } from '../models/Variant';
-
-export type BlockchainVariantData = {
-  lastModified: BN;
-  variantId: string;
-  itemId: string;
-  projectId: string;
-  variantHash: string;
-  variantHashSignature: string;
-};
+// eslint-disable-next-line no-unused-vars
+import { BlockchainVariant, Variant } from '../models/Variant';
 
 // Stores variant on blockchain
 export const sendVariant = async (
   program: Program,
   provider: AnchorProvider,
-  sendVariant: BlockchainVariantData
+  sendVariant: BlockchainVariant
 ) => {
   // Create key pair for new variant account
   const variant = web3.Keypair.generate();
@@ -41,5 +33,5 @@ export const sendVariant = async (
 
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
 
-  return Variant.fromServerModel(variantAccount, variant.publicKey);
+  return Variant.fromDeliverModel(variantAccount, variant.publicKey);
 };

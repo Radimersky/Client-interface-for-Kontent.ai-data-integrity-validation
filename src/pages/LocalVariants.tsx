@@ -25,8 +25,8 @@ const LocalVariants = () => {
         const cards = data.items.map((variantData: DeliverVariant) => (
           <LocalVariantCard
             deliverVariant={variantData}
-            key={variantData.system.id}
             projectId={projectId}
+            key={variantData.system.id}
           />
         ));
 

@@ -3,7 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCard';
 import { Variant } from '../models/Variant';
-import { authorFilter, fetchVariants } from '../api/FetchVariants';
+import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
 import useWorkspace from '../utils/useWorkspace';
 
 const BlockchainVariants = () => {
@@ -23,7 +23,7 @@ const BlockchainVariants = () => {
     fetchVariants(program, filter)
       .then((fetchedVariants) => {
         const variantCards = fetchedVariants.map((variant) => {
-          const mappedVariant = Variant.fromDeliverModel(variant.account, variant.publicKey);
+          const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
           return <BlockchainVariantCard {...mappedVariant} key={mappedVariant.publicKey} />;
         });
         setVariantCards(variantCards);

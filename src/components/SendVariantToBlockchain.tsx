@@ -6,11 +6,12 @@ import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import useWorkspace from '../utils/useWorkspace';
 // eslint-disable-next-line no-unused-vars
-import { sendVariant } from '../api/SendVariant';
+import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 // eslint-disable-next-line no-unused-vars
 import { BlockchainVariant, DeliverVariant, Variant, KontentSignature } from '../models/Variant';
+import { getSignature } from '../api/signatureProvider/GetSignature';
 
 type ISendVariantToBlockchainProps = {
   readonly deliverVariant: DeliverVariant;
@@ -74,10 +75,11 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   }, [state]);
 
   const handleSigningState = () => {
+    setLoading(true);
     setFirstMessage(messages.retrievingSignature);
 
     const localHash = hash(deliverVariant);
-    signatureData = getSignature();
+    signatureData = getSignature(deliverVariant);
     console.log(signatureData);
 
     setSecondMessage(
@@ -94,15 +96,15 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   };
 
   const handleSendingState = () => {
-    const sendVariantToBlockchain = async (variantData: BlockchainVariant) => {
-      await sendVariant(program, provider, variantData);
+    const sendVariantToBlockchain = async (blockchainVariant: BlockchainVariant) => {
+      await sendVariant(program, provider, blockchainVariant);
     };
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const variantData = Variant.toBlockchainModel(deliverVariant, projectId, signatureData);
+    const blockchainVariant = Variant.toBlockchainModel(deliverVariant, projectId, signatureData);
 
-    sendVariantToBlockchain(variantData)
+    sendVariantToBlockchain(blockchainVariant)
       .then(() => {
         setState(State.Completed);
       })
@@ -120,13 +122,7 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
     setLoading(false);
   };
 
-  const getSignature = (): KontentSignature => {
-    const variantHash = hash(deliverVariant);
-    return { hash: variantHash, signature: '1234abcd' };
-  };
-
   const startProcess = () => {
-    setLoading(true);
     setState(State.Signing);
   };
 

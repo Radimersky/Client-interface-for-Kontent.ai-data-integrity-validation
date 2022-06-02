@@ -71,7 +71,7 @@ const toTimestamp = (strDate: string) => {
 };
 
 export const Variant = {
-  fromDeliverModel(
+  fromSolanaAccount(
     serverAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
     publicKey: PublicKey
   ): Variant {

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ProgramAccount, IdlTypes, Idl } from '@project-serum/anchor';
+import { IdlTypes, Idl } from '@project-serum/anchor';
 // eslint-disable-next-line no-unused-vars
 import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
 // eslint-disable-next-line no-unused-vars
@@ -34,12 +34,12 @@ export type ServerVariant = {
 };
 
 export type BlockchainVariant = {
-  lastModified: BN;
-  variantId: string;
-  itemId: string;
-  projectId: string;
-  variantHash: string;
-  variantHashSignature: string;
+  readonly lastModified: BN;
+  readonly variantId: string;
+  readonly itemId: string;
+  readonly projectId: string;
+  readonly variantHash: string;
+  readonly variantHashSignature: string;
 };
 
 export type System = {

@@ -2,7 +2,7 @@ import { Button, Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
-import DeliverVariantCard, { DeliverVariant } from '../components/variantCard/DeliverVariantCard';
+import LocalVariantCard, { DeliverVariant } from '../components/variantCard/LocalVariantCard';
 import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 
@@ -25,7 +25,11 @@ const LocalVariants = () => {
       })
       .then((data) => {
         const cards = data.items.map((variantData: DeliverVariant) => (
-          <DeliverVariantCard {...variantData} key={variantData.system.id} />
+          <LocalVariantCard
+            deliverVariant={variantData}
+            key={variantData.system.id}
+            projectId={projectId}
+          />
         ));
 
         setVariantCards(cards);

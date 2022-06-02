@@ -4,7 +4,7 @@ import { AnchorProvider, BN, web3 } from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 import { Variant } from '../models/Variant';
 
-export type SendVariant = {
+export type BlockchainVariantData = {
   lastModified: BN;
   variantId: string;
   itemId: string;
@@ -17,7 +17,7 @@ export type SendVariant = {
 export const sendVariant = async (
   program: Program,
   provider: AnchorProvider,
-  sendVariant: SendVariant
+  sendVariant: BlockchainVariantData
 ) => {
   // Create key pair for new variant account
   const variant = web3.Keypair.generate();

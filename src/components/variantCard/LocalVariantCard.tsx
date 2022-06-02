@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from './StyledCardRow';
-import DeliverVariantModal from './DeliverVariantModal';
+import LocalVariantCardDetail from './LocalVariantCardDetail';
 import React from 'react';
 
 export type System = {
@@ -22,8 +22,14 @@ export type DeliverVariant = {
   readonly elements: any;
 };
 
-const DeliverVariantCard: React.FC<DeliverVariant> = ({ system, elements }) => {
+export type ILocalVariantCardProps = {
+  readonly deliverVariant: DeliverVariant;
+  readonly projectId: string;
+};
+
+const LocalVariantCard: React.FC<ILocalVariantCardProps> = ({ deliverVariant, projectId }) => {
   const [open, setOpen] = React.useState(false);
+  const { system } = { ...deliverVariant };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -59,14 +65,14 @@ const DeliverVariantCard: React.FC<DeliverVariant> = ({ system, elements }) => {
           </Box>
         </Paper>
       </Grid>
-      <DeliverVariantModal
+      <LocalVariantCardDetail
         open={open}
         handleClose={handleClose}
-        system={system}
-        elements={elements}
+        deliverVariant={deliverVariant}
+        projectId={projectId}
       />
     </>
   );
 };
 
-export default DeliverVariantCard;
+export default LocalVariantCard;

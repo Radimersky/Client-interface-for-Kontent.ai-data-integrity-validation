@@ -5,17 +5,21 @@ import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCa
 import { Variant } from '../models/Variant';
 import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
 import useWorkspace from '../utils/useWorkspace';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
   const { program, provider } = useWorkspace();
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!connected) {
       return;
     }
+
+    setLoading(true);
 
     // Filter variants by connected wallet pubkey
     const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
@@ -27,25 +31,35 @@ const BlockchainVariants = () => {
           return <BlockchainVariantCard {...mappedVariant} key={mappedVariant.publicKey} />;
         });
         setVariantCards(variantCards);
-        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
+        setErrorMessage('Error: ' + e.message);
       })
-      .finally(() => {});
-  }, [loading]);
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [connected]);
 
   return (
     <Container maxWidth={false}>
       <Box marginY={3}>
         <h1>Blockchain variants</h1>
       </Box>
-      {connected && (
+      <Box color={'red'}>{errorMessage}</Box>
+      {connected ? (
         <>
+          {loading && (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress size={100} />
+            </Box>
+          )}
           <Grid container spacing={4}>
             {variantCards}
           </Grid>
         </>
+      ) : (
+        <h2 style={{ textAlign: 'center' }}>Please connect your wallet.</h2>
       )}
     </Container>
   );

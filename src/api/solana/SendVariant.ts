@@ -9,18 +9,18 @@ import { BlockchainVariant, Variant } from '../../models/Variant';
 export const sendVariant = async (
   program: Program,
   provider: AnchorProvider,
-  sendVariant: BlockchainVariant
+  variantProps: BlockchainVariant
 ) => {
   // Create key pair for new variant account
   const variant = web3.Keypair.generate();
 
   await program.rpc.saveVariant(
-    sendVariant.variantId,
-    sendVariant.itemId,
-    sendVariant.projectId,
-    sendVariant.variantHash,
-    sendVariant.variantHashSignature,
-    sendVariant.lastModified,
+    variantProps.variantId,
+    variantProps.itemId,
+    variantProps.projectId,
+    variantProps.variantHash,
+    variantProps.variantHashSignature,
+    variantProps.lastModified,
     {
       accounts: {
         variant: variant.publicKey,

@@ -10,9 +10,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 const BlockchainVariants = () => {
   const { connected } = useWallet();
   const { program, provider } = useWorkspace();
+  // Type <BlockchainVariantCard[]>
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleRemoveVariantCard = (publicKey: any) => {
+    const newVariantCards: JSX.Element[] = variantCards.filter(
+      (item: any) => item.publicKey !== publicKey
+    );
+    setVariantCards(newVariantCards);
+  };
 
   useEffect(() => {
     if (!connected) {
@@ -28,7 +36,15 @@ const BlockchainVariants = () => {
       .then((fetchedVariants) => {
         const variantCards = fetchedVariants.map((variant) => {
           const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
-          return <BlockchainVariantCard {...mappedVariant} key={mappedVariant.publicKey} />;
+          return (
+            <BlockchainVariantCard
+              variant={mappedVariant}
+              program={program}
+              provider={provider}
+              handleRemoveVariantCard={() => handleRemoveVariantCard(mappedVariant.publicKey)}
+              key={mappedVariant.publicKey}
+            />
+          );
         });
         setVariantCards(variantCards);
       })

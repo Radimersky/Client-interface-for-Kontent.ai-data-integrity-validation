@@ -5,12 +5,36 @@ import StyledCardRow from './StyledCardRow';
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Variant } from '../../models/Variant';
+import { deleteVariant } from '../../api/solana/DeleteVariant';
+import { AnchorProvider, Program } from '@project-serum/anchor';
 
-const BlockchainVariantCard: React.FC<Variant> = (variant) => {
+interface IBlockchainVariantCardProps {
+  readonly variant: Variant;
+  readonly provider: AnchorProvider;
+  readonly program: Program<any>;
+  readonly handleRemoveVariantCard: () => void;
+}
+
+const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
+  variant,
+  provider,
+  program,
+  handleRemoveVariantCard
+}) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleDelete = () => {
+    deleteVariant(program, provider, variant.publicKey)
+      .then(() => {
+        handleRemoveVariantCard();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // const handleClose = () => {
@@ -38,7 +62,11 @@ const BlockchainVariantCard: React.FC<Variant> = (variant) => {
               <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>
                 Detail
               </Button>
-              <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
+              <Button
+                variant="contained"
+                color="error"
+                startIcon={<DeleteIcon />}
+                onClick={handleDelete}>
                 Delete
               </Button>
             </Box>

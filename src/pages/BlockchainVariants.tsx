@@ -58,7 +58,7 @@ const BlockchainVariants = () => {
       });
   }, [connected]);
 
-  const handleValidateVariants = () => {};
+  const handleCheckConsistency = () => {};
 
   return (
     <Container maxWidth={false}>
@@ -66,8 +66,8 @@ const BlockchainVariants = () => {
         disabled={loading}
         variant="contained"
         startIcon={<CloudSyncIcon />}
-        onClick={handleValidateVariants}>
-        Validate variants
+        onClick={handleCheckConsistency}>
+        Check consistency
       </Button>
       <Box marginY={3}>
         <h1>Blockchain variants</h1>

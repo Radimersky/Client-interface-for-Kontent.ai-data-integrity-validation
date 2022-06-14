@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCard';
@@ -6,6 +6,7 @@ import { Variant } from '../models/Variant';
 import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
 import useWorkspace from '../utils/useWorkspace';
 import CircularProgress from '@mui/material/CircularProgress';
+import CloudSyncIcon from '@mui/icons-material/CloudSync';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
@@ -57,8 +58,17 @@ const BlockchainVariants = () => {
       });
   }, [connected]);
 
+  const handleValidateVariants = () => {};
+
   return (
     <Container maxWidth={false}>
+      <Button
+        disabled={loading}
+        variant="contained"
+        startIcon={<CloudSyncIcon />}
+        onClick={handleValidateVariants}>
+        Validate variants
+      </Button>
       <Box marginY={3}>
         <h1>Blockchain variants</h1>
       </Box>

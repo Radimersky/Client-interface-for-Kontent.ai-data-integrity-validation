@@ -6,15 +6,13 @@ import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant } from '../models/Variant';
+import { getVariantsByProjectId } from '../api/deliver/GetVariantsByProjectId';
 
 const LocalVariants = () => {
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
 
-  //const deliverBaseUrl = "https://deliver.kontent.ai/";
-  const deliverBaseUrl = 'https://qa-deliver.freetls.fastly.net/';
-
   const loadVariantsByProjectId = (projectId: string) => {
-    fetch(deliverBaseUrl + projectId + '/items')
+    getVariantsByProjectId(projectId)
       .then((response) => {
         if (response.ok) {
           return response.json();

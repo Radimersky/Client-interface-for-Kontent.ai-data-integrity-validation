@@ -1,21 +1,14 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import CircularProgress from '@mui/material/CircularProgress';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import useFetchBlockchainVariants from '../utils/useFetchBlockchainVariants';
+import { Loader } from '../components/Loader';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
+  const { isFetching, errorMessage, variantCards } = useFetchBlockchainVariants();
 
   const handleCheckConsistency = () => {};
-
-  const Loader = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <CircularProgress size={100} />
-    </Box>
-  );
-
-  const { isFetching, errorMessage, variantCards } = useFetchBlockchainVariants();
 
   return (
     <Container maxWidth={false}>

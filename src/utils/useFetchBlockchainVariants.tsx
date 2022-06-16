@@ -5,7 +5,6 @@ import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
 import { Variant } from '../models/Variant';
 import BlockchainVariantCard from '../components/blockchainVariantCard/BlockchainVariantCard';
 
-// Hook providing logged in user information
 const useFetchBlockchainVariants = () => {
   const { program, provider } = useWorkspace();
   const { connected } = useWallet();

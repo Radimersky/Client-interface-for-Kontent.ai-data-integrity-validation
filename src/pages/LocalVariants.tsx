@@ -1,4 +1,4 @@
-import { Button, Container, Grid } from '@mui/material';
+import { Button, Container, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
 import LocalVariantCard from '../components/variantCard/LocalVariantCard';
@@ -6,7 +6,7 @@ import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant } from '../models/Variant';
-import { getVariantsByProjectId } from '../api/deliver/GetVariants';
+import { getVariants } from '../api/deliver/GetVariants';
 import { getProjectLanguages } from '../api/deliver/GetProjectLanguages';
 import React from 'react';
 
@@ -21,39 +21,40 @@ const LocalVariants = () => {
   const loadVariantsByProjectId = (projectId: string) => {
     const variantCardsWithLanguage: VariantCards[] = [];
 
-    getProjectLanguages(projectId).then((languages) => {
-      languages?.map((language) => {
-        getVariantsByProjectId(projectId, language.codename)
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw response;
-          })
-          .then((data) => {
-            const cards = data.items.map((variantData: DeliverVariant) => (
-              <LocalVariantCard
-                deliverVariant={variantData}
-                projectId={projectId}
-                key={variantData.system.id}
-              />
-            ));
+    getProjectLanguages(projectId)
+      .then((languages) => {
+        languages?.map((language) => {
+          getVariants(projectId, language.codename)
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw response;
+            })
+            .then((data) => {
+              const cards = data.items.map((variantData: DeliverVariant) => (
+                <LocalVariantCard
+                  deliverVariant={variantData}
+                  projectId={projectId}
+                  key={variantData.system.id}
+                />
+              ));
 
-            const variantCardWithLanguage: VariantCards = {
-              language: language.name,
-              variantCards: cards
-            };
+              const variantCardWithLanguage: VariantCards = {
+                language: language.name,
+                variantCards: cards
+              };
 
-            variantCardsWithLanguage.push(variantCardWithLanguage);
-          })
-          .then(() => {
-            setVariantCards(variantCardsWithLanguage);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+              variantCardsWithLanguage.push(variantCardWithLanguage);
+            })
+            .then(() => {
+              setVariantCards(variantCardsWithLanguage);
+            });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   };
 
   return (
@@ -72,6 +73,7 @@ const LocalVariants = () => {
             <Grid container spacing={4}>
               {variantCard.variantCards}
             </Grid>
+            <Divider style={{ width: '100%', paddingTop: '50px' }} />
           </React.Fragment>
         );
       })}

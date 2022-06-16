@@ -1,5 +1,5 @@
 import { deliverBaseUrl } from '../../Constants';
 
-export const getVariantsByProjectId = async (projectId: string, languageId: string) => {
-  return fetch(deliverBaseUrl + projectId + '/items-feed?language=' + languageId);
+export const getVariants = async (projectId: string, variantId: string) => {
+  return fetch(deliverBaseUrl + projectId + '/items-feed?language=' + variantId);
 };

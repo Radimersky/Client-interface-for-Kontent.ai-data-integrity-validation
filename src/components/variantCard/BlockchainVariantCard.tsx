@@ -4,9 +4,13 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from './StyledCardRow';
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
-import { Variant } from '../../models/Variant';
+import { DeliverVariant, Variant } from '../../models/Variant';
 import { deleteVariant } from '../../api/solana/DeleteVariant';
 import { AnchorProvider, Program } from '@project-serum/anchor';
+import CloudSyncIcon from '@mui/icons-material/CloudSync';
+import CircularProgress from '@mui/material/CircularProgress';
+import { getVariant } from '../../api/deliver/GetVariant';
+import hash from 'object-hash';
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
@@ -22,6 +26,8 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   handleRemoveVariantCard
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [checkingConsistency, setCheckingIntegrity] = React.useState(false);
+  const [borderColor, setBorderColor] = React.useState('snow');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,10 +47,57 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   //   setOpen(false);
   // };
 
+  const compareHashes = (deliverVariantHash: string, blockchainVariantHash: string) => {
+    return deliverVariantHash.localeCompare(blockchainVariantHash) === 0;
+  };
+
+  const handleIntegrityViolation = () => {
+    setBorderColor('red');
+  };
+
+  const checkVariantNotFound = () => {
+    setBorderColor('orange');
+  };
+
+  const checkVariantIsObsolete = () => {
+    setBorderColor('orange');
+  };
+
+  const handleCheckIntegrity = () => {
+    setCheckingIntegrity(true);
+    setBorderColor('snow');
+    getVariant(variant.projectId, variant.itemId, variant.variantId)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          checkVariantNotFound();
+        }
+        throw response;
+      })
+      .then((deliverVariant: DeliverVariant) => {
+        if (new Date(deliverVariant.system.last_modified) != new Date(variant.lastModified)) {
+          checkVariantIsObsolete();
+        }
+
+        if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
+          handleIntegrityViolation();
+        } else {
+          setBorderColor('green');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setCheckingIntegrity(false);
+      });
+  };
+
   return (
     <>
       <Grid item xs={4} sx={{ minWidth: 400 }}>
-        <Paper elevation={3}>
+        <Paper elevation={3} sx={{ borderColor: { borderColor }, borderStyle: 'solid' }}>
           <Box padding={2}>
             <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
               <b>On-chain pubkey: {variant.publicKey}</b>
@@ -61,6 +114,13 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>
                 Detail
+              </Button>
+              <Button
+                disabled={checkingConsistency}
+                variant="contained"
+                startIcon={checkingConsistency ? <CircularProgress /> : <CloudSyncIcon />}
+                onClick={handleCheckIntegrity}>
+                Check consistency
               </Button>
               <Button
                 variant="contained"

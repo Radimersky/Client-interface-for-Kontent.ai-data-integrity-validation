@@ -1,7 +1,7 @@
 import { Grid, Paper, Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import StyledCardRow from './StyledCardRow';
+import StyledCardRow from '../StyledCardRow';
 import LocalVariantCardDetail from './LocalVariantCardDetail';
 import React from 'react';
 import { DeliverVariant } from '../../models/Variant';

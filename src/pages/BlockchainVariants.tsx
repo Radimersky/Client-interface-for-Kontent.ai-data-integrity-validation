@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
-import BlockchainVariantCard from '../components/variantCard/BlockchainVariantCard';
+import BlockchainVariantCard from '../components/blockchainVariantCard/BlockchainVariantCard';
 import { Variant } from '../models/Variant';
 import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
 import useWorkspace from '../utils/useWorkspace';

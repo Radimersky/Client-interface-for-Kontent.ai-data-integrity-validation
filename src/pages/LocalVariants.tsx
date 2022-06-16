@@ -1,7 +1,7 @@
 import { Button, Container, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { Link as RouterLink } from 'react-router-dom';
-import LocalVariantCard from '../components/variantCard/LocalVariantCard';
+import LocalVariantCard from '../components/localVariantCard/LocalVariantCard';
 import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars

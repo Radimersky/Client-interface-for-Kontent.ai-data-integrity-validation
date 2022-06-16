@@ -1,7 +1,6 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import StyledCardRow from './StyledCardRow';
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant, Variant } from '../../models/Variant';
@@ -11,6 +10,7 @@ import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getVariant } from '../../api/deliver/GetVariant';
 import hash from 'object-hash';
+import StyledCardRow from '../StyledCardRow';
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
@@ -70,17 +70,14 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
-          checkVariantNotFound();
         }
+        checkVariantNotFound();
         throw response;
       })
       .then((deliverVariant: DeliverVariant) => {
         if (new Date(deliverVariant.system.last_modified) != new Date(variant.lastModified)) {
           checkVariantIsObsolete();
-        }
-
-        if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
+        } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
           handleIntegrityViolation();
         } else {
           setBorderColor('green');

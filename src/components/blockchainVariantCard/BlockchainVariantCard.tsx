@@ -1,6 +1,5 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant, Variant } from '../../models/Variant';
@@ -11,6 +10,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getVariant } from '../../api/deliver/GetVariant';
 import hash from 'object-hash';
 import StyledCardRow from '../StyledCardRow';
+import BlockchainVariantDialog, { DialogContent } from './BlockchainVariantDialog';
+import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../../utils/dialogTemplates';
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
@@ -25,13 +26,13 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   program,
   handleRemoveVariantCard
 }) => {
-  const [open, setOpen] = React.useState(false);
-  const [checkingConsistency, setCheckingIntegrity] = React.useState(false);
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [checkingIntegrity, setCheckingIntegrity] = React.useState(false);
   const [borderColor, setBorderColor] = React.useState('snow');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [dialogContent, setDialogContent] = React.useState<DialogContent>({
+    title: '',
+    body: <></>
+  });
 
   const handleDelete = () => {
     deleteVariant(program, provider, variant.publicKey)
@@ -43,9 +44,9 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       });
   };
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+  const handleDialogClose = () => {
+    setShowDialog(false);
+  };
 
   const compareHashes = (deliverVariantHash: string, blockchainVariantHash: string) => {
     return deliverVariantHash.localeCompare(blockchainVariantHash) === 0;
@@ -57,10 +58,19 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
 
   const checkVariantNotFound = () => {
     setBorderColor('orange');
+    setDialogContent(deliverVariantNotFound);
+    setShowDialog(true);
   };
 
-  const checkVariantIsObsolete = () => {
+  const checkVariantIsObsolete = (
+    deliverVariantLastModified: Date,
+    blockchainVariantLastModified: Date
+  ) => {
     setBorderColor('orange');
+    setDialogContent(
+      obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
+    );
+    setShowDialog(true);
   };
 
   const handleCheckIntegrity = () => {
@@ -75,8 +85,10 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         throw response;
       })
       .then((deliverVariant: DeliverVariant) => {
-        if (new Date(deliverVariant.system.last_modified) != new Date(variant.lastModified)) {
-          checkVariantIsObsolete();
+        const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
+        const blockchainVariantLastModified = new Date(variant.lastModified);
+        if (deliverVariantLastModified != blockchainVariantLastModified) {
+          checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
           handleIntegrityViolation();
         } else {
@@ -109,15 +121,12 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-              <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>
-                Detail
-              </Button>
               <Button
-                disabled={checkingConsistency}
+                disabled={checkingIntegrity}
                 variant="contained"
-                startIcon={checkingConsistency ? <CircularProgress /> : <CloudSyncIcon />}
+                startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}
                 onClick={handleCheckIntegrity}>
-                Check consistency
+                Check integrity
               </Button>
               <Button
                 variant="contained"
@@ -130,8 +139,11 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
           </Box>
         </Paper>
       </Grid>
-      {open}
-      {/* <VariantDialog open={open} handleClose={handleClose} system={system} elements={elements} /> */}
+      <BlockchainVariantDialog
+        open={showDialog}
+        handleClose={handleDialogClose}
+        dialogContent={dialogContent}
+      />
     </>
   );
 };

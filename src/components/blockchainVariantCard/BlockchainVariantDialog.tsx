@@ -3,33 +3,32 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button, DialogActions } from '@mui/material';
 
+export type DialogContent = {
+  readonly title: string;
+  readonly body: JSX.Element;
+};
+
 type IBlockchainVariantDialogProps = {
   readonly open: boolean;
   readonly handleClose: () => void;
-  readonly title: string;
-  readonly content: string;
+  readonly dialogContent: DialogContent;
 };
 
 const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
   open,
   handleClose,
-  title,
-  content
+  dialogContent
 }) => {
   return (
     <Dialog
       open={open}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description">
-      <DialogTitle id="alert-dialog-title">
-        {title}
-      </DialogTitle>
-      <DialogContent>
-        {content}
-      </DialogContent>
+      <DialogTitle id="alert-dialog-title">{dialogContent.title}</DialogTitle>
+      <DialogContent>{dialogContent.body}</DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Disagree</Button>
-        <Button onClick={handleClose}>Agree</Button>
+        <Button onClick={handleClose}>No</Button>
+        <Button onClick={handleClose}>Yes</Button>
       </DialogActions>
     </Dialog>
   );

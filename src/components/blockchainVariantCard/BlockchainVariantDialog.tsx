@@ -1,41 +1,38 @@
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box } from '@mui/material';
-import { DeliverVariant } from '../../models/Variant';
-import SendVariantToBlockchain from '../SendVariantToBlockchain';
+import { Button, DialogActions } from '@mui/material';
 
-type ILocalVariantCardDetailProps = {
+type IBlockchainVariantDialogProps = {
   readonly open: boolean;
   readonly handleClose: () => void;
-  readonly deliverVariant: DeliverVariant;
-  readonly projectId: string;
+  readonly title: string;
+  readonly content: string;
 };
 
-const LocalVariantCardDetail: React.FC<ILocalVariantCardDetailProps> = ({
+const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
   open,
   handleClose,
-  deliverVariant,
-  projectId
+  title,
+  content
 }) => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
-      scroll={'paper'}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description">
       <DialogTitle id="alert-dialog-title">
-        {deliverVariant.system.name + ' (' + deliverVariant.system.codename + ')'}
+        {title}
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ marginBottom: '30px' }}>
-          <pre>{JSON.stringify(deliverVariant, null, 2)}</pre>
-        </Box>
-        <SendVariantToBlockchain deliverVariant={deliverVariant} projectId={projectId} />
+        {content}
       </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Disagree</Button>
+        <Button onClick={handleClose}>Agree</Button>
+      </DialogActions>
     </Dialog>
   );
 };
 
-export default LocalVariantCardDetail;
+export default BlockchainVariantDialog;

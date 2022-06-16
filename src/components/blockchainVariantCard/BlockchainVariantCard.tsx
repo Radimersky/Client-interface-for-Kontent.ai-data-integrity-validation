@@ -44,7 +44,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       });
   };
 
-  const handleDialogClose = () => {
+  const makeVariantConsistencyViolated = () => {
     setShowDialog(false);
   };
 
@@ -141,7 +141,8 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       </Grid>
       <BlockchainVariantDialog
         open={showDialog}
-        handleClose={handleDialogClose}
+        handleConfirm={makeVariantConsistencyViolated}
+        handleDeny={makeVariantConsistencyViolated}
         dialogContent={dialogContent}
       />
     </>

@@ -10,13 +10,15 @@ export type DialogContent = {
 
 type IBlockchainVariantDialogProps = {
   readonly open: boolean;
-  readonly handleClose: () => void;
+  readonly handleConfirm: () => void;
+  readonly handleDeny: () => void;
   readonly dialogContent: DialogContent;
 };
 
 const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
   open,
-  handleClose,
+  handleDeny,
+  handleConfirm,
   dialogContent
 }) => {
   return (
@@ -27,8 +29,12 @@ const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
       <DialogTitle id="alert-dialog-title">{dialogContent.title}</DialogTitle>
       <DialogContent>{dialogContent.body}</DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>No</Button>
-        <Button onClick={handleClose}>Yes</Button>
+        <Button onClick={handleDeny} sx={{ color: 'green' }}>
+          No
+        </Button>
+        <Button onClick={handleConfirm} sx={{ color: 'red' }}>
+          Yes
+        </Button>
       </DialogActions>
     </Dialog>
   );

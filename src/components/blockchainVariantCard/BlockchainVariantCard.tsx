@@ -21,7 +21,7 @@ interface IBlockchainVariantCardProps {
 enum State {
   IntegrityViolated = 'red',
   Consistent = 'green',
-  Unknown = 'orange',
+  Suspicious = 'orange',
   Default = 'snow'
 }
 
@@ -72,16 +72,18 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       .then((response) => {
         if (response.ok) return response.json();
 
-        setBorderColor(State.Unknown);
+        setBorderColor(State.Suspicious);
         checkVariantNotFound();
         throw response;
       })
-      .then((deliverVariant: DeliverVariant) => {
+      .then((deliverItem) => {
+        const deliverVariant: DeliverVariant = deliverItem.item;
+        console.log(deliverVariant);
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
 
         if (deliverVariantLastModified != blockchainVariantLastModified) {
-          setBorderColor(State.Unknown);
+          setBorderColor(State.Suspicious);
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
           setBorderColor(State.IntegrityViolated);
@@ -91,7 +93,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       })
       .finally(() => {
         setCheckingIntegrity(false);

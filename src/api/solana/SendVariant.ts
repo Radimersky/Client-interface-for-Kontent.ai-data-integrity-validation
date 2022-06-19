@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { AnchorProvider, BN, web3 } from '@project-serum/anchor';
+import { AnchorProvider, web3 } from '@project-serum/anchor';
 // eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 // eslint-disable-next-line no-unused-vars
@@ -33,6 +33,7 @@ export const sendVariant = async (
 
   // TODO is this needed?
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
-
+  console.log('vvv');
+  console.log(variantAccount);
   return Variant.fromSolanaAccount(variantAccount, variant.publicKey);
 };

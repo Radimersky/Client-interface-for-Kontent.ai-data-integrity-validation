@@ -101,8 +101,8 @@ export const Variant = {
     const lastModifiedTimestamp = toTimestamp(deliverVariant.system.last_modified);
     const variantData: BlockchainVariant = {
       lastModified: new BN(lastModifiedTimestamp),
-      variantId: deliverVariant.system.id,
-      itemId: deliverVariant.system.language,
+      variantId: deliverVariant.system.language,
+      itemId: deliverVariant.system.id,
       projectId: projectId,
       variantHash: signatureData.hash,
       variantHashSignature: signatureData.signature

@@ -32,7 +32,7 @@ const LocalVariantCard: React.FC<ILocalVariantCardProps> = ({ deliverVariant, pr
               <b>{system.name}</b>
             </h2>
             <Box marginY={1}>
-              <StyledCardRow name="Variant ID" value={system.id} />
+              <StyledCardRow name="Item ID" value={system.id} />
               <StyledCardRow name="Codename" value={system.codename} />
               <StyledCardRow name="Last modified" value={system.last_modified} />
               <StyledCardRow name="Type" value={system.type} />

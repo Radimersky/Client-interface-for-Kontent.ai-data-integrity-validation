@@ -10,7 +10,7 @@ import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 // eslint-disable-next-line no-unused-vars
-import { BlockchainVariant, DeliverVariant, Variant, KontentSignature } from '../models/Variant';
+import { BlockchainVariant, DeliverVariant, Variant } from '../models/Variant';
 import { getSignature } from '../api/signatureProvider/GetSignature';
 
 type ISendVariantToBlockchainProps = {

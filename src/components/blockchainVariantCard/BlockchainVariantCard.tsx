@@ -67,6 +67,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   const handleCheckIntegrity = () => {
     setCheckingIntegrity(true);
     setBorderColor(State.Default);
+    console.log(variant);
     getVariant(variant.projectId, variant.itemId, variant.variantId)
       .then((response) => {
         if (response.ok) {

@@ -19,6 +19,14 @@ interface IBlockchainVariantCardProps {
   readonly program: Program<any>;
   readonly handleRemoveVariantCard: () => void;
   readonly handleIntegrityViolation: () => void;
+  readonly isIntegrityViolated: boolean;
+}
+
+enum State {
+  IntegrityViolated = 'red',
+  Consistent = 'green',
+  Unknown = 'orange',
+  Default = 'snow'
 }
 
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
@@ -26,15 +34,17 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   provider,
   program,
   handleRemoveVariantCard,
-  handleIntegrityViolation
+  handleIntegrityViolation,
+  isIntegrityViolated
 }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
-  const [borderColor, setBorderColor] = useState('snow');
+  const [borderColor, setBorderColor] = useState(State.Default);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
     title: '',
     body: <></>
   });
+  const [integrityViolated, setIntegrityViolated] = useState(isIntegrityViolated);
 
   const handleDelete = () => {
     deleteVariant(program, provider, variant.publicKey)
@@ -47,6 +57,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   };
 
   const makeVariantOk = () => {
+    setBorderColor(State.Consistent);
     setShowDialog(false);
   };
 
@@ -71,13 +82,13 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
 
   const handleCheckIntegrity = () => {
     setCheckingIntegrity(true);
-    setBorderColor('snow');
+    setBorderColor(State.Default);
     getVariant(variant.projectId, variant.itemId, variant.variantId)
       .then((response) => {
         if (response.ok) {
           return response.json();
         }
-        setBorderColor('orange');
+        setBorderColor(State.Unknown);
         checkVariantNotFound();
         throw response;
       })
@@ -85,13 +96,13 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
         if (deliverVariantLastModified != blockchainVariantLastModified) {
-          setBorderColor('orange');
+          setBorderColor(State.Unknown);
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
-          setBorderColor('red');
+          setBorderColor(State.IntegrityViolated);
           handleIntegrityViolation();
         } else {
-          setBorderColor('green');
+          setBorderColor(State.Consistent);
         }
       })
       .catch((error) => {
@@ -121,7 +132,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
-                disabled={checkingIntegrity}
+                disabled={checkingIntegrity || integrityViolated}
                 variant="contained"
                 startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}
                 onClick={handleCheckIntegrity}>
@@ -142,6 +153,8 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         open={showDialog}
         handleConfirm={() => {
           setShowDialog(false);
+          setBorderColor(State.IntegrityViolated);
+          setIntegrityViolated(true);
           handleIntegrityViolation();
         }}
         handleDeny={makeVariantOk}

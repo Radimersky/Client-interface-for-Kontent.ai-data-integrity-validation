@@ -16,7 +16,7 @@ const BlockchainVariants = () => {
   const { program, provider } = useWorkspace();
 
   useEffect(() => {
-    const variantCards = blockchainVariants.map((variant) => {
+    const newVariantCards = blockchainVariants.map((variant) => {
       const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
       return (
         <BlockchainVariantCard
@@ -25,33 +25,40 @@ const BlockchainVariants = () => {
           provider={provider}
           handleRemoveVariantCard={() => handleRemoveVariantCard(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
+          isIntegrityViolated={false}
           key={mappedVariant.publicKey}
         />
       );
     });
-    setVariantCards(variantCards);
+    setVariantCards(newVariantCards);
   }, [blockchainVariants]);
 
   const handleRemoveVariantCard = (publicKey: any) => {
-    const newVariantCards: JSX.Element[] = variantCards.filter(
-      (item: any) => item.key !== publicKey
-    );
-    setVariantCards(newVariantCards);
+    console.log('removing');
+    console.log(variantCards);
+    setVariantCards((prevCards) => {
+      return prevCards.filter((item: any) => item.key !== publicKey);
+    });
+    console.log(variantCards);
   };
 
   const handleCheckConsistency = () => {};
 
   const handleIntegrityViolation = (publicKey: any) => {
-    const variant = variantCards.find((item: any) => item.key === publicKey);
-    console.log(variant);
-    if (!variant) {
-      return;
-    }
-    // Move variant card to new array
-    setViolatedVariantCards((previousCards) => previousCards.concat(variant));
-
-    // Remove variant card from previous array
-    handleRemoveVariantCard(publicKey);
+    if (publicKey) setViolatedVariantCards((prev) => prev);
+    // console.log(variantCards);
+    // const variant = variantCards.find((item) => item.key === publicKey);
+    // console.log(variant);
+    // if (!variant) {
+    //   return;
+    // }
+    // // Move variant card to new array
+    // setViolatedVariantCards((previousCards) => {
+    //   console.log('moving');
+    //   return previousCards.concat(variant);
+    // });
+    // // Remove variant card from previous array
+    // handleRemoveVariantCard(publicKey);
   };
 
   return (

@@ -3,8 +3,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant, Variant } from '../../models/Variant';
-import { deleteVariant } from '../../api/solana/DeleteVariant';
-import { AnchorProvider, Program } from '@project-serum/anchor';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getVariant } from '../../api/deliver/GetVariant';
@@ -15,9 +13,7 @@ import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../../utils/d
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
-  readonly provider: AnchorProvider;
-  readonly program: Program<any>;
-  readonly handleRemoveVariantCard: () => void;
+  readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;
 }
@@ -31,9 +27,7 @@ enum State {
 
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
-  provider,
-  program,
-  handleRemoveVariantCard,
+  handleRemove,
   handleIntegrityViolation,
   isIntegrityViolated
 }) => {
@@ -45,16 +39,6 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     body: <></>
   });
   const [integrityViolated, setIntegrityViolated] = useState(isIntegrityViolated);
-
-  const handleDelete = () => {
-    deleteVariant(program, provider, variant.publicKey)
-      .then(() => {
-        handleRemoveVariantCard();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   const makeVariantOk = () => {
     setBorderColor(State.Consistent);
@@ -142,7 +126,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
                 variant="contained"
                 color="error"
                 startIcon={<DeleteIcon />}
-                onClick={handleDelete}>
+                onClick={handleRemove}>
                 Delete
               </Button>
             </Box>

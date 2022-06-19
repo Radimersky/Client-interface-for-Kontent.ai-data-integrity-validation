@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import BlockchainVariantCard from '../components/blockchainVariantCard/BlockchainVariantCard';
 import { Variant } from '../models/Variant';
 import useWorkspace from '../utils/useWorkspace';
+import { deleteVariant } from '../api/solana/DeleteVariant';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
@@ -21,9 +22,7 @@ const BlockchainVariants = () => {
       return (
         <BlockchainVariantCard
           variant={mappedVariant}
-          program={program}
-          provider={provider}
-          handleRemoveVariantCard={() => handleRemoveVariantCard(mappedVariant.publicKey)}
+          handleRemove={() => removeVariantFromBlockchain(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
           isIntegrityViolated={false}
           key={mappedVariant.publicKey}
@@ -33,7 +32,17 @@ const BlockchainVariants = () => {
     setVariantCards(newVariantCards);
   }, [blockchainVariants]);
 
-  const handleRemoveVariantCard = (publicKey: any) => {
+  const removeVariantFromBlockchain = (publicKey: string) => {
+    deleteVariant(program, provider, publicKey)
+      .then(() => {
+        removeVariantCard(publicKey);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const removeVariantCard = (publicKey: string) => {
     console.log('removing');
     console.log(variantCards);
     setVariantCards((prevCards) => {

@@ -11,6 +11,7 @@ import { BN } from '@project-serum/anchor';
 export type Variant = {
   readonly projectId: string;
   readonly itemId: string;
+  readonly itemCodename: string;
   readonly variantId: string;
   readonly variantHash: string;
   readonly variantHashSignature: string;
@@ -24,6 +25,7 @@ export type Variant = {
 export type ServerVariant = {
   readonly projectId: string;
   readonly itemId: string;
+  readonly itemCodename: string;
   readonly variantId: string;
   readonly variantHash: string;
   readonly variantHashSignature: string;
@@ -37,6 +39,7 @@ export type BlockchainVariant = {
   readonly lastModified: BN;
   readonly variantId: string;
   readonly itemId: string;
+  readonly itemCodename: string;
   readonly projectId: string;
   readonly variantHash: string;
   readonly variantHashSignature: string;
@@ -82,6 +85,7 @@ export const Variant = {
     return {
       projectId: account.projectId,
       itemId: account.itemId,
+      itemCodename: account.itemCodename,
       variantId: account.variantId,
       variantHash: account.variantHash,
       variantHashSignature: account.variantHashSignature,
@@ -103,6 +107,7 @@ export const Variant = {
       lastModified: new BN(lastModifiedTimestamp),
       variantId: deliverVariant.system.language,
       itemId: deliverVariant.system.id,
+      itemCodename: deliverVariant.system.codename,
       projectId: projectId,
       variantHash: signatureData.hash,
       variantHashSignature: signatureData.signature

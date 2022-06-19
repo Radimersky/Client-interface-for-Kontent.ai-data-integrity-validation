@@ -17,6 +17,7 @@ export const sendVariant = async (
   await program.rpc.saveVariant(
     variantProps.variantId,
     variantProps.itemId,
+    variantProps.itemCodename,
     variantProps.projectId,
     variantProps.variantHash,
     variantProps.variantHashSignature,
@@ -33,7 +34,6 @@ export const sendVariant = async (
 
   // TODO is this needed?
   const variantAccount = await program.account.variant.fetch(variant.publicKey);
-  console.log('vvv');
-  console.log(variantAccount);
+
   return Variant.fromSolanaAccount(variantAccount, variant.publicKey);
 };

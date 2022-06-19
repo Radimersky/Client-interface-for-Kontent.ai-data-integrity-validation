@@ -109,7 +109,7 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
         setState(State.Completed);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setFirstMessage(messages.sendingToBlockchainFailed);
         setSecondMessage(err?.message);
         setLoading(false);

@@ -115,7 +115,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
               <StyledCardRow name="Project ID" value={variant.projectId} />
               <StyledCardRow name="Item ID" value={variant.itemId} />
               <StyledCardRow name="Variant ID" value={variant.variantId} />
-              <StyledCardRow name="Last modified" value={variant.lastModified} />
+              <StyledCardRow name="Last modified" value={variant.lastModifiedPretty} />
               <StyledCardRow name="Hash" value={variant.variantHash} />
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />
             </Box>

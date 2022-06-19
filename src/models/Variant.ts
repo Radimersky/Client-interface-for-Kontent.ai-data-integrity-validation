@@ -19,6 +19,7 @@ export type Variant = {
   readonly shortAuthor: string;
   readonly author: string;
   readonly lastModified: string;
+  readonly lastModifiedPretty: string;
   readonly accountCreated: string;
 };
 
@@ -31,7 +32,7 @@ export type ServerVariant = {
   readonly variantHashSignature: string;
   readonly publicKey: PublicKey;
   readonly author: PublicKey;
-  readonly lastModified: number;
+  readonly lastModified: string;
   readonly accountCreated: number;
 };
 
@@ -81,7 +82,6 @@ export const Variant = {
     const account = serverAccount as ServerVariant;
 
     const author = publicKey.toBase58();
-
     return {
       projectId: account.projectId,
       itemId: account.itemId,
@@ -92,7 +92,10 @@ export const Variant = {
       publicKey: publicKey.toBase58(),
       author: author,
       shortAuthor: author.slice(0, 4) + '..' + author.slice(-4),
-      lastModified: dayjs.unix(account.lastModified).format('YYYY-MM-DDTHH:mmZ'),
+      lastModified: account.lastModified,
+      lastModifiedPretty: dayjs
+        .unix(new BN(account.lastModified).toNumber())
+        .format('YYYY-MM-DDTHH:mmZ'),
       accountCreated: dayjs.unix(account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
     };
   },

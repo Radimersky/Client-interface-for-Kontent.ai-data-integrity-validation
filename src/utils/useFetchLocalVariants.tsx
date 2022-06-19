@@ -28,10 +28,7 @@ const useFetchLocalVariants = (projectId: string) => {
         languages?.map((language) => {
           getVariants(projectId, language.codename)
             .then((response) => {
-              console.log('hey');
-              if (response.ok) {
-                return response.json();
-              }
+              if (response.ok) return response.json();
               throw response;
             })
             .then((data) => {

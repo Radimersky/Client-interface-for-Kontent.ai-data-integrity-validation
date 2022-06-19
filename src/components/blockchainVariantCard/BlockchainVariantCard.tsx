@@ -67,12 +67,11 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   const handleCheckIntegrity = () => {
     setCheckingIntegrity(true);
     setBorderColor(State.Default);
-    console.log(variant);
+
     getVariant(variant.projectId, variant.itemId, variant.variantId)
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+        if (response.ok) return response.json();
+
         setBorderColor(State.Unknown);
         checkVariantNotFound();
         throw response;
@@ -80,6 +79,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       .then((deliverVariant: DeliverVariant) => {
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
+
         if (deliverVariantLastModified != blockchainVariantLastModified) {
           setBorderColor(State.Unknown);
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);

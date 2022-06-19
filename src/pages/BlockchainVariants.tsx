@@ -82,21 +82,23 @@ const BlockchainVariants = () => {
       <Box marginY={3}>
         <h1>Blockchain variants</h1>
       </Box>
-      <Box color={'red'}>{errorMessage}</Box>
+      <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
       {connected ? (
         <>
           {isFetching && <Loader />}
-          <Box marginY={3}>
-            <h2>Proper variants</h2>
-          </Box>
-          <Grid container spacing={4}>
-            {variantCards}
-          </Grid>
+
           <Box marginY={3}>
             <h2>Integrity violated variants</h2>
           </Box>
           <Grid container spacing={4}>
             {violatedVariantCards}
+          </Grid>
+
+          <Box marginY={3}>
+            <h2>Proper variants</h2>
+          </Box>
+          <Grid container spacing={4}>
+            {variantCards}
           </Grid>
         </>
       ) : (

@@ -34,7 +34,7 @@ const useFetchBlockchainVariants = () => {
         setBlockchainVariants(fetchedVariants);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         setErrorMessage('Error: ' + e.message);
       })
       .finally(() => {

@@ -2,23 +2,22 @@ import { useEffect, useState } from 'react';
 import useWorkspace from './useWorkspace';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
-import { Variant } from '../models/Variant';
-import BlockchainVariantCard from '../components/blockchainVariantCard/BlockchainVariantCard';
+// eslint-disable-next-line no-unused-vars
+import { ProgramAccount, IdlTypes, Idl } from '@project-serum/anchor';
+// eslint-disable-next-line no-unused-vars
+import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
+// eslint-disable-next-line no-unused-vars
+import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
 
 const useFetchBlockchainVariants = () => {
   const { program, provider } = useWorkspace();
   const { connected } = useWallet();
   // Type <BlockchainVariantCard[]>
-  const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
+  const [blockchainVariants, setBlockchainVariants] = useState<
+    ProgramAccount<TypeDef<IdlAccountDef, IdlTypes<Idl>>>[]
+  >([]);
   const [fetching, setFetching] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const handleRemoveVariantCard = (publicKey: any) => {
-    const newVariantCards: JSX.Element[] = variantCards.filter(
-      (item: any) => item.publicKey !== publicKey
-    );
-    setVariantCards(newVariantCards);
-  };
 
   useEffect(() => {
     if (!connected) {
@@ -32,19 +31,7 @@ const useFetchBlockchainVariants = () => {
 
     fetchVariants(program, filter)
       .then((fetchedVariants) => {
-        const variantCards = fetchedVariants.map((variant) => {
-          const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
-          return (
-            <BlockchainVariantCard
-              variant={mappedVariant}
-              program={program}
-              provider={provider}
-              handleRemoveVariantCard={() => handleRemoveVariantCard(mappedVariant.publicKey)}
-              key={mappedVariant.publicKey}
-            />
-          );
-        });
-        setVariantCards(variantCards);
+        setBlockchainVariants(fetchedVariants);
       })
       .catch((e) => {
         console.log(e);
@@ -55,7 +42,7 @@ const useFetchBlockchainVariants = () => {
       });
   }, [connected]);
 
-  return { variantCards, isFetching: fetching, errorMessage };
+  return { blockchainVariants, isFetching: fetching, errorMessage };
 };
 
 export default useFetchBlockchainVariants;

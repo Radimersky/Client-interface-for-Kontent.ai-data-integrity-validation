@@ -1,6 +1,6 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from 'react';
+import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { DeliverVariant, Variant } from '../../models/Variant';
 import { deleteVariant } from '../../api/solana/DeleteVariant';
@@ -18,18 +18,20 @@ interface IBlockchainVariantCardProps {
   readonly provider: AnchorProvider;
   readonly program: Program<any>;
   readonly handleRemoveVariantCard: () => void;
+  readonly handleIntegrityViolation: () => void;
 }
 
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
   provider,
   program,
-  handleRemoveVariantCard
+  handleRemoveVariantCard,
+  handleIntegrityViolation
 }) => {
-  const [showDialog, setShowDialog] = React.useState(false);
-  const [checkingIntegrity, setCheckingIntegrity] = React.useState(false);
-  const [borderColor, setBorderColor] = React.useState('snow');
-  const [dialogContent, setDialogContent] = React.useState<DialogContent>({
+  const [showDialog, setShowDialog] = useState(false);
+  const [checkingIntegrity, setCheckingIntegrity] = useState(false);
+  const [borderColor, setBorderColor] = useState('snow');
+  const [dialogContent, setDialogContent] = useState<DialogContent>({
     title: '',
     body: <></>
   });
@@ -44,7 +46,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       });
   };
 
-  const makeVariantConsistencyViolated = () => {
+  const makeVariantOk = () => {
     setShowDialog(false);
   };
 
@@ -52,12 +54,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     return deliverVariantHash.localeCompare(blockchainVariantHash) === 0;
   };
 
-  const handleIntegrityViolation = () => {
-    setBorderColor('red');
-  };
-
   const checkVariantNotFound = () => {
-    setBorderColor('orange');
     setDialogContent(deliverVariantNotFound);
     setShowDialog(true);
   };
@@ -66,7 +63,6 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     deliverVariantLastModified: Date,
     blockchainVariantLastModified: Date
   ) => {
-    setBorderColor('orange');
     setDialogContent(
       obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
     );
@@ -81,6 +77,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         if (response.ok) {
           return response.json();
         }
+        setBorderColor('orange');
         checkVariantNotFound();
         throw response;
       })
@@ -88,8 +85,10 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
         if (deliverVariantLastModified != blockchainVariantLastModified) {
+          setBorderColor('orange');
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
+          setBorderColor('red');
           handleIntegrityViolation();
         } else {
           setBorderColor('green');
@@ -141,8 +140,11 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       </Grid>
       <BlockchainVariantDialog
         open={showDialog}
-        handleConfirm={makeVariantConsistencyViolated}
-        handleDeny={makeVariantConsistencyViolated}
+        handleConfirm={() => {
+          setShowDialog(false);
+          handleIntegrityViolation();
+        }}
+        handleDeny={makeVariantOk}
         dialogContent={dialogContent}
       />
     </>

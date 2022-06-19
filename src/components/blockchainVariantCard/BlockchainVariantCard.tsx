@@ -78,9 +78,11 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       })
       .then((deliverItem) => {
         const deliverVariant: DeliverVariant = deliverItem.item;
-        console.log(deliverVariant);
+
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
+        console.log(deliverVariantLastModified.toUTCString());
+        console.log(blockchainVariantLastModified.toUTCString());
 
         if (deliverVariantLastModified != blockchainVariantLastModified) {
           setBorderColor(State.Suspicious);

@@ -26,8 +26,8 @@ export const obsoleteBlockchainVariant = (
     <>
       <p>It looks like the Deliver variant was updated since it was uploaded to blockchain.</p>
       <p>
-        The variant on Deliver was last modified {deliverLastModified.getDate()} but the version of
-        variant on blockchain was last modified {blockchainLastModified.getDate()}.
+        The variant on Deliver was last modified {deliverLastModified.toUTCString()} but the version
+        of variant on blockchain was last modified {blockchainLastModified.toUTCString()}.
       </p>
       <p>
         It may also mean that integrity of the variant&quot;s property &quot;last_modified&quot; was

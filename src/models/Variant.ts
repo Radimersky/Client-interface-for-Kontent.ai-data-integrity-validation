@@ -80,6 +80,10 @@ export const Variant = {
     publicKey: PublicKey
   ): Variant {
     const account = serverAccount as ServerVariant;
+    console.log('fff');
+    console.log(dayjs.unix(account.lastModified.toNumber()).toDate().getTime());
+    console.log('ddd');
+    console.log(dayjs.unix(account.lastModified.toNumber()));
 
     const author = publicKey.toBase58();
     return {

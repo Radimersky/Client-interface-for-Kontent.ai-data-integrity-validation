@@ -78,13 +78,17 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       })
       .then((deliverItem) => {
         const deliverVariant: DeliverVariant = deliverItem.item;
-        console.log(variant.lastModified);
+
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
-        console.log(deliverVariantLastModified.toUTCString());
-        console.log(blockchainVariantLastModified.toUTCString());
+        console.log(deliverVariantLastModified.getTime());
+        console.log(blockchainVariantLastModified.getTime());
 
-        if (deliverVariantLastModified != blockchainVariantLastModified) {
+        // We need to remove millis, because they were lost when blockchainVariantLastModified was converted from byte array to date object
+        if (
+          deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() !==
+          blockchainVariantLastModified.getTime()
+        ) {
           setBorderColor(State.Suspicious);
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {

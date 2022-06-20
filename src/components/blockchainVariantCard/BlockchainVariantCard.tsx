@@ -34,31 +34,31 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   handleRemove,
   handleIntegrityViolation
 }) => {
+  const [borderColor, setBorderColor] = useState('snow');
+
   const {
     checkIntegrity,
     checkingIntegrity,
-    variantIntegrity,
+    variantIntegrityState,
     IntegrityCompromisationCheckDialog,
     infoMessage
-  } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation);
-
-  const [borderColor, setBorderColor] = useState('snow');
+  } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
 
   useEffect(() => {
-    switch (variantIntegrity) {
+    switch (variantIntegrityState) {
       case VariantIntegrity.Intact:
         setBorderColor('green');
         break;
       case VariantIntegrity.Compromised:
         setBorderColor('red');
         break;
-      case VariantIntegrity.Deciding:
+      case VariantIntegrity.Obsolete:
         setBorderColor('orange');
         break;
       default:
         setBorderColor('snow');
     }
-  }, [variantIntegrity]);
+  }, [variantIntegrityState]);
 
   return (
     <>
@@ -81,7 +81,9 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
             <Box sx={boxStyling}>{infoMessage}</Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
-                disabled={checkingIntegrity || variantIntegrity === VariantIntegrity.Compromised}
+                disabled={
+                  checkingIntegrity || variantIntegrityState === VariantIntegrity.Compromised
+                }
                 variant="contained"
                 startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}
                 onClick={checkIntegrity}>

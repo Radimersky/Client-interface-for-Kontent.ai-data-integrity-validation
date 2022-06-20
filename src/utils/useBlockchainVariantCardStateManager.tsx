@@ -6,40 +6,33 @@ import { DeliverVariant, Variant } from '../models/Variant';
 import BlockchainVariantDialog, {
   DialogContent
 } from '../components/blockchainVariantCard/BlockchainVariantDialog';
-import { deliverVariantNotFound, obsoleteBlockchainVariant } from './dialogTemplates';
+import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
+import { areStringsEqual } from './Utils';
 
 export enum VariantIntegrity {
   Compromised,
   Intact,
-  Deciding,
+  Obsolete,
   Unknown
 }
 
 const useBlockchainVariantCardStateManager = (
   variant: Variant,
-  handleIntegrityViolation: () => void
+  handleIntegrityViolation: () => void,
+  handleRemove: () => void
 ) => {
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
   const [infoMessage, setInfoMessage] = useState('');
+  const [showDialog, setShowDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
     title: '',
     body: <></>
   });
-  const [variantIntegrity, setVariantIntegrity] = useState<VariantIntegrity>(
+  const [variantIntegrityState, setVariantIntegrityState] = useState<VariantIntegrity>(
     VariantIntegrity.Unknown
   );
 
-  const makeVariantOk = () => {
-    setVariantIntegrity(VariantIntegrity.Intact);
-    setShowDialog(false);
-  };
-
-  const compareHashes = (deliverVariantHash: string, blockchainVariantHash: string) => {
-    return deliverVariantHash.localeCompare(blockchainVariantHash) === 0;
-  };
-
-  const checkVariantIsObsolete = (
+  const notifyVariantIsObsolete = (
     deliverVariantLastModified: Date,
     blockchainVariantLastModified: Date
   ) => {
@@ -49,28 +42,37 @@ const useBlockchainVariantCardStateManager = (
     setShowDialog(true);
   };
 
-  const checkVariantNotFound = () => {
+  const notifyVariantNotFound = () => {
     setDialogContent(deliverVariantNotFound);
     setShowDialog(true);
   };
 
-  const makeVariantIntegrityViolated = () => {
+  const moveToObsoleteState = () => {
     setShowDialog(false);
-    setVariantIntegrity(VariantIntegrity.Compromised);
-    setInfoMessage('Integrity violated!');
+    setVariantIntegrityState(VariantIntegrity.Obsolete);
+  };
+
+  const moveToCompromisedState = () => {
+    setVariantIntegrityState(VariantIntegrity.Compromised);
     handleIntegrityViolation();
+  };
+
+  const removeVariant = () => {
+    setShowDialog(false);
+    handleRemove();
   };
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
-    setVariantIntegrity(VariantIntegrity.Unknown);
+    setInfoMessage('Checking integrity.');
+    setVariantIntegrityState(VariantIntegrity.Unknown);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {
-        if (response.ok) return response.json();
-        else {
-          setVariantIntegrity(VariantIntegrity.Deciding);
-          checkVariantNotFound();
+        if (response.ok) {
+          return response.json();
+        } else {
+          notifyVariantNotFound();
           throw response;
         }
       })
@@ -79,21 +81,22 @@ const useBlockchainVariantCardStateManager = (
 
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
-        console.log(deliverVariantLastModified.getTime());
-        console.log(blockchainVariantLastModified.getTime());
 
         // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
-        if (
-          deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() !==
-          blockchainVariantLastModified.getTime()
-        ) {
-          setVariantIntegrity(VariantIntegrity.Deciding);
-          checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
-        } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
-          setVariantIntegrity(VariantIntegrity.Compromised);
-          makeVariantIntegrityViolated();
+        const areLastModifiedDatesEqual =
+          deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() ===
+          blockchainVariantLastModified.getTime();
+
+        const deliverVariantHash = hash(deliverVariant);
+        const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
+
+        if (!areLastModifiedDatesEqual) {
+          notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
+        } else if (!areVariantHashesEqual) {
+          //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
+          moveToCompromisedState();
         } else {
-          setVariantIntegrity(VariantIntegrity.Intact);
+          setVariantIntegrityState(VariantIntegrity.Intact);
         }
       })
       .catch((error) => {
@@ -107,8 +110,8 @@ const useBlockchainVariantCardStateManager = (
   const IntegrityCompromisationCheckDialog = () => (
     <BlockchainVariantDialog
       open={showDialog}
-      handleConfirm={makeVariantIntegrityViolated}
-      handleDeny={makeVariantOk}
+      handleConfirm={removeVariant}
+      handleDeny={moveToObsoleteState}
       dialogContent={dialogContent}
     />
   );
@@ -116,7 +119,7 @@ const useBlockchainVariantCardStateManager = (
   return {
     checkIntegrity,
     checkingIntegrity,
-    variantIntegrity,
+    variantIntegrityState,
     IntegrityCompromisationCheckDialog,
     infoMessage
   };

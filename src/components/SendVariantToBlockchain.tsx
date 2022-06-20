@@ -35,7 +35,7 @@ const boxStyling = {
   backgroundColor: '#C5C5C5',
   borderRadius: '8px',
   padding: '15px',
-  minWidth: '00px'
+  minWidth: '100px'
 };
 
 const messages = {

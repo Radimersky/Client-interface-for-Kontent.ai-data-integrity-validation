@@ -25,6 +25,18 @@ enum State {
   Default = 'snow'
 }
 
+const boxStyling = {
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  marginBottom: '20px',
+  marginTop: '10px',
+  backgroundColor: '#C5C5C5',
+  borderRadius: '8px',
+  padding: '15px'
+};
+
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
   handleRemove,
@@ -39,6 +51,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     body: <></>
   });
   const [integrityViolated, setIntegrityViolated] = useState(isIntegrityViolated);
+  const [infoMessage, setInfoMessage] = useState('');
 
   const makeVariantOk = () => {
     setBorderColor(State.Consistent);
@@ -64,6 +77,14 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     setShowDialog(true);
   };
 
+  const makeVariantIntegrityViolated = () => {
+    setShowDialog(false);
+    setBorderColor(State.IntegrityViolated);
+    setInfoMessage('Integrity violated!');
+    setIntegrityViolated(true);
+    handleIntegrityViolation();
+  };
+
   const handleCheckIntegrity = () => {
     setCheckingIntegrity(true);
     setBorderColor(State.Default);
@@ -71,10 +92,11 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {
         if (response.ok) return response.json();
-
-        setBorderColor(State.Suspicious);
-        checkVariantNotFound();
-        throw response;
+        else {
+          setBorderColor(State.Suspicious);
+          checkVariantNotFound();
+          throw response;
+        }
       })
       .then((deliverItem) => {
         const deliverVariant: DeliverVariant = deliverItem.item;
@@ -84,7 +106,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         console.log(deliverVariantLastModified.getTime());
         console.log(blockchainVariantLastModified.getTime());
 
-        // We need to remove millis, because they were lost when blockchainVariantLastModified was converted from byte array to date object
+        // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
         if (
           deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() !==
           blockchainVariantLastModified.getTime()
@@ -93,7 +115,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
           checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
           setBorderColor(State.IntegrityViolated);
-          handleIntegrityViolation();
+          makeVariantIntegrityViolated();
         } else {
           setBorderColor(State.Consistent);
         }
@@ -124,6 +146,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
               <StyledCardRow name="Hash" value={variant.variantHash} />
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />
             </Box>
+            <Box sx={boxStyling}>{infoMessage}</Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
                 disabled={checkingIntegrity || integrityViolated}
@@ -145,12 +168,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       </Grid>
       <BlockchainVariantDialog
         open={showDialog}
-        handleConfirm={() => {
-          setShowDialog(false);
-          setBorderColor(State.IntegrityViolated);
-          setIntegrityViolated(true);
-          handleIntegrityViolation();
-        }}
+        handleConfirm={makeVariantIntegrityViolated}
         handleDeny={makeVariantOk}
         dialogContent={dialogContent}
       />

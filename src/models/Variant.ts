@@ -32,7 +32,7 @@ export type ServerVariant = {
   readonly variantHashSignature: string;
   readonly publicKey: PublicKey;
   readonly author: PublicKey;
-  readonly lastModified: string;
+  readonly lastModified: BN;
   readonly accountCreated: number;
 };
 
@@ -92,10 +92,8 @@ export const Variant = {
       publicKey: publicKey.toBase58(),
       author: author,
       shortAuthor: author.slice(0, 4) + '..' + author.slice(-4),
-      lastModified: account.lastModified,
-      lastModifiedPretty: dayjs
-        .unix(new BN(account.lastModified).toNumber())
-        .format('YYYY-MM-DDTHH:mmZ'),
+      lastModified: dayjs.unix(account.lastModified.toNumber()).toISOString(),
+      lastModifiedPretty: dayjs.unix(account.lastModified.toNumber()).format('YYYY-MM-DDTHH:mmZ'),
       accountCreated: dayjs.unix(account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
     };
   },

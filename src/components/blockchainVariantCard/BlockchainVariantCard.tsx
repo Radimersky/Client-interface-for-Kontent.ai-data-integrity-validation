@@ -78,7 +78,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
       })
       .then((deliverItem) => {
         const deliverVariant: DeliverVariant = deliverItem.item;
-
+        console.log(variant.lastModified);
         const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
         const blockchainVariantLastModified = new Date(variant.lastModified);
         console.log(deliverVariantLastModified.toUTCString());
@@ -114,6 +114,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
               <StyledCardRow name="Created" value={variant.accountCreated} />
               <StyledCardRow name="Project ID" value={variant.projectId} />
               <StyledCardRow name="Item ID" value={variant.itemId} />
+              <StyledCardRow name="Item code name" value={variant.itemCodename} />
               <StyledCardRow name="Variant ID" value={variant.variantId} />
               <StyledCardRow name="Last modified" value={variant.lastModifiedPretty} />
               <StyledCardRow name="Hash" value={variant.variantHash} />

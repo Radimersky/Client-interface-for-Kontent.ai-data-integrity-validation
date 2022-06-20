@@ -1,28 +1,20 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { DeliverVariant, Variant } from '../../models/Variant';
+import { Variant } from '../../models/Variant';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getVariant } from '../../api/deliver/GetVariant';
-import hash from 'object-hash';
 import StyledCardRow from '../StyledCardRow';
-import BlockchainVariantDialog, { DialogContent } from './BlockchainVariantDialog';
-import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../../utils/dialogTemplates';
+import useBlockchainVariantCardStateManager, {
+  VariantIntegrity
+} from '../../utils/useBlockchainVariantCardStateManager';
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;
-}
-
-enum State {
-  IntegrityViolated = 'red',
-  Consistent = 'green',
-  Suspicious = 'orange',
-  Default = 'snow'
 }
 
 const boxStyling = {
@@ -40,93 +32,33 @@ const boxStyling = {
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
   handleRemove,
-  handleIntegrityViolation,
-  isIntegrityViolated
+  handleIntegrityViolation
 }) => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [checkingIntegrity, setCheckingIntegrity] = useState(false);
-  const [borderColor, setBorderColor] = useState(State.Default);
-  const [dialogContent, setDialogContent] = useState<DialogContent>({
-    title: '',
-    body: <></>
-  });
-  const [integrityViolated, setIntegrityViolated] = useState(isIntegrityViolated);
-  const [infoMessage, setInfoMessage] = useState('');
+  const {
+    checkIntegrity,
+    checkingIntegrity,
+    variantIntegrity,
+    IntegrityCompromisationCheckDialog,
+    infoMessage
+  } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation);
 
-  const makeVariantOk = () => {
-    setBorderColor(State.Consistent);
-    setShowDialog(false);
-  };
+  const [borderColor, setBorderColor] = useState('snow');
 
-  const compareHashes = (deliverVariantHash: string, blockchainVariantHash: string) => {
-    return deliverVariantHash.localeCompare(blockchainVariantHash) === 0;
-  };
-
-  const checkVariantNotFound = () => {
-    setDialogContent(deliverVariantNotFound);
-    setShowDialog(true);
-  };
-
-  const checkVariantIsObsolete = (
-    deliverVariantLastModified: Date,
-    blockchainVariantLastModified: Date
-  ) => {
-    setDialogContent(
-      obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
-    );
-    setShowDialog(true);
-  };
-
-  const makeVariantIntegrityViolated = () => {
-    setShowDialog(false);
-    setBorderColor(State.IntegrityViolated);
-    setInfoMessage('Integrity violated!');
-    setIntegrityViolated(true);
-    handleIntegrityViolation();
-  };
-
-  const handleCheckIntegrity = () => {
-    setCheckingIntegrity(true);
-    setBorderColor(State.Default);
-
-    getVariant(variant.projectId, variant.itemCodename, variant.variantId)
-      .then((response) => {
-        if (response.ok) return response.json();
-        else {
-          setBorderColor(State.Suspicious);
-          checkVariantNotFound();
-          throw response;
-        }
-      })
-      .then((deliverItem) => {
-        const deliverVariant: DeliverVariant = deliverItem.item;
-
-        const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
-        const blockchainVariantLastModified = new Date(variant.lastModified);
-        console.log(deliverVariantLastModified.getTime());
-        console.log(blockchainVariantLastModified.getTime());
-
-        // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
-        if (
-          deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() !==
-          blockchainVariantLastModified.getTime()
-        ) {
-          setBorderColor(State.Suspicious);
-          checkVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
-        } else if (!compareHashes(hash(deliverVariant), variant.variantHash)) {
-          setBorderColor(State.IntegrityViolated);
-          makeVariantIntegrityViolated();
-        } else {
-          setBorderColor(State.Consistent);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setCheckingIntegrity(false);
-      });
-  };
+  useEffect(() => {
+    switch (variantIntegrity) {
+      case VariantIntegrity.Intact:
+        setBorderColor('green');
+        break;
+      case VariantIntegrity.Compromised:
+        setBorderColor('red');
+        break;
+      case VariantIntegrity.Deciding:
+        setBorderColor('orange');
+        break;
+      default:
+        setBorderColor('snow');
+    }
+  }, [variantIntegrity]);
 
   return (
     <>
@@ -149,10 +81,10 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
             <Box sx={boxStyling}>{infoMessage}</Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
-                disabled={checkingIntegrity || integrityViolated}
+                disabled={checkingIntegrity || variantIntegrity === VariantIntegrity.Compromised}
                 variant="contained"
                 startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}
-                onClick={handleCheckIntegrity}>
+                onClick={checkIntegrity}>
                 Check integrity
               </Button>
               <Button
@@ -166,12 +98,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
           </Box>
         </Paper>
       </Grid>
-      <BlockchainVariantDialog
-        open={showDialog}
-        handleConfirm={makeVariantIntegrityViolated}
-        handleDeny={makeVariantOk}
-        dialogContent={dialogContent}
-      />
+      <IntegrityCompromisationCheckDialog />
     </>
   );
 };

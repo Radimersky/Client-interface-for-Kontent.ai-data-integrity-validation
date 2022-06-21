@@ -13,6 +13,7 @@ export enum VariantIntegrity {
   Compromised,
   Intact,
   Obsolete,
+  NotFound,
   Unknown
 }
 
@@ -39,20 +40,29 @@ const useBlockchainVariantCardStateManager = (
     setDialogContent(
       obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
     );
+    setVariantIntegrityState(VariantIntegrity.Obsolete);
     setShowDialog(true);
   };
 
   const notifyVariantNotFound = () => {
     setDialogContent(deliverVariantNotFound);
+    setVariantIntegrityState(VariantIntegrity.NotFound);
     setShowDialog(true);
   };
 
   const moveToObsoleteState = () => {
     setShowDialog(false);
+    if (VariantIntegrity.Obsolete) {
+      setInfoMessage('Variant is obsolete.');
+    } else if (VariantIntegrity.NotFound) {
+      setInfoMessage('Deliver variant was not found.');
+    }
+
     setVariantIntegrityState(VariantIntegrity.Obsolete);
   };
 
   const moveToCompromisedState = () => {
+    setInfoMessage('Variant hash mismatch!');
     setVariantIntegrityState(VariantIntegrity.Compromised);
     handleIntegrityViolation();
   };

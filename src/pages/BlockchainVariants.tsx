@@ -43,12 +43,9 @@ const BlockchainVariants = () => {
   };
 
   const removeVariantCard = (publicKey: string) => {
-    console.log('removing');
-    console.log(variantCards);
     setVariantCards((prevCards) => {
       return prevCards.filter((item: any) => item.key !== publicKey);
     });
-    console.log(variantCards);
   };
 
   const handleCheckConsistency = () => {};

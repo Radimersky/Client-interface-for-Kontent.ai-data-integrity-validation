@@ -68,6 +68,7 @@ const useBlockchainVariantCardStateManager = (
   };
 
   const removeVariant = () => {
+    setInfoMessage('Variant can be removed.');
     setShowDialog(false);
     handleRemove();
   };
@@ -100,7 +101,7 @@ const useBlockchainVariantCardStateManager = (
         const deliverVariantHash = hash(deliverVariant);
         const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
 
-        if (!areLastModifiedDatesEqual) {
+        if (areLastModifiedDatesEqual) {
           notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
         } else if (!areVariantHashesEqual) {
           //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)

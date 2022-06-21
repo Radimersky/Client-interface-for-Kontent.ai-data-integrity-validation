@@ -5,13 +5,10 @@ export const deliverVariantNotFound: DialogContent = {
   title: 'Deliver variant not found',
   body: (
     <>
-      <p>It looks like the variant from Deliver does not longer exist.</p>
-      <p>
-        It was probably removed or unpushlished, but it may also mean that integrity of the
-        variant&quot;s identifiers were corrupted.
-      </p>
+      <p>It looks like the variant from the Deliver does not longer exist.</p>
+      <p>The variant saved on blockchain does not have a purpose anymore and can be removed.</p>
       <p style={{ paddingTop: '20px' }}>
-        <b>Do you want to mark the variant as integrity violated?</b>
+        <b>Do you want to remove the variant from blockchain?</b>
       </p>
     </>
   )
@@ -29,12 +26,9 @@ export const obsoleteBlockchainVariant = (
         The variant on Deliver was last modified {deliverLastModified.toUTCString()} but the version
         of variant on blockchain was last modified {blockchainLastModified.toUTCString()}.
       </p>
-      <p>
-        It may also mean that integrity of the variant&quot;s property &quot;last_modified&quot; was
-        corrupted.
-      </p>
+      <p>The variant saved on blockchain does not have a purpose anymore and can be removed.</p>
       <p style={{ paddingTop: '20px' }}>
-        <b>Do you want to mark the variant as integrity violated?</b>
+        <b>Do you want to remove the variant from blockchain?</b>
       </p>
     </>
   )

@@ -9,16 +9,28 @@ import {
   signInAnonymously
 } from 'firebase/auth';
 import {
+  addDoc,
   collection,
   CollectionReference,
   doc,
   DocumentReference,
   getFirestore
 } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+export enum IssueType {
+  Compromised = 'compromised',
+  NotFound = 'not found',
+  Obsolete = 'obsolete'
+}
+
+// Collections
+export type DatabaseVariant = {
+  wallet: string;
+  variantPublicKey: string;
+  issueType: IssueType;
+};
+
+// Web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyCf0u2RX-7EFySUxI26yotkF26hD519c1s',
   authDomain: 'variant-kontent.firebaseapp.com',
@@ -29,7 +41,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-//const app = initializeApp(firebaseConfig);
 initializeApp(firebaseConfig);
 
 // Authentication
@@ -48,18 +59,20 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 // Firestore
 const db = getFirestore();
 
-export enum IssueType {
-  Compromised = 'compromised',
-  NotFound = 'not found',
-  Obsolete = 'obsolete'
-}
-
-// Collections
-export type DatabaseVariant = {
-  wallet: string;
-  variantPublicKey: string;
-  //variantId: "compromised" | "not found" | "obsolete";
-  issueType: IssueType;
+export const submitDataToDatabase = async (
+  wallet: string,
+  issueType: IssueType,
+  variantPublicKey: string
+) => {
+  try {
+    await addDoc(databaseVariantsCollection, {
+      wallet: wallet,
+      issueType: issueType,
+      variantPublicKey: variantPublicKey
+    });
+  } catch (err) {
+    console.error((err as { message?: string })?.message ?? 'Unknown error occurred');
+  }
 };
 
 export const databaseVariantsCollection = collection(

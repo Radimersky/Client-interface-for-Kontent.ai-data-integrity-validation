@@ -8,15 +8,9 @@ import BlockchainVariantCard from '../components/blockchainVariantCard/Blockchai
 import { Variant } from '../models/Variant';
 import useWorkspace from '../utils/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
-import { addDoc, onSnapshot } from 'firebase/firestore';
-import {
-  DatabaseVariant,
-  databaseVariantsCollection,
-  // eslint-disable-next-line no-unused-vars
-  IssueType,
-  onAuthChanged
-} from '../utils/firebase';
-import { getAuth, signInAnonymously, User } from 'firebase/auth';
+import { onSnapshot } from 'firebase/firestore';
+import { DatabaseVariant, databaseVariantsCollection, onAuthChanged } from '../utils/firebase';
+import { User } from 'firebase/auth';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
@@ -38,7 +32,6 @@ const BlockchainVariants = () => {
         <BlockchainVariantCard
           handleRemove={() => removeVariantFromBlockchain(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
-          submitDataToDatabase={submitDataToDatabase}
           variant={mappedVariant}
           isIntegrityViolated={false}
           walletKey={provider.wallet.publicKey}
@@ -50,43 +43,16 @@ const BlockchainVariants = () => {
   }, [blockchainVariants]);
 
   useEffect(() => {
-    const auth = getAuth();
-    signInAnonymously(auth)
-      .then(() => {})
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  useEffect(() => {
     // Call onSnapshot() to listen to changes
     const unsubscribe = onSnapshot(databaseVariantsCollection, (snapshot) => {
       // Access .docs property of snapshot
       setDatabaseVariants(snapshot.docs.map((doc) => doc.data()));
-      console.log('hello');
     });
-    // Don't forget to unsubscribe from listening to changes
+    // Unsubscribe from listening to changes
     return () => {
       unsubscribe();
     };
   }, [user]);
-
-  const submitDataToDatabase = async (
-    wallet: string,
-    issueType: IssueType,
-    variantPublicKey: string
-  ) => {
-    try {
-      await addDoc(databaseVariantsCollection, {
-        wallet: wallet,
-        issueType: issueType,
-        variantPublicKey: variantPublicKey
-      });
-      console.log('sent');
-    } catch (err) {
-      console.error((err as { message?: string })?.message ?? 'Unknown error occurred');
-    }
-  };
 
   const removeVariantFromBlockchain = (publicKey: string) => {
     deleteVariant(program, provider, publicKey)

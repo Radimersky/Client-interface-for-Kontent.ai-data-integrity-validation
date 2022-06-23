@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import BlockchainVariants from './pages/BlockchainVariants';
-import { CssBaseline, Typography } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import NavigationMenu from './components/NavigationMenu';
 import {
   ExodusWalletAdapter,
@@ -23,8 +23,6 @@ import LocalVariants from './pages/LocalVariants';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 function App() {
-  const [submitError, setSubmitError] = useState<string>();
-
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
   const network = WalletAdapterNetwork.Testnet;
 
@@ -50,7 +48,7 @@ function App() {
     try {
       signIn();
     } catch (err) {
-      setSubmitError((err as { message?: string })?.message ?? 'Unknown error occurred');
+      console.error((err as { message?: string })?.message ?? 'Unknown error occurred');
     }
   }, []);
 
@@ -59,11 +57,6 @@ function App() {
       <WalletProvider wallets={wallets} autoConnect>
         <CssBaseline />
         <NavigationMenu />
-        {submitError && (
-          <Typography variant="caption" textAlign="right" sx={{ color: 'error.main' }}>
-            {submitError}
-          </Typography>
-        )}
         <Routes>
           <Route path={localVariantsPage} element={<LocalVariants />} />
           <Route path={blockchainVariantsPage} element={<BlockchainVariants />} />

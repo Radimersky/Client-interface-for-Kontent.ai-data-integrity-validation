@@ -11,7 +11,7 @@ import useBlockchainVariantCardStateManager, {
 } from '../../utils/useBlockchainVariantCardStateManager';
 import { VariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 // eslint-disable-next-line no-unused-vars
-import { IssueType } from '../../utils/firebase';
+import { IssueType, submitDataToDatabase } from '../../utils/firebase';
 // eslint-disable-next-line no-unused-vars
 import { PublicKey } from '@solana/web3.js';
 
@@ -20,11 +20,6 @@ interface IBlockchainVariantCardProps {
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;
-  readonly submitDataToDatabase: (
-    wallet: string,
-    issueType: IssueType,
-    variantPublicKey: string
-  ) => void;
   readonly walletKey: PublicKey;
 }
 
@@ -44,8 +39,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
   walletKey,
   handleRemove,
-  handleIntegrityViolation,
-  submitDataToDatabase
+  handleIntegrityViolation
 }) => {
   const [borderColor, setBorderColor] = useState('snow');
 
@@ -57,6 +51,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     infoMessage
   } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
 
+  // Submit state changes to variant database
   useEffect(() => {
     if (
       variantIntegrityState === VariantIntegrity.Unknown ||

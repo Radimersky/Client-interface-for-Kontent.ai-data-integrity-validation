@@ -4,8 +4,6 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Program, AnchorProvider, Wallet, Idl } from '@project-serum/anchor';
 
 interface IWorkspaceProps {
-  //readonly wallet: AnchorWallet | undefined;
-  //readonly connection: Connection;
   readonly provider: AnchorProvider;
   readonly program: Program<any>;
 }
@@ -26,8 +24,6 @@ const useWorkspace = (): IWorkspaceProps => {
   const program = new Program(idl as Idl, programID, provider);
 
   return {
-    //wallet,
-    //connection,
     provider,
     program
   };

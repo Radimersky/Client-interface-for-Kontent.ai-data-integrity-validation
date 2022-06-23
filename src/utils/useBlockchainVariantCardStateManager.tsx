@@ -103,7 +103,7 @@ const useBlockchainVariantCardStateManager = (
 
         if (!areLastModifiedDatesEqual) {
           notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
-        } else if (!areVariantHashesEqual) {
+        } else if (areVariantHashesEqual) {
           //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
           moveToCompromisedState();
         } else {

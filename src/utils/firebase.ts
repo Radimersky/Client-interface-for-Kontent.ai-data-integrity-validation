@@ -48,16 +48,24 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 // Firestore
 const db = getFirestore();
 
+export enum IssueType {
+  Compromised = 'compromised',
+  NotFound = 'not found',
+  Obsolete = 'obsolete'
+}
+
 // Collections
-export type Variant = {
+export type DatabaseVariant = {
   wallet: string;
-  projectId: string;
-  variantId: string;
-  integrityViolated: boolean;
-  //description?: string;
+  variantPublicKey: string;
+  //variantId: "compromised" | "not found" | "obsolete";
+  issueType: IssueType;
 };
 
-export const variantsCollection = collection(db, 'variants') as CollectionReference<Variant>;
+export const databaseVariantsCollection = collection(
+  db,
+  'databaseVariants'
+) as CollectionReference<DatabaseVariant>;
 
-export const variantsDocument = (id: string) =>
-  doc(db, 'variants', id) as DocumentReference<Variant>;
+export const databaseVariantsDocument = (id: string) =>
+  doc(db, 'databaseVariants', id) as DocumentReference<DatabaseVariant>;

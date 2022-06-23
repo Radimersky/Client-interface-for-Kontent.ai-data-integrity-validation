@@ -9,12 +9,23 @@ import StyledCardRow from '../StyledCardRow';
 import useBlockchainVariantCardStateManager, {
   VariantIntegrity
 } from '../../utils/useBlockchainVariantCardStateManager';
+import { VariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
+// eslint-disable-next-line no-unused-vars
+import { IssueType } from '../../utils/firebase';
+// eslint-disable-next-line no-unused-vars
+import { PublicKey } from '@solana/web3.js';
 
 interface IBlockchainVariantCardProps {
   readonly variant: Variant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;
+  readonly submitDataToDatabase: (
+    wallet: string,
+    issueType: IssueType,
+    variantPublicKey: string
+  ) => void;
+  readonly walletKey: PublicKey;
 }
 
 const boxStyling = {
@@ -31,8 +42,10 @@ const boxStyling = {
 
 const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   variant,
+  walletKey,
   handleRemove,
-  handleIntegrityViolation
+  handleIntegrityViolation,
+  submitDataToDatabase
 }) => {
   const [borderColor, setBorderColor] = useState('snow');
 
@@ -43,6 +56,22 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
     IntegrityCompromisationCheckDialog,
     infoMessage
   } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
+
+  useEffect(() => {
+    if (
+      variantIntegrityState === VariantIntegrity.Unknown ||
+      variantIntegrityState === VariantIntegrity.Intact
+    ) {
+      return;
+    }
+
+    const issueType = VariantIntegritytoIssueTypeMapper(variantIntegrityState);
+
+    if (issueType) {
+      console.log('sending data');
+      submitDataToDatabase(walletKey.toString(), issueType, variant.publicKey);
+    }
+  }, [variantIntegrityState]);
 
   useEffect(() => {
     switch (variantIntegrityState) {

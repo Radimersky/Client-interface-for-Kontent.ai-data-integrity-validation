@@ -12,6 +12,7 @@ import { addDoc, onSnapshot } from 'firebase/firestore';
 import {
   DatabaseVariant,
   databaseVariantsCollection,
+  // eslint-disable-next-line no-unused-vars
   IssueType,
   onAuthChanged
 } from '../utils/firebase';
@@ -35,10 +36,12 @@ const BlockchainVariants = () => {
       const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
       return (
         <BlockchainVariantCard
-          variant={mappedVariant}
           handleRemove={() => removeVariantFromBlockchain(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
+          submitDataToDatabase={submitDataToDatabase}
+          variant={mappedVariant}
           isIntegrityViolated={false}
+          walletKey={provider.wallet.publicKey}
           key={mappedVariant.publicKey}
         />
       );
@@ -49,9 +52,7 @@ const BlockchainVariants = () => {
   useEffect(() => {
     const auth = getAuth();
     signInAnonymously(auth)
-      .then(() => {
-        handleSubmit();
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
       });
@@ -62,6 +63,7 @@ const BlockchainVariants = () => {
     const unsubscribe = onSnapshot(databaseVariantsCollection, (snapshot) => {
       // Access .docs property of snapshot
       setDatabaseVariants(snapshot.docs.map((doc) => doc.data()));
+      console.log('hello');
     });
     // Don't forget to unsubscribe from listening to changes
     return () => {
@@ -69,13 +71,18 @@ const BlockchainVariants = () => {
     };
   }, [user]);
 
-  const handleSubmit = async () => {
+  const submitDataToDatabase = async (
+    wallet: string,
+    issueType: IssueType,
+    variantPublicKey: string
+  ) => {
     try {
       await addDoc(databaseVariantsCollection, {
-        wallet: 'abc',
-        issueType: IssueType.Compromised,
-        variantPublicKey: 'abcdef'
+        wallet: wallet,
+        issueType: issueType,
+        variantPublicKey: variantPublicKey
       });
+      console.log('sent');
     } catch (err) {
       console.error((err as { message?: string })?.message ?? 'Unknown error occurred');
     }

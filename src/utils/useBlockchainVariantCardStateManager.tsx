@@ -94,6 +94,28 @@ const useBlockchainVariantCardStateManager = (
     if (databaseMetaData) handleRemove();
   };
 
+  const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariant) => {
+    const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
+    const blockchainVariantLastModified = new Date(variant.lastModified);
+
+    // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
+    const areLastModifiedDatesEqual =
+      deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() ===
+      blockchainVariantLastModified.getTime();
+
+    const deliverVariantHash = hash(deliverVariant);
+    const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
+
+    if (!areLastModifiedDatesEqual) {
+      notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
+    } else if (!areVariantHashesEqual) {
+      //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
+      moveToCompromisedState();
+    } else {
+      setVariantIntegrityState(VariantIntegrity.Intact);
+    }
+  };
+
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
     setInfoMessage('Checking integrity.');
@@ -109,27 +131,7 @@ const useBlockchainVariantCardStateManager = (
         }
       })
       .then((deliverItem) => {
-        const deliverVariant: DeliverVariant = deliverItem.item;
-
-        const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
-        const blockchainVariantLastModified = new Date(variant.lastModified);
-
-        // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
-        const areLastModifiedDatesEqual =
-          deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() ===
-          blockchainVariantLastModified.getTime();
-
-        const deliverVariantHash = hash(deliverVariant);
-        const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
-
-        if (!areLastModifiedDatesEqual) {
-          notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
-        } else if (!areVariantHashesEqual) {
-          //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
-          moveToCompromisedState();
-        } else {
-          setVariantIntegrityState(VariantIntegrity.Intact);
-        }
+        evaluateStateFromDeliverVariant(deliverItem.item);
       })
       .catch((error) => {
         console.error(error);

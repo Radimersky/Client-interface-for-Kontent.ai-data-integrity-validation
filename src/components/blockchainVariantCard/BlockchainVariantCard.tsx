@@ -69,6 +69,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         variantPublicKey: variant.publicKey,
         wallet: walletKey.toString()
       };
+
       submitDocumentToDb(dbVariant);
     }
   }, [variantIntegrityState]);

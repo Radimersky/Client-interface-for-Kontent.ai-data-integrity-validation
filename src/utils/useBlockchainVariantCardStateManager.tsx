@@ -9,7 +9,7 @@ import BlockchainVariantDialog, {
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
 import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from './Utils';
 // eslint-disable-next-line no-unused-vars
-import { getDatabaseVariant } from './firebase';
+import { DatabaseVariantWithId, getDatabaseVariant } from './firebase';
 
 export enum VariantIntegrity {
   Compromised,
@@ -27,6 +27,7 @@ const useBlockchainVariantCardStateManager = (
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
   const [infoMessage, setInfoMessage] = useState('');
   const [showDialog, setShowDialog] = useState(false);
+  const [databaseMetaData, setDatabaseMetaData] = useState<DatabaseVariantWithId | null>(null);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
     title: '',
     body: <></>
@@ -43,12 +44,12 @@ const useBlockchainVariantCardStateManager = (
 
     fetchDatabaseVariant()
       .then((data) => {
-        const persistedState = issueTypeToVariantIntegrityMapper(data?.issueType);
+        setDatabaseMetaData(data);
+        const issueType = data?.databaseVariant.issueType;
+        const persistedState = issueTypeToVariantIntegrityMapper(issueType);
         setVariantIntegrityState(persistedState);
 
-        if (data?.issueType) {
-          setInfoMessage(makeSentence(data?.issueType));
-        }
+        if (issueType) setInfoMessage(makeSentence(issueType));
       })
       .catch(console.error);
   }, []);
@@ -90,7 +91,7 @@ const useBlockchainVariantCardStateManager = (
   const removeVariant = () => {
     setInfoMessage('Variant can be removed.');
     setShowDialog(false);
-    handleRemove();
+    if (databaseMetaData) handleRemove();
   };
 
   const checkIntegrity = () => {

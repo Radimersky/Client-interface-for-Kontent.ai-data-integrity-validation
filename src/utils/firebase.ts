@@ -12,11 +12,13 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  deleteDoc,
   doc,
   DocumentReference,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where
 } from 'firebase/firestore';
 
@@ -31,6 +33,11 @@ export type DatabaseVariant = {
   wallet: string;
   variantPublicKey: string;
   issueType: IssueType;
+};
+
+export type DatabaseVariantWithId = {
+  databaseVariant: DatabaseVariant;
+  id: string;
 };
 
 // Web app's Firebase configuration
@@ -64,31 +71,51 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 // Firestore
 const db = getFirestore();
 
-export const submitDocumentToDb = async (
-  wallet: string,
-  issueType: IssueType,
-  variantPublicKey: string
-) => {
+export const submitDocumentToDb = async (databaseVariant: DatabaseVariant) => {
   try {
-    await addDoc(databaseVariantsCollection, {
-      wallet: wallet,
-      issueType: issueType,
-      variantPublicKey: variantPublicKey
-    });
+    const dbVariant = await getDatabaseVariant(databaseVariant.variantPublicKey);
+
+    if (dbVariant) {
+      updateDatabaseVariant(dbVariant.id, databaseVariant);
+    } else {
+      addDoc(databaseVariantsCollection, databaseVariant);
+    }
   } catch (err) {
     console.error((err as { message?: string })?.message ?? 'Unknown error occurred');
   }
 };
 
-export const getDatabaseVariant = async (variantPublicKey: string) => {
+export const getDatabaseVariant = async (
+  variantPublicKey: string
+): Promise<DatabaseVariantWithId | null> => {
   const q = query(
     collection(db, databaseVariantsTable),
     where('variantPublicKey', '==', variantPublicKey)
   );
 
   const querySnapshot = await getDocs(q);
-  const databaseVariant = querySnapshot.empty ? null : querySnapshot.docs[0].data();
-  return databaseVariant as DatabaseVariant;
+  if (!querySnapshot.empty) {
+    const databaseVariant = querySnapshot.docs[0].data() as DatabaseVariant;
+    const id = querySnapshot.docs[0].id;
+    return { databaseVariant, id };
+  }
+
+  return null;
+};
+
+export const updateDatabaseVariant = async (id: string, newDocument: DatabaseVariant) => {
+  const document = databaseVariantsDocument(id);
+  updateDoc(document, newDocument);
+};
+
+export const removeDatabaseVariant = (id: string) => {
+  const document = databaseVariantsDocument(id);
+  deleteDoc(document);
+};
+
+export const tryRemoveDatabaseVariantByPublicKey = async (publicKey: string) => {
+  const dbVariant = await getDatabaseVariant(publicKey);
+  if (dbVariant) removeDatabaseVariant(dbVariant.id);
 };
 
 export const databaseVariantsCollection = collection(
@@ -96,5 +123,5 @@ export const databaseVariantsCollection = collection(
   databaseVariantsTable
 ) as CollectionReference<DatabaseVariant>;
 
-export const databaseVariantsDocument = (id: string) =>
+const databaseVariantsDocument = (id: string) =>
   doc(db, databaseVariantsTable, id) as DocumentReference<DatabaseVariant>;

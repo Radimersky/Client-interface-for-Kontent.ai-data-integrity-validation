@@ -54,8 +54,6 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   // Submit state changes to variant database
   useEffect(() => {
     if (
-      // Persist changes in state only when integrity of variant is checked
-      !checkingIntegrity ||
       variantIntegrityState === VariantIntegrity.Unknown ||
       variantIntegrityState === VariantIntegrity.Intact
     ) {
@@ -66,7 +64,12 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
 
     if (issueType) {
       console.log('sending data');
-      submitDocumentToDb(walletKey.toString(), issueType, variant.publicKey);
+      const dbVariant: DatabaseVariant = {
+        issueType,
+        variantPublicKey: variant.publicKey,
+        wallet: walletKey.toString()
+      };
+      submitDocumentToDb(dbVariant);
     }
   }, [variantIntegrityState]);
 

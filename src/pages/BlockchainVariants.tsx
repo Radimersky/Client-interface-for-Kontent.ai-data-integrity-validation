@@ -8,8 +8,7 @@ import BlockchainVariantCard from '../components/blockchainVariantCard/Blockchai
 import { Variant } from '../models/Variant';
 import useWorkspace from '../utils/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
-import { onSnapshot } from 'firebase/firestore';
-import { DatabaseVariant, databaseVariantsCollection } from '../utils/firebase';
+import { tryRemoveDatabaseVariantByPublicKey } from '../utils/firebase';
 // import { User } from 'firebase/auth';
 
 const BlockchainVariants = () => {
@@ -18,7 +17,7 @@ const BlockchainVariants = () => {
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
-  const [databaseVariants, setDatabaseVariants] = useState<DatabaseVariant[]>([]);
+  //const [databaseVariants, setDatabaseVariants] = useState<DatabaseVariant[]>([]);
   // const [user, setUser] = useState<User>();
 
   // useEffect(() => {
@@ -42,22 +41,23 @@ const BlockchainVariants = () => {
     setVariantCards(newVariantCards);
   }, [blockchainVariants]);
 
-  useEffect(() => {
-    // Call onSnapshot() to listen to changes
-    const unsubscribe = onSnapshot(databaseVariantsCollection, (snapshot) => {
-      // Access .docs property of snapshot
-      setDatabaseVariants(snapshot.docs.map((doc) => doc.data()));
-    });
-    // Unsubscribe from listening to changes
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  // useEffect(() => {
+  //   // Call onSnapshot() to listen to changes
+  //   const unsubscribe = onSnapshot(databaseVariantsCollection, (snapshot) => {
+  //     // Access .docs property of snapshot
+  //     setDatabaseVariants(snapshot.docs.map((doc) => doc.data()));
+  //   });
+  //   // Unsubscribe from listening to changes
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   const removeVariantFromBlockchain = (publicKey: string) => {
     deleteVariant(program, provider, publicKey)
       .then(() => {
         removeVariantCardFromState(publicKey);
+        tryRemoveDatabaseVariantByPublicKey(publicKey);
       })
       .catch((e) => {
         console.log(e);
@@ -68,7 +68,6 @@ const BlockchainVariants = () => {
     setVariantCards((prevCards) => {
       return prevCards.filter((item: any) => item.key !== publicKey);
     });
-    console.log(databaseVariants);
   };
 
   const handleCheckConsistency = () => {};

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
 // eslint-disable-next-line no-unused-vars
@@ -7,7 +7,9 @@ import BlockchainVariantDialog, {
   DialogContent
 } from '../components/blockchainVariantCard/BlockchainVariantDialog';
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
-import { areStringsEqual } from './Utils';
+import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from './Utils';
+// eslint-disable-next-line no-unused-vars
+import { getDatabaseVariant } from './firebase';
 
 export enum VariantIntegrity {
   Compromised,
@@ -32,6 +34,24 @@ const useBlockchainVariantCardStateManager = (
   const [variantIntegrityState, setVariantIntegrityState] = useState<VariantIntegrity>(
     VariantIntegrity.Unknown
   );
+
+  // Set initaial state with data from database
+  useEffect(() => {
+    const fetchDatabaseVariant = async () => {
+      return await getDatabaseVariant(variant.publicKey);
+    };
+
+    fetchDatabaseVariant()
+      .then((data) => {
+        const persistedState = issueTypeToVariantIntegrityMapper(data?.issueType);
+        setVariantIntegrityState(persistedState);
+
+        if (data?.issueType) {
+          setInfoMessage(makeSentence(data?.issueType));
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const notifyVariantIsObsolete = (
     deliverVariantLastModified: Date,
@@ -103,7 +123,7 @@ const useBlockchainVariantCardStateManager = (
 
         if (!areLastModifiedDatesEqual) {
           notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
-        } else if (areVariantHashesEqual) {
+        } else if (!areVariantHashesEqual) {
           //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
           moveToCompromisedState();
         } else {

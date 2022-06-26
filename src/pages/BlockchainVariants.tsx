@@ -9,8 +9,8 @@ import { Variant } from '../models/Variant';
 import useWorkspace from '../utils/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
 import { onSnapshot } from 'firebase/firestore';
-import { DatabaseVariant, databaseVariantsCollection, onAuthChanged } from '../utils/firebase';
-import { User } from 'firebase/auth';
+import { DatabaseVariant, databaseVariantsCollection } from '../utils/firebase';
+// import { User } from 'firebase/auth';
 
 const BlockchainVariants = () => {
   const { connected } = useWallet();
@@ -19,11 +19,11 @@ const BlockchainVariants = () => {
   const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
   const [databaseVariants, setDatabaseVariants] = useState<DatabaseVariant[]>([]);
-  const [user, setUser] = useState<User>();
+  // const [user, setUser] = useState<User>();
 
-  useEffect(() => {
-    onAuthChanged((u) => setUser(u ?? undefined));
-  }, []);
+  // useEffect(() => {
+  //   onAuthChanged((u) => setUser(u ?? undefined));
+  // }, []);
 
   useEffect(() => {
     const newVariantCards = blockchainVariants.map((variant) => {
@@ -52,7 +52,7 @@ const BlockchainVariants = () => {
     return () => {
       unsubscribe();
     };
-  }, [user]);
+  }, []);
 
   const removeVariantFromBlockchain = (publicKey: string) => {
     deleteVariant(program, provider, publicKey)
@@ -69,7 +69,6 @@ const BlockchainVariants = () => {
       return prevCards.filter((item: any) => item.key !== publicKey);
     });
     console.log(databaseVariants);
-    console.log(user);
   };
 
   const handleCheckConsistency = () => {};

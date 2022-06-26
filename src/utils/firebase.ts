@@ -14,7 +14,10 @@ import {
   CollectionReference,
   doc,
   DocumentReference,
-  getFirestore
+  getDocs,
+  getFirestore,
+  query,
+  where
 } from 'firebase/firestore';
 
 export enum IssueType {
@@ -40,6 +43,8 @@ const firebaseConfig = {
   appId: '1:358818717767:web:f292565842c943b24a1162'
 };
 
+const databaseVariantsTable = 'databaseVariants';
+
 // Initialize Firebase
 initializeApp(firebaseConfig);
 
@@ -59,7 +64,7 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 // Firestore
 const db = getFirestore();
 
-export const submitDataToDatabase = async (
+export const submitDocumentToDb = async (
   wallet: string,
   issueType: IssueType,
   variantPublicKey: string
@@ -75,10 +80,21 @@ export const submitDataToDatabase = async (
   }
 };
 
+export const getDatabaseVariant = async (variantPublicKey: string) => {
+  const q = query(
+    collection(db, databaseVariantsTable),
+    where('variantPublicKey', '==', variantPublicKey)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const databaseVariant = querySnapshot.empty ? null : querySnapshot.docs[0].data();
+  return databaseVariant as DatabaseVariant;
+};
+
 export const databaseVariantsCollection = collection(
   db,
-  'databaseVariants'
+  databaseVariantsTable
 ) as CollectionReference<DatabaseVariant>;
 
 export const databaseVariantsDocument = (id: string) =>
-  doc(db, 'databaseVariants', id) as DocumentReference<DatabaseVariant>;
+  doc(db, databaseVariantsTable, id) as DocumentReference<DatabaseVariant>;

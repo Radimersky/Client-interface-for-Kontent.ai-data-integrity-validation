@@ -9,9 +9,9 @@ import StyledCardRow from '../StyledCardRow';
 import useBlockchainVariantCardStateManager, {
   VariantIntegrity
 } from '../../utils/useBlockchainVariantCardStateManager';
-import { VariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
+import { variantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 // eslint-disable-next-line no-unused-vars
-import { IssueType, submitDataToDatabase } from '../../utils/firebase';
+import { DatabaseVariant, getDatabaseVariant, submitDocumentToDb } from '../../utils/firebase';
 // eslint-disable-next-line no-unused-vars
 import { PublicKey } from '@solana/web3.js';
 
@@ -54,17 +54,19 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   // Submit state changes to variant database
   useEffect(() => {
     if (
+      // Persist changes in state only when integrity of variant is checked
+      !checkingIntegrity ||
       variantIntegrityState === VariantIntegrity.Unknown ||
       variantIntegrityState === VariantIntegrity.Intact
     ) {
       return;
     }
 
-    const issueType = VariantIntegritytoIssueTypeMapper(variantIntegrityState);
+    const issueType = variantIntegritytoIssueTypeMapper(variantIntegrityState);
 
     if (issueType) {
       console.log('sending data');
-      submitDataToDatabase(walletKey.toString(), issueType, variant.publicKey);
+      submitDocumentToDb(walletKey.toString(), issueType, variant.publicKey);
     }
   }, [variantIntegrityState]);
 

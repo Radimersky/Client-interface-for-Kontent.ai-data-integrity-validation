@@ -10,10 +10,10 @@ import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 // eslint-disable-next-line no-unused-vars
-import { BlockchainVariant, DeliverVariant, Variant } from '../models/Variant';
+import { BlockchainVariant, DeliverVariant, KontentSignature, Variant } from '../models/Variant';
 import { getSignature } from '../api/signatureProvider/GetSignature';
 
-type ISendVariantToBlockchainProps = {
+type ISendVariantToBlockchainProviderProps = {
   readonly deliverVariant: DeliverVariant;
   readonly projectId: string;
 };
@@ -44,12 +44,11 @@ const messages = {
   hashCompareFail: 'Hash comparison mismatch',
   sendingToBlockchain: 'Please approve the transaction',
   sendingToBlockchainFailed: 'Transaction failed',
-  completed: 'Variant successfully sent to blockchain'
+  completed: 'Variant successfully sent to blockchain',
+  failedToRetrieveSignature: 'Cannot get signature from Kontent server'
 };
 
-let signatureData = { signature: '', hash: '' };
-
-const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
+const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProviderProps> = ({
   deliverVariant,
   projectId
 }) => {
@@ -57,6 +56,10 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   const [loading, setLoading] = useState(false);
   const [firstMessage, setFirstMessage] = useState(!connected ? messages.connectWallet : '');
   const [secondMessage, setSecondMessage] = useState('');
+  const [kontentSignature, setKontentSignature] = useState<KontentSignature>({
+    signature: '',
+    hash: ''
+  });
   const [state, setState] = useState(State.Started);
   const { program, provider } = useWorkspace();
 
@@ -79,20 +82,33 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
     setFirstMessage(messages.retrievingSignature);
 
     const localHash = hash(deliverVariant);
-    signatureData = getSignature(deliverVariant);
-    console.log(signatureData);
 
-    setSecondMessage(
-      'Local variant hash:\n' + localHash + '\nKontent variant hash:\n' + signatureData.hash
-    );
-
-    if (localHash === signatureData.hash) {
-      setState(State.Sending);
-    } else {
-      setFirstMessage(messages.hashCompareFail);
-      setLoading(false);
-      setState(State.Failed);
-    }
+    getSignature(deliverVariant)
+      .then((response: KontentSignature | null | void) => {
+        if (response) {
+          setKontentSignature(response);
+          setSecondMessage(
+            'Local variant hash:\n' +
+              localHash +
+              '\nKontent variant hash:\n' +
+              kontentSignature.hash
+          );
+          if (localHash === response.hash) {
+            setState(State.Sending);
+          } else {
+            setFirstMessage(messages.hashCompareFail);
+            setLoading(false);
+            setState(State.Failed);
+          }
+        } else {
+          setFirstMessage(messages.failedToRetrieveSignature);
+          setLoading(false);
+          setState(State.Failed);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleSendingState = () => {
@@ -102,7 +118,11 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const blockchainVariant = Variant.toBlockchainModel(deliverVariant, projectId, signatureData);
+    const blockchainVariant = Variant.toBlockchainModel(
+      deliverVariant,
+      projectId,
+      kontentSignature
+    );
 
     sendVariantToBlockchain(blockchainVariant)
       .then(() => {
@@ -150,4 +170,4 @@ const SendVariantToBlockchain: React.FC<ISendVariantToBlockchainProps> = ({
   );
 };
 
-export default SendVariantToBlockchain;
+export default SendVariantToBlockchainProvider;

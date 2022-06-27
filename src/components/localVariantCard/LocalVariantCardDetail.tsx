@@ -3,7 +3,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
 import { DeliverVariant } from '../../models/Variant';
-import SendVariantToBlockchain from '../SendVariantToBlockchain';
+import SendVariantToBlockchainProvider from '../SendVariantToBlockchainProvider';
 
 type ILocalVariantCardDetailProps = {
   readonly open: boolean;
@@ -32,7 +32,7 @@ const LocalVariantCardDetail: React.FC<ILocalVariantCardDetailProps> = ({
         <Box sx={{ marginBottom: '30px' }}>
           <pre>{JSON.stringify(deliverVariant, null, 2)}</pre>
         </Box>
-        <SendVariantToBlockchain deliverVariant={deliverVariant} projectId={projectId} />
+        <SendVariantToBlockchainProvider deliverVariant={deliverVariant} projectId={projectId} />
       </DialogContent>
     </Dialog>
   );

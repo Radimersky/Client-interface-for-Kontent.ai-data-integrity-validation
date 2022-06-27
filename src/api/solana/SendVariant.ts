@@ -31,9 +31,4 @@ export const sendVariant = async (
       signers: [variant]
     }
   );
-
-  // TODO is this needed?
-  const variantAccount = await program.account.variant.fetch(variant.publicKey);
-
-  return Variant.fromSolanaAccount(variantAccount, variant.publicKey);
 };

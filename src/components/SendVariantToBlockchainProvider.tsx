@@ -88,10 +88,7 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
         if (response) {
           setKontentSignature(response);
           setSecondMessage(
-            'Local variant hash:\n' +
-              localHash +
-              '\nKontent variant hash:\n' +
-              kontentSignature.hash
+            'Local variant hash:\n' + localHash + '\nKontent variant hash:\n' + response.hash
           );
           if (localHash === response.hash) {
             setState(State.Sending);

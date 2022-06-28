@@ -1,8 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { DeliverVariant, KontentSignature } from '../../models/Variant';
+import { DeliverVariant } from '../../models/Variant';
 
 export const getSignature = async (deliverVariant: DeliverVariant) => {
-  console.log('here');
   return fetch('http://localhost:3001/sign/', {
     method: 'POST',
     headers: {
@@ -25,8 +24,4 @@ export const getSignature = async (deliverVariant: DeliverVariant) => {
       console.error(e);
       return null;
     });
-
-  // console.log(resp);
-
-  // return { hash: 'variantHash', signature: '1234abcd' };
 };

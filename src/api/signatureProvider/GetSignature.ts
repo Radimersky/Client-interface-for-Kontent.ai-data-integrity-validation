@@ -1,8 +1,8 @@
-// eslint-disable-next-line no-unused-vars
+import { signatureProviderAPIBaseUrl } from '../../AppSettingConstants';
 import { DeliverVariant } from '../../models/Variant';
 
 export const getSignature = async (deliverVariant: DeliverVariant) => {
-  return fetch('http://localhost:3001/sign/', {
+  return fetch(signatureProviderAPIBaseUrl + 'sign/', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

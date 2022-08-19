@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
 // eslint-disable-next-line no-unused-vars
-import { DeliverVariant, Variant } from '../models/Variant';
+import { DeliverVariant, LocalVariant } from '../models/Variant';
 import BlockchainVariantDialog, {
   DialogContent
 } from '../components/blockchainVariantCard/BlockchainVariantDialog';
@@ -20,7 +20,7 @@ export enum VariantIntegrity {
 }
 
 const useBlockchainVariantCardStateManager = (
-  variant: Variant,
+  variant: LocalVariant,
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {

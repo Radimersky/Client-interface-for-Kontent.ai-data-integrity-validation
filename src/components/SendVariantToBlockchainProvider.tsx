@@ -10,7 +10,7 @@ import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 // eslint-disable-next-line no-unused-vars
-import { BlockchainVariant, DeliverVariant, KontentSignature, Variant } from '../models/Variant';
+import { DtoVariant, DeliverVariant, KontentSignature, Variant } from '../models/Variant';
 import { getSignature } from '../api/signatureProvider/GetSignature';
 
 type ISendVariantToBlockchainProviderProps = {
@@ -109,13 +109,13 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
   };
 
   const handleSendingState = () => {
-    const sendVariantToBlockchain = async (blockchainVariant: BlockchainVariant) => {
+    const sendVariantToBlockchain = async (blockchainVariant: DtoVariant) => {
       await sendVariant(program, provider, blockchainVariant);
     };
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const blockchainVariant = Variant.toBlockchainModel(
+    const blockchainVariant = Variant.toDtoModel(
       deliverVariant,
       projectId,
       kontentSignature

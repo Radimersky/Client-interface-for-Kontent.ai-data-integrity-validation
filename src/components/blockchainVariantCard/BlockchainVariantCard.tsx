@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { Variant } from '../../models/Variant';
+import { LocalVariant } from '../../models/Variant';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
@@ -16,7 +16,7 @@ import { DatabaseVariant, getDatabaseVariant, submitDocumentToDb } from '../../u
 import { PublicKey } from '@solana/web3.js';
 
 interface IBlockchainVariantCardProps {
-  readonly variant: Variant;
+  readonly variant: LocalVariant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;

@@ -1,14 +1,11 @@
-// eslint-disable-next-line no-unused-vars
 import { IdlTypes, Idl } from '@project-serum/anchor';
-// eslint-disable-next-line no-unused-vars
 import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
-// eslint-disable-next-line no-unused-vars
 import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
 import { PublicKey } from '@solana/web3.js';
 import dayjs from 'dayjs';
 import { BN } from '@project-serum/anchor';
 
-export type Variant = {
+export type LocalVariant = {
   readonly projectId: string;
   readonly itemId: string;
   readonly itemCodename: string;
@@ -23,7 +20,7 @@ export type Variant = {
   readonly accountCreated: string;
 };
 
-export type ServerVariant = {
+export type SolanaAccountVariant = {
   readonly projectId: string;
   readonly itemId: string;
   readonly itemCodename: string;
@@ -36,7 +33,7 @@ export type ServerVariant = {
   readonly accountCreated: number;
 };
 
-export type BlockchainVariant = {
+export type DtoVariant = {
   readonly lastModified: BN;
   readonly variantId: string;
   readonly itemId: string;
@@ -76,12 +73,12 @@ const toTimestamp = (strDate: string) => {
 
 export const Variant = {
   fromSolanaAccount(
-    serverAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
+    solanaAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
     publicKey: PublicKey
-  ): Variant {
-    const account = serverAccount as ServerVariant;
-
+  ): LocalVariant {
+    const account = solanaAccount as SolanaAccountVariant;
     const author = publicKey.toBase58();
+
     return {
       projectId: account.projectId,
       itemId: account.itemId,
@@ -98,15 +95,13 @@ export const Variant = {
     };
   },
 
-  toBlockchainModel(
+  toDtoModel(
     deliverVariant: DeliverVariant,
     projectId: string,
     signatureData: KontentSignature
-  ): BlockchainVariant {
+  ): DtoVariant {
     const lastModifiedTimestamp = toTimestamp(deliverVariant.system.last_modified);
-    console.log(signatureData.signature);
-    console.log(signatureData.hash);
-    const variantData: BlockchainVariant = {
+    const variantData: DtoVariant = {
       lastModified: new BN(lastModifiedTimestamp),
       variantId: deliverVariant.system.language,
       itemId: deliverVariant.system.id,

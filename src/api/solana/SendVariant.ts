@@ -1,12 +1,12 @@
 import { AnchorProvider, web3 } from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor/dist/cjs/program';
-import { BlockchainVariant } from '../../models/Variant';
+import { DtoVariant } from '../../models/Variant';
 
 // Stores variant on blockchain
 export const sendVariant = async (
   program: Program,
   provider: AnchorProvider,
-  variantProps: BlockchainVariant
+  variantProps: DtoVariant
 ) => {
   // Create key pair for new variant account
   const variant = web3.Keypair.generate();

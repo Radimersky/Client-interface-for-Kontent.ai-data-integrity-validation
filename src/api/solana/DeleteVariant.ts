@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars
 import { AnchorProvider } from '@project-serum/anchor';
-// eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 
+// Deletes variant from blockchain.
 export const deleteVariant = async (
   program: Program,
   provider: AnchorProvider,

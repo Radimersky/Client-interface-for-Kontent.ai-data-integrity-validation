@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
 
-// Fetches variants from blockchain.
+// Fetches all variants from blockchain and applies filter when provided.
 export const fetchVariants = async (program: Program, filters: any[] = []) => {
   return await program.account.variant.all(filters);
 };
 
+// Filters out variants created by author with given public key
 export const authorFilter = (authorBase58PublicKey: any) => ({
   memcmp: {
     offset: 8, // Discriminator.

@@ -1,5 +1,5 @@
-import { deliverBaseUrl } from '../../Constants';
+import { deliverAPIBaseUrl } from '../../AppSettingConstants';
 
 export const getVariants = async (projectId: string, variantId: string) => {
-  return fetch(deliverBaseUrl + projectId + '/items-feed?language=' + variantId);
+  return fetch(deliverAPIBaseUrl + projectId + '/items-feed?language=' + variantId);
 };

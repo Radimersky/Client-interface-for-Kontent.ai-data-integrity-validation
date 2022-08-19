@@ -1,4 +1,4 @@
-import { deliverBaseUrl } from '../../Constants';
+import { deliverAPIBaseUrl } from '../../AppSettingConstants';
 
 type DeliverLanguages = {
   readonly languages: Languages[];
@@ -17,7 +17,7 @@ type LanguagesSystem = {
 
 export const getProjectLanguages = (projectId: string) => {
   // Get all languages of project
-  return fetch(deliverBaseUrl + projectId + '/languages')
+  return fetch(deliverAPIBaseUrl + projectId + '/languages')
     .then((response) => {
       if (response.ok) {
         return response.json();

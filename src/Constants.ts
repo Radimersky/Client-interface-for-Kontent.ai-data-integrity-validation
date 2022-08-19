@@ -1,2 +1,3 @@
-export const deliverBaseUrl = 'https://qa-deliver.freetls.fastly.net/';
-//const deliverBaseUrl = "https://deliver.kontent.ai/";
+// Deliver API
+export const deliverAPIBaseUrlQA = 'https://qa-deliver.freetls.fastly.net/';
+export const deliverAPIBaseUrlProduction = 'https://deliver.kontent.ai/';

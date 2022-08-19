@@ -13,15 +13,13 @@ export const getSignature = async (deliverVariant: DeliverVariant) => {
     .then((response) => {
       if (response.ok) {
         return response.json();
-      } else {
-        throw response;
       }
+      throw response;
     })
     .then((data) => {
       return data;
     })
     .catch((e) => {
       console.error(e);
-      return null;
     });
 };

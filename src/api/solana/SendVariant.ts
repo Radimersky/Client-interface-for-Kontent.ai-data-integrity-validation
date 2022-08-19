@@ -1,9 +1,6 @@
-// eslint-disable-next-line no-unused-vars
 import { AnchorProvider, web3 } from '@project-serum/anchor';
-// eslint-disable-next-line no-unused-vars
 import { Program } from '@project-serum/anchor/dist/cjs/program';
-// eslint-disable-next-line no-unused-vars
-import { BlockchainVariant, Variant } from '../../models/Variant';
+import { BlockchainVariant } from '../../models/Variant';
 
 // Stores variant on blockchain
 export const sendVariant = async (

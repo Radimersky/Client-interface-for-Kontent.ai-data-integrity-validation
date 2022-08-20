@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { DialogContent } from '../components/blockchainVariantCard/BlockchainVariantDialog';
 
 export const deliverVariantNotFound: DialogContent = {

@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
-// eslint-disable-next-line no-unused-vars
 import { DeliverVariant, LocalVariant } from '../models/Variant';
 import BlockchainVariantDialog, {
   DialogContent
 } from '../components/blockchainVariantCard/BlockchainVariantDialog';
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
 import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from './Utils';
-// eslint-disable-next-line no-unused-vars
-import { DatabaseVariantWithId, getDatabaseVariant } from './firebase';
+import { DatabaseVariantWithId, getDatabaseVariantOrNull } from './firebase';
 
-export enum VariantIntegrity {
+export enum VariantIntegrityState {
   Compromised,
   Intact,
   Obsolete,
@@ -32,14 +30,14 @@ const useBlockchainVariantCardStateManager = (
     title: '',
     body: <></>
   });
-  const [variantIntegrityState, setVariantIntegrityState] = useState<VariantIntegrity>(
-    VariantIntegrity.Unknown
+  const [variantIntegrityState, setVariantIntegrityState] = useState<VariantIntegrityState>(
+    VariantIntegrityState.Unknown
   );
 
   // Set initaial state with data from database
   useEffect(() => {
     const fetchDatabaseVariant = async () => {
-      return await getDatabaseVariant(variant.publicKey);
+      return await getDatabaseVariantOrNull(variant.publicKey);
     };
 
     fetchDatabaseVariant()
@@ -61,30 +59,30 @@ const useBlockchainVariantCardStateManager = (
     setDialogContent(
       obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
     );
-    setVariantIntegrityState(VariantIntegrity.Obsolete);
+    setVariantIntegrityState(VariantIntegrityState.Obsolete);
     setShowDialog(true);
   };
 
   const notifyVariantNotFound = () => {
     setDialogContent(deliverVariantNotFound);
-    setVariantIntegrityState(VariantIntegrity.NotFound);
+    setVariantIntegrityState(VariantIntegrityState.NotFound);
     setShowDialog(true);
   };
 
   const moveToObsoleteState = () => {
     setShowDialog(false);
-    if (VariantIntegrity.Obsolete) {
+    if (VariantIntegrityState.Obsolete) {
       setInfoMessage('Variant is obsolete.');
-    } else if (VariantIntegrity.NotFound) {
+    } else if (VariantIntegrityState.NotFound) {
       setInfoMessage('Deliver variant was not found.');
     }
 
-    setVariantIntegrityState(VariantIntegrity.Obsolete);
+    setVariantIntegrityState(VariantIntegrityState.Obsolete);
   };
 
   const moveToCompromisedState = () => {
     setInfoMessage('Variant hash mismatch!');
-    setVariantIntegrityState(VariantIntegrity.Compromised);
+    setVariantIntegrityState(VariantIntegrityState.Compromised);
     handleIntegrityViolation();
   };
 
@@ -98,7 +96,7 @@ const useBlockchainVariantCardStateManager = (
     const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
     const blockchainVariantLastModified = new Date(variant.lastModified);
 
-    // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object
+    // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object.
     const areLastModifiedDatesEqual =
       deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() ===
       blockchainVariantLastModified.getTime();
@@ -112,14 +110,14 @@ const useBlockchainVariantCardStateManager = (
       //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
       moveToCompromisedState();
     } else {
-      setVariantIntegrityState(VariantIntegrity.Intact);
+      setVariantIntegrityState(VariantIntegrityState.Intact);
     }
   };
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
     setInfoMessage('Checking integrity.');
-    setVariantIntegrityState(VariantIntegrity.Unknown);
+    setVariantIntegrityState(VariantIntegrityState.Unknown);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {

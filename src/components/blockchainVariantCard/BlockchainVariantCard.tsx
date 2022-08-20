@@ -7,11 +7,11 @@ import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
 import useBlockchainVariantCardStateManager, {
-  VariantIntegrity
+  VariantIntegrityState
 } from '../../utils/useBlockchainVariantCardStateManager';
 import { variantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 // eslint-disable-next-line no-unused-vars
-import { DatabaseVariant, getDatabaseVariant, submitDocumentToDb } from '../../utils/firebase';
+import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase';
 // eslint-disable-next-line no-unused-vars
 import { PublicKey } from '@solana/web3.js';
 
@@ -54,8 +54,8 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   // Submit state changes to variant database
   useEffect(() => {
     if (
-      variantIntegrityState === VariantIntegrity.Unknown ||
-      variantIntegrityState === VariantIntegrity.Intact
+      variantIntegrityState === VariantIntegrityState.Unknown ||
+      variantIntegrityState === VariantIntegrityState.Intact
     ) {
       return;
     }
@@ -70,19 +70,19 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
         wallet: walletKey.toString()
       };
 
-      submitDocumentToDb(dbVariant);
+      submitDocumentToDatabase(dbVariant);
     }
   }, [variantIntegrityState]);
 
   useEffect(() => {
     switch (variantIntegrityState) {
-      case VariantIntegrity.Intact:
+      case VariantIntegrityState.Intact:
         setBorderColor('green');
         break;
-      case VariantIntegrity.Compromised:
+      case VariantIntegrityState.Compromised:
         setBorderColor('red');
         break;
-      case VariantIntegrity.Obsolete:
+      case VariantIntegrityState.Obsolete:
         setBorderColor('orange');
         break;
       default:
@@ -112,7 +112,7 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
                 disabled={
-                  checkingIntegrity || variantIntegrityState === VariantIntegrity.Compromised
+                  checkingIntegrity || variantIntegrityState === VariantIntegrityState.Compromised
                 }
                 variant="contained"
                 startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}

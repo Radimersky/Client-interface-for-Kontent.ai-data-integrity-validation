@@ -1,19 +1,19 @@
 import { IssueType } from './firebase';
-import { VariantIntegrity } from './useBlockchainVariantCardStateManager';
+import { VariantIntegrityState } from './useBlockchainVariantCardStateManager';
 
 export const areStringsEqual = (a: string, b: string) => {
   return a.localeCompare(b) === 0;
 };
 
 export const variantIntegritytoIssueTypeMapper = (
-  variantIntegrity: VariantIntegrity
+  variantIntegrity: VariantIntegrityState
 ): IssueType | null => {
   switch (variantIntegrity) {
-    case VariantIntegrity.Compromised:
+    case VariantIntegrityState.Compromised:
       return IssueType.Compromised;
-    case VariantIntegrity.NotFound:
+    case VariantIntegrityState.NotFound:
       return IssueType.NotFound;
-    case VariantIntegrity.Obsolete:
+    case VariantIntegrityState.Obsolete:
       return IssueType.Obsolete;
     default:
       return null;
@@ -22,16 +22,16 @@ export const variantIntegritytoIssueTypeMapper = (
 
 export const issueTypeToVariantIntegrityMapper = (
   issueType: IssueType | null | undefined
-): VariantIntegrity => {
+): VariantIntegrityState => {
   switch (issueType) {
     case IssueType.Compromised:
-      return VariantIntegrity.Compromised;
+      return VariantIntegrityState.Compromised;
     case IssueType.NotFound:
-      return VariantIntegrity.NotFound;
+      return VariantIntegrityState.NotFound;
     case IssueType.Obsolete:
-      return VariantIntegrity.Obsolete;
+      return VariantIntegrityState.Obsolete;
     default:
-      return VariantIntegrity.Unknown;
+      return VariantIntegrityState.Unknown;
   }
 };
 

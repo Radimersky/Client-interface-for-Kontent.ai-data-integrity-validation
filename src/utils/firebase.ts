@@ -1,7 +1,5 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
-  // eslint-disable-next-line no-unused-vars
   User,
   getAuth,
   signOut as authSignOut,
@@ -58,10 +56,8 @@ initializeApp(firebaseConfig);
 // Authentication
 const auth = getAuth();
 
-// Sign in handler
 export const signIn = () => signInAnonymously(auth);
 
-// Sign out handler
 export const signOut = () => authSignOut(auth);
 
 // Subscribe to auth state changes
@@ -71,9 +67,17 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 // Firestore
 const db = getFirestore();
 
-export const submitDocumentToDb = async (databaseVariant: DatabaseVariant) => {
+export const databaseVariantsCollection = collection(
+  db,
+  databaseVariantsTable
+) as CollectionReference<DatabaseVariant>;
+
+const databaseVariantsDocument = (id: string) =>
+  doc(db, databaseVariantsTable, id) as DocumentReference<DatabaseVariant>;
+
+export const submitDocumentToDatabase = async (databaseVariant: DatabaseVariant) => {
   try {
-    const dbVariant = await getDatabaseVariant(databaseVariant.variantPublicKey);
+    const dbVariant = await getDatabaseVariantOrNull(databaseVariant.variantPublicKey);
 
     if (dbVariant) {
       updateDatabaseVariant(dbVariant.id, databaseVariant);
@@ -85,15 +89,16 @@ export const submitDocumentToDb = async (databaseVariant: DatabaseVariant) => {
   }
 };
 
-export const getDatabaseVariant = async (
-  variantPublicKey: string
+export const getDatabaseVariantOrNull = async (
+  solanaAccountVariantPublicKey: string
 ): Promise<DatabaseVariantWithId | null> => {
   const q = query(
     collection(db, databaseVariantsTable),
-    where('variantPublicKey', '==', variantPublicKey)
+    where('variantPublicKey', '==', solanaAccountVariantPublicKey)
   );
 
   const querySnapshot = await getDocs(q);
+
   if (!querySnapshot.empty) {
     const databaseVariant = querySnapshot.docs[0].data() as DatabaseVariant;
     const id = querySnapshot.docs[0].id;
@@ -114,14 +119,6 @@ export const removeDatabaseVariant = (id: string) => {
 };
 
 export const tryRemoveDatabaseVariantByPublicKey = async (publicKey: string) => {
-  const dbVariant = await getDatabaseVariant(publicKey);
+  const dbVariant = await getDatabaseVariantOrNull(publicKey);
   if (dbVariant) removeDatabaseVariant(dbVariant.id);
 };
-
-export const databaseVariantsCollection = collection(
-  db,
-  databaseVariantsTable
-) as CollectionReference<DatabaseVariant>;
-
-const databaseVariantsDocument = (id: string) =>
-  doc(db, databaseVariantsTable, id) as DocumentReference<DatabaseVariant>;

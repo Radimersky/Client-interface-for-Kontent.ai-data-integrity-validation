@@ -43,6 +43,11 @@ export type DtoVariant = {
   readonly variantHashSignature: string;
 };
 
+export type DeliverVariant = {
+  readonly system: System;
+  readonly elements: any;
+};
+
 export type System = {
   readonly id: string;
   readonly name: string;
@@ -53,11 +58,6 @@ export type System = {
   readonly sitemap_locations: never[];
   readonly last_modified: string;
   readonly workflow_step: string;
-};
-
-export type DeliverVariant = {
-  readonly system: System;
-  readonly elements: any;
 };
 
 export type KontentSignature = {

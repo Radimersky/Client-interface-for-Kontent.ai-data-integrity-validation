@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { DeliverVariant } from '../models/Variant';
 import { getProjectLanguages } from '../api/deliver/GetProjectLanguages';
 import { getVariants } from '../api/deliver/GetVariants';
@@ -14,6 +13,12 @@ const useFetchLocalVariants = (projectId: string) => {
   const [variantCards, setVariantCards] = useState<LocalVariantCards[]>([]);
   const [fetching, setFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const resetErrorMessage = () => {
+    if (errorMessage != '') {
+      setErrorMessage('');
+    }
+  }
 
   useEffect(() => {
     if (projectId === '') {
@@ -45,14 +50,14 @@ const useFetchLocalVariants = (projectId: string) => {
                 variantCards: cards
               };
               setVariantCards((prev) => prev.concat(variantCardWithLanguage));
-              setErrorMessage('');
+              resetErrorMessage();
             });
         });
       })
       .catch((error) => {
-        console.log(error);
         const errorMessage = error.message ?? 'Failed to fetch variants.';
         setErrorMessage('Error: ' + errorMessage);
+        console.error(error);
       })
       .finally(() => {
         setFetching(false);

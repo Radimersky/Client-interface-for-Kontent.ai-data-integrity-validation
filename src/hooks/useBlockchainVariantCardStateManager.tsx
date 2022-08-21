@@ -4,10 +4,10 @@ import { getVariant } from '../api/deliver/GetVariant';
 import { DeliverVariant, LocalVariant } from '../models/Variant';
 import SolanaVariantDialog, {
   DialogContent
-} from '../components/blockchainVariantCard/SolanaVariantDialog';
+} from '../components/solanaVariantCard/SolanaVariantDialog';
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
-import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from './Utils';
-import { DatabaseVariantWithId, getDatabaseVariantOrNull } from './firebase';
+import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from '../utils/Utils';
+import { DatabaseVariantWithId, getDatabaseVariantOrNull } from '../utils/firebase';
 
 export enum VariantIntegrityState {
   Compromised,

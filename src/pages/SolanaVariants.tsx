@@ -1,12 +1,12 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
-import useFetchSolanaVariants from '../utils/useFetchSolanaVariants';
+import useFetchSolanaVariants from '../hooks/useFetchSolanaVariants';
 import { Loader } from '../components/Loader';
 import { useEffect, useState } from 'react';
 import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard';
 import { Variant } from '../models/Variant';
-import useWorkspace from '../utils/useWorkspace';
+import useWorkspace from '../hooks/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
 import { tryRemoveDatabaseVariantByPublicKey } from '../utils/firebase';
 // import { User } from 'firebase/auth';

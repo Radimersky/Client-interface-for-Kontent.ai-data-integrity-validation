@@ -4,7 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import useWorkspace from '../utils/useWorkspace';
+import useWorkspace from '../hooks/useWorkspace';
 // eslint-disable-next-line no-unused-vars
 import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -115,11 +115,7 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const blockchainVariant = Variant.toDtoModel(
-      deliverVariant,
-      projectId,
-      kontentSignature
-    );
+    const blockchainVariant = Variant.toDtoModel(deliverVariant, projectId, kontentSignature);
 
     sendVariantToBlockchain(blockchainVariant)
       .then(() => {

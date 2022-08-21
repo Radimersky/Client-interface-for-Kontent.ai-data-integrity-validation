@@ -5,7 +5,7 @@ import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
-import useFetchLocalVariants, { LocalVariantCards } from '../utils/useFetchLocalVariants';
+import useFetchLocalVariants, { LocalVariantCards } from '../hooks/useFetchLocalVariants';
 import { Loader } from '../components/Loader';
 
 const LocalVariants = () => {

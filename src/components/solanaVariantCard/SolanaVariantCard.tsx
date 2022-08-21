@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
 import useBlockchainVariantCardStateManager, {
   VariantIntegrityState
-} from '../../utils/useBlockchainVariantCardStateManager';
+} from '../../hooks/useBlockchainVariantCardStateManager';
 import { variantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 // eslint-disable-next-line no-unused-vars
 import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase';

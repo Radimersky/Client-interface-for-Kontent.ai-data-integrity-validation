@@ -1,19 +1,19 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
-import useFetchBlockchainVariants from '../utils/useFetchBlockchainVariants';
+import useFetchSolanaVariants from '../utils/useFetchSolanaVariants';
 import { Loader } from '../components/Loader';
 import { useEffect, useState } from 'react';
-import BlockchainVariantCard from '../components/blockchainVariantCard/BlockchainVariantCard';
+import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard';
 import { Variant } from '../models/Variant';
 import useWorkspace from '../utils/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
 import { tryRemoveDatabaseVariantByPublicKey } from '../utils/firebase';
 // import { User } from 'firebase/auth';
 
-const BlockchainVariants = () => {
+const SolanaVariants = () => {
   const { connected } = useWallet();
-  const { isFetching, errorMessage, blockchainVariants } = useFetchBlockchainVariants();
+  const { isFetching, errorMessage, blockchainVariants } = useFetchSolanaVariants();
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
@@ -28,7 +28,7 @@ const BlockchainVariants = () => {
     const newVariantCards = blockchainVariants.map((variant) => {
       const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
       return (
-        <BlockchainVariantCard
+        <SolanaVariantCard
           handleRemove={() => removeVariantFromBlockchain(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
           variant={mappedVariant}
@@ -127,4 +127,4 @@ const BlockchainVariants = () => {
   );
 };
 
-export default BlockchainVariants;
+export default SolanaVariants;

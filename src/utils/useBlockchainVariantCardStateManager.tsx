@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
 import { DeliverVariant, LocalVariant } from '../models/Variant';
-import BlockchainVariantDialog, {
+import SolanaVariantDialog, {
   DialogContent
-} from '../components/blockchainVariantCard/BlockchainVariantDialog';
+} from '../components/blockchainVariantCard/SolanaVariantDialog';
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
 import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from './Utils';
 import { DatabaseVariantWithId, getDatabaseVariantOrNull } from './firebase';
@@ -140,7 +140,7 @@ const useBlockchainVariantCardStateManager = (
   };
 
   const IntegrityCompromisationCheckDialog = () => (
-    <BlockchainVariantDialog
+    <SolanaVariantDialog
       open={showDialog}
       handleConfirm={removeVariant}
       handleDeny={moveToObsoleteState}

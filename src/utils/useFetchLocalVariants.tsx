@@ -18,7 +18,7 @@ const useFetchLocalVariants = (projectId: string) => {
     if (errorMessage != '') {
       setErrorMessage('');
     }
-  }
+  };
 
   useEffect(() => {
     if (projectId === '') {

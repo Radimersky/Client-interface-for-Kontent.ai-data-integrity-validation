@@ -15,7 +15,7 @@ import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase'
 // eslint-disable-next-line no-unused-vars
 import { PublicKey } from '@solana/web3.js';
 
-interface IBlockchainVariantCardProps {
+interface ISolanaVariantCardProps {
   readonly variant: LocalVariant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
@@ -35,7 +35,7 @@ const boxStyling = {
   padding: '15px'
 };
 
-const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
+const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
   variant,
   walletKey,
   handleRemove,
@@ -135,4 +135,4 @@ const BlockchainVariantCard: React.FC<IBlockchainVariantCardProps> = ({
   );
 };
 
-export default BlockchainVariantCard;
+export default SolanaVariantCard;

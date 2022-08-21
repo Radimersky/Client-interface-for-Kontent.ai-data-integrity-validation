@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import BlockchainVariants from './pages/BlockchainVariants';
+import SolanaVariants from './pages/SolanaVariants';
 import { CssBaseline } from '@mui/material';
 import NavigationMenu from './components/NavigationMenu';
 import {
@@ -59,7 +59,7 @@ function App() {
         <NavigationMenu />
         <Routes>
           <Route path={localVariantsPage} element={<LocalVariants />} />
-          <Route path={blockchainVariantsPage} element={<BlockchainVariants />} />
+          <Route path={blockchainVariantsPage} element={<SolanaVariants />} />
         </Routes>
       </WalletProvider>
     </ConnectionProvider>

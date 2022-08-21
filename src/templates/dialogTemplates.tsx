@@ -1,4 +1,4 @@
-import { DialogContent } from '../components/blockchainVariantCard/BlockchainVariantDialog';
+import { DialogContent } from '../components/solanaVariantCard/SolanaVariantDialog';
 
 export const deliverVariantNotFound: DialogContent = {
   title: 'Deliver variant not found',

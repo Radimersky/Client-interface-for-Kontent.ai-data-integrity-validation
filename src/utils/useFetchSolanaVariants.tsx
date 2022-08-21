@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 import useWorkspace from './useWorkspace';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
-// eslint-disable-next-line no-unused-vars
 import { ProgramAccount, IdlTypes, Idl } from '@project-serum/anchor';
-// eslint-disable-next-line no-unused-vars
 import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
-// eslint-disable-next-line no-unused-vars
 import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
 
-const useFetchBlockchainVariants = () => {
+const useFetchSolanaVariants = () => {
   const { program, provider } = useWorkspace();
   const { connected } = useWallet();
   // Type <BlockchainVariantCard[]>
@@ -45,4 +42,4 @@ const useFetchBlockchainVariants = () => {
   return { blockchainVariants, isFetching: fetching, errorMessage };
 };
 
-export default useFetchBlockchainVariants;
+export default useFetchSolanaVariants;

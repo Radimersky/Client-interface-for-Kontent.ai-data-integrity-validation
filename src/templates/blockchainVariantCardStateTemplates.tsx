@@ -1,4 +1,4 @@
-import { DialogContent } from '../components/blockchainVariantCard/BlockchainVariantDialog';
+import { DialogContent } from '../components/solanaVariantCard/SolanaVariantDialog';
 
 export const hashCompareMissmatchMessageTemplate = (
   deliverHash: string,

@@ -8,14 +8,14 @@ export type DialogContent = {
   readonly body: JSX.Element;
 };
 
-type IBlockchainVariantDialogProps = {
+type ISolanaVariantDialogProps = {
   readonly open: boolean;
   readonly handleConfirm: () => void;
   readonly handleDeny: () => void;
   readonly dialogContent: DialogContent;
 };
 
-const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
+const SolanaVariantDialog: React.FC<ISolanaVariantDialogProps> = ({
   open,
   handleDeny,
   handleConfirm,
@@ -40,4 +40,4 @@ const BlockchainVariantDialog: React.FC<IBlockchainVariantDialogProps> = ({
   );
 };
 
-export default BlockchainVariantDialog;
+export default SolanaVariantDialog;

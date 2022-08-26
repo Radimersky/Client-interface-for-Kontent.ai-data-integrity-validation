@@ -15,7 +15,7 @@ export const deliverVariantNotFound: DialogContent = {
 
 export const obsoleteBlockchainVariant = (
   deliverLastModified: Date,
-  blockchainLastModified: Date
+  solanaLastModified: Date
 ): DialogContent => ({
   title: 'Newer Deliver variant found',
   body: (
@@ -23,7 +23,7 @@ export const obsoleteBlockchainVariant = (
       <p>It looks like the Deliver variant was updated since it was uploaded to blockchain.</p>
       <p>
         The variant on Deliver was last modified {deliverLastModified.toUTCString()} but the version
-        of variant on blockchain was last modified {blockchainLastModified.toUTCString()}.
+        of variant on blockchain was last modified {solanaLastModified.toUTCString()}.
       </p>
       <p>The variant saved on blockchain does not have a purpose anymore and can be removed.</p>
       <p style={{ paddingTop: '20px' }}>

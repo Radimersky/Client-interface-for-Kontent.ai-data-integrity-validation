@@ -17,13 +17,13 @@ export enum VariantIntegrityState {
   Unknown
 }
 
-const useBlockchainVariantCardStateManager = (
+const useSolanaVariantCardStateManager = (
   variant: LocalVariant,
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
-  const [infoMessage, setInfoMessage] = useState('');
+  const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState('');
   const [showDialog, setShowDialog] = useState(false);
   const [databaseMetaData, setDatabaseMetaData] = useState<DatabaseVariantWithId | null>(null);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
@@ -47,17 +47,19 @@ const useBlockchainVariantCardStateManager = (
         const persistedState = issueTypeToVariantIntegrityMapper(issueType);
         setVariantIntegrityState(persistedState);
 
-        if (issueType) setInfoMessage(makeSentence(issueType));
+        if (issueType) setVariantIntegrityInfoMessage(makeSentence(issueType));
       })
-      .catch(console.error);
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const notifyVariantIsObsolete = (
     deliverVariantLastModified: Date,
-    blockchainVariantLastModified: Date
+    solanaVariantLastModified: Date
   ) => {
     setDialogContent(
-      obsoleteBlockchainVariant(deliverVariantLastModified, blockchainVariantLastModified)
+      obsoleteBlockchainVariant(deliverVariantLastModified, solanaVariantLastModified)
     );
     setVariantIntegrityState(VariantIntegrityState.Obsolete);
     setShowDialog(true);
@@ -72,22 +74,22 @@ const useBlockchainVariantCardStateManager = (
   const moveToObsoleteState = () => {
     setShowDialog(false);
     if (VariantIntegrityState.Obsolete) {
-      setInfoMessage('Variant is obsolete.');
+      setVariantIntegrityInfoMessage('Variant is obsolete.');
     } else if (VariantIntegrityState.NotFound) {
-      setInfoMessage('Deliver variant was not found.');
+      setVariantIntegrityInfoMessage('Deliver variant was not found.');
     }
 
     setVariantIntegrityState(VariantIntegrityState.Obsolete);
   };
 
   const moveToCompromisedState = () => {
-    setInfoMessage('Variant hash mismatch!');
+    setVariantIntegrityInfoMessage('Variant hash mismatch!');
     setVariantIntegrityState(VariantIntegrityState.Compromised);
     handleIntegrityViolation();
   };
 
   const removeVariant = () => {
-    setInfoMessage('Variant can be removed.');
+    setVariantIntegrityInfoMessage('Variant can be removed.');
     setShowDialog(false);
     if (databaseMetaData) handleRemove();
   };
@@ -116,7 +118,7 @@ const useBlockchainVariantCardStateManager = (
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
-    setInfoMessage('Checking integrity.');
+    setVariantIntegrityInfoMessage('Checking integrity.');
     setVariantIntegrityState(VariantIntegrityState.Unknown);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
@@ -153,8 +155,8 @@ const useBlockchainVariantCardStateManager = (
     checkingIntegrity,
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
-    infoMessage
+    variantIntegrityInfoMessage
   };
 };
 
-export default useBlockchainVariantCardStateManager;
+export default useSolanaVariantCardStateManager;

@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
 import useBlockchainVariantCardStateManager, {
   VariantIntegrityState
-} from '../../hooks/useBlockchainVariantCardStateManager';
+} from '../../hooks/useSolanaVariantCardStateManager';
 import { variantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 // eslint-disable-next-line no-unused-vars
 import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase';
@@ -48,7 +48,7 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
     checkingIntegrity,
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
-    infoMessage
+    variantIntegrityInfoMessage
   } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
 
   // Submit state changes to variant database
@@ -108,7 +108,7 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
               <StyledCardRow name="Hash" value={variant.variantHash} />
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />
             </Box>
-            <Box sx={boxStyling}>{infoMessage}</Box>
+            <Box sx={boxStyling}>{variantIntegrityInfoMessage}</Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
                 disabled={

@@ -1,5 +1,5 @@
 import { IssueType } from './firebase';
-import { VariantIntegrityState } from '../hooks/useBlockchainVariantCardStateManager';
+import { VariantIntegrityState } from '../hooks/useSolanaVariantCardStateManager';
 
 export const areStringsEqual = (a: string, b: string) => {
   return a.localeCompare(b) === 0;

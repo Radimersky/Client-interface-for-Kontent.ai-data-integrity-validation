@@ -31,8 +31,8 @@ const useFetchSolanaVariants = () => {
         setBlockchainVariants(fetchedVariants);
       })
       .catch((e) => {
-        console.error(e);
         setErrorMessage('Error: ' + e.message);
+        console.error(e);
       })
       .finally(() => {
         setFetching(false);

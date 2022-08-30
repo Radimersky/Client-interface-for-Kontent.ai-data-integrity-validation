@@ -1,37 +1,37 @@
+import { SolanaVariantIntegrityState } from '../hooks/useSolanaVariantCardStateManager';
 import { IssueType } from './firebase';
-import { VariantIntegrityState } from '../hooks/useSolanaVariantCardStateManager';
 
 export const areStringsEqual = (a: string, b: string) => {
   return a.localeCompare(b) === 0;
 };
 
-export const variantIntegritytoIssueTypeMapper = (
-  variantIntegrity: VariantIntegrityState
+export const solanaVariantIntegritytoIssueTypeMapper = (
+  variantIntegrity: SolanaVariantIntegrityState
 ): IssueType | null => {
   switch (variantIntegrity) {
-    case VariantIntegrityState.Compromised:
+    case SolanaVariantIntegrityState.Compromised:
       return IssueType.Compromised;
-    case VariantIntegrityState.NotFound:
+    case SolanaVariantIntegrityState.NotFound:
       return IssueType.NotFound;
-    case VariantIntegrityState.Obsolete:
+    case SolanaVariantIntegrityState.Obsolete:
       return IssueType.Obsolete;
     default:
       return null;
   }
 };
 
-export const issueTypeToVariantIntegrityMapper = (
+export const issueTypeToSolanaVariantIntegrityMapper = (
   issueType: IssueType | null | undefined
-): VariantIntegrityState => {
+): SolanaVariantIntegrityState => {
   switch (issueType) {
     case IssueType.Compromised:
-      return VariantIntegrityState.Compromised;
+      return SolanaVariantIntegrityState.Compromised;
     case IssueType.NotFound:
-      return VariantIntegrityState.NotFound;
+      return SolanaVariantIntegrityState.NotFound;
     case IssueType.Obsolete:
-      return VariantIntegrityState.Obsolete;
+      return SolanaVariantIntegrityState.Obsolete;
     default:
-      return VariantIntegrityState.Unknown;
+      return SolanaVariantIntegrityState.Unknown;
   }
 };
 

@@ -6,10 +6,14 @@ import SolanaVariantDialog, {
   DialogContent
 } from '../components/solanaVariantCard/SolanaVariantDialog';
 import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
-import { areStringsEqual, issueTypeToVariantIntegrityMapper, makeSentence } from '../utils/Utils';
+import {
+  areStringsEqual,
+  issueTypeToSolanaVariantIntegrityMapper,
+  makeSentence
+} from '../utils/Utils';
 import { DatabaseVariantWithId, getDatabaseVariantOrNull } from '../utils/firebase';
 
-export enum VariantIntegrityState {
+export enum SolanaVariantIntegrityState {
   Compromised,
   Intact,
   Obsolete,
@@ -17,7 +21,7 @@ export enum VariantIntegrityState {
   Unknown
 }
 
-const useSolanaVariantCardStateManager = (
+export const useSolanaVariantCardStateManager = (
   variant: LocalVariant,
   handleIntegrityViolation: () => void,
   handleRemove: () => void
@@ -30,8 +34,8 @@ const useSolanaVariantCardStateManager = (
     title: '',
     body: <></>
   });
-  const [variantIntegrityState, setVariantIntegrityState] = useState<VariantIntegrityState>(
-    VariantIntegrityState.Unknown
+  const [variantIntegrityState, setVariantIntegrityState] = useState<SolanaVariantIntegrityState>(
+    SolanaVariantIntegrityState.Unknown
   );
 
   // Set initaial state with data from database
@@ -44,7 +48,7 @@ const useSolanaVariantCardStateManager = (
       .then((data) => {
         setDatabaseMetaData(data);
         const issueType = data?.databaseVariant.issueType;
-        const persistedState = issueTypeToVariantIntegrityMapper(issueType);
+        const persistedState = issueTypeToSolanaVariantIntegrityMapper(issueType);
         setVariantIntegrityState(persistedState);
 
         if (issueType) setVariantIntegrityInfoMessage(makeSentence(issueType));
@@ -61,30 +65,30 @@ const useSolanaVariantCardStateManager = (
     setDialogContent(
       obsoleteBlockchainVariant(deliverVariantLastModified, solanaVariantLastModified)
     );
-    setVariantIntegrityState(VariantIntegrityState.Obsolete);
+    setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
     setShowDialog(true);
   };
 
   const notifyVariantNotFound = () => {
     setDialogContent(deliverVariantNotFound);
-    setVariantIntegrityState(VariantIntegrityState.NotFound);
+    setVariantIntegrityState(SolanaVariantIntegrityState.NotFound);
     setShowDialog(true);
   };
 
   const moveToObsoleteState = () => {
     setShowDialog(false);
-    if (VariantIntegrityState.Obsolete) {
+    if (SolanaVariantIntegrityState.Obsolete) {
       setVariantIntegrityInfoMessage('Variant is obsolete.');
-    } else if (VariantIntegrityState.NotFound) {
+    } else if (SolanaVariantIntegrityState.NotFound) {
       setVariantIntegrityInfoMessage('Deliver variant was not found.');
     }
 
-    setVariantIntegrityState(VariantIntegrityState.Obsolete);
+    setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
   };
 
   const moveToCompromisedState = () => {
     setVariantIntegrityInfoMessage('Variant hash mismatch!');
-    setVariantIntegrityState(VariantIntegrityState.Compromised);
+    setVariantIntegrityState(SolanaVariantIntegrityState.Compromised);
     handleIntegrityViolation();
   };
 
@@ -112,14 +116,14 @@ const useSolanaVariantCardStateManager = (
       //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
       moveToCompromisedState();
     } else {
-      setVariantIntegrityState(VariantIntegrityState.Intact);
+      setVariantIntegrityState(SolanaVariantIntegrityState.Intact);
     }
   };
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
     setVariantIntegrityInfoMessage('Checking integrity.');
-    setVariantIntegrityState(VariantIntegrityState.Unknown);
+    setVariantIntegrityState(SolanaVariantIntegrityState.Unknown);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {
@@ -158,5 +162,3 @@ const useSolanaVariantCardStateManager = (
     variantIntegrityInfoMessage
   };
 };
-
-export default useSolanaVariantCardStateManager;

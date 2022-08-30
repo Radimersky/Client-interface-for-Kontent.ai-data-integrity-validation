@@ -1,18 +1,16 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line no-unused-vars
 import { LocalVariant } from '../../models/Variant';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
-import useBlockchainVariantCardStateManager, {
-  VariantIntegrityState
+import {
+  useSolanaVariantCardStateManager,
+  SolanaVariantIntegrityState
 } from '../../hooks/useSolanaVariantCardStateManager';
-import { variantIntegritytoIssueTypeMapper } from '../../utils/Utils';
-// eslint-disable-next-line no-unused-vars
+import { solanaVariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase';
-// eslint-disable-next-line no-unused-vars
 import { PublicKey } from '@solana/web3.js';
 
 interface ISolanaVariantCardProps {
@@ -49,21 +47,20 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
     variantIntegrityInfoMessage
-  } = useBlockchainVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
+  } = useSolanaVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
 
   // Submit state changes to variant database
   useEffect(() => {
     if (
-      variantIntegrityState === VariantIntegrityState.Unknown ||
-      variantIntegrityState === VariantIntegrityState.Intact
+      variantIntegrityState === SolanaVariantIntegrityState.Unknown ||
+      variantIntegrityState === SolanaVariantIntegrityState.Intact
     ) {
       return;
     }
 
-    const issueType = variantIntegritytoIssueTypeMapper(variantIntegrityState);
+    const issueType = solanaVariantIntegritytoIssueTypeMapper(variantIntegrityState);
 
     if (issueType) {
-      console.log('sending data');
       const dbVariant: DatabaseVariant = {
         issueType,
         variantPublicKey: variant.publicKey,
@@ -76,13 +73,13 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
 
   useEffect(() => {
     switch (variantIntegrityState) {
-      case VariantIntegrityState.Intact:
+      case SolanaVariantIntegrityState.Intact:
         setBorderColor('green');
         break;
-      case VariantIntegrityState.Compromised:
+      case SolanaVariantIntegrityState.Compromised:
         setBorderColor('red');
         break;
-      case VariantIntegrityState.Obsolete:
+      case SolanaVariantIntegrityState.Obsolete:
         setBorderColor('orange');
         break;
       default:
@@ -112,7 +109,8 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
                 disabled={
-                  checkingIntegrity || variantIntegrityState === VariantIntegrityState.Compromised
+                  checkingIntegrity ||
+                  variantIntegrityState === SolanaVariantIntegrityState.Compromised
                 }
                 variant="contained"
                 startIcon={checkingIntegrity ? <CircularProgress /> : <CloudSyncIcon />}

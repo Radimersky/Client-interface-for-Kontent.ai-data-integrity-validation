@@ -5,7 +5,7 @@ import { PublicKey } from '@solana/web3.js';
 import dayjs from 'dayjs';
 import { BN } from '@project-serum/anchor';
 
-export type LocalVariant = {
+export type DeliverVariant = {
   readonly projectId: string;
   readonly itemId: string;
   readonly itemCodename: string;
@@ -43,7 +43,7 @@ export type DtoVariant = {
   readonly variantHashSignature: string;
 };
 
-export type DeliverVariant = {
+export type DeliverVariantModel = {
   readonly system: System;
   readonly elements: any;
 };
@@ -75,7 +75,7 @@ export const Variant = {
   fromSolanaAccount(
     solanaAccount: TypeDef<IdlAccountDef, IdlTypes<Idl>>,
     publicKey: PublicKey
-  ): LocalVariant {
+  ): DeliverVariant {
     const account = solanaAccount as SolanaAccountVariant;
     const author = publicKey.toBase58();
 
@@ -96,7 +96,7 @@ export const Variant = {
   },
 
   toDtoModel(
-    deliverVariant: DeliverVariant,
+    deliverVariant: DeliverVariantModel,
     projectId: string,
     signatureData: KontentSignature
   ): DtoVariant {

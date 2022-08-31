@@ -1,7 +1,7 @@
 import { signatureProviderAPIBaseUrl } from '../../AppSettingConstants';
-import { DeliverVariant } from '../../models/Variant';
+import { DeliverVariantModel } from '../../models/Variant';
 
-export const getSignature = async (deliverVariant: DeliverVariant) => {
+export const getSignature = async (deliverVariant: DeliverVariantModel) => {
   return fetch(signatureProviderAPIBaseUrl + 'sign/', {
     method: 'POST',
     headers: {

@@ -1,16 +1,16 @@
-import { DeliverVariant } from '../models/Variant';
+import { DeliverVariantModel } from '../models/Variant';
 import { getProjectLanguages } from '../api/deliver/GetProjectLanguages';
 import { getVariants } from '../api/deliver/GetVariants';
-import LocalVariantCard from '../components/localVariantCard/LocalVariantCard';
+import DeliverVariantCard from '../components/deliverVariantCard/DeliverVariantCard';
 import { useEffect, useState } from 'react';
 
-export type LocalVariantCards = {
+export type DeliverVariantCards = {
   readonly language: string;
   readonly variantCards: JSX.Element[];
 };
 
-const useFetchLocalVariants = (projectId: string) => {
-  const [variantCards, setVariantCards] = useState<LocalVariantCards[]>([]);
+const useFetchDeliverVariants = (projectId: string) => {
+  const [variantCards, setVariantCards] = useState<DeliverVariantCards[]>([]);
   const [fetching, setFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -37,15 +37,15 @@ const useFetchLocalVariants = (projectId: string) => {
               throw response;
             })
             .then((data) => {
-              const cards = data.items.map((variantData: DeliverVariant) => (
-                <LocalVariantCard
+              const cards = data.items.map((variantData: DeliverVariantModel) => (
+                <DeliverVariantCard
                   deliverVariant={variantData}
                   projectId={projectId}
                   key={variantData.system.id}
                 />
               ));
 
-              const variantCardWithLanguage: LocalVariantCards = {
+              const variantCardWithLanguage: DeliverVariantCards = {
                 language: language.name,
                 variantCards: cards
               };
@@ -67,4 +67,4 @@ const useFetchLocalVariants = (projectId: string) => {
   return { variantCards, isFetching: fetching, errorMessage };
 };
 
-export default useFetchLocalVariants;
+export default useFetchDeliverVariants;

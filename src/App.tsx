@@ -19,7 +19,7 @@ import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { signIn } from './utils/firebase';
-import LocalVariants from './pages/LocalVariants';
+import DeliverVariants from './pages/DeliverVariants';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
         <CssBaseline />
         <NavigationMenu />
         <Routes>
-          <Route path={deliverVariantsPage} element={<LocalVariants />} />
+          <Route path={deliverVariantsPage} element={<DeliverVariants />} />
           <Route path={solanaVariantsPage} element={<SolanaVariants />} />
         </Routes>
       </WalletProvider>

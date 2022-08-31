@@ -8,11 +8,11 @@ import useWorkspace from '../hooks/useWorkspace';
 import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
-import { DtoVariant, DeliverVariant, KontentSignature, Variant } from '../models/Variant';
+import { DtoVariant, DeliverVariantModel, KontentSignature, Variant } from '../models/Variant';
 import { getSignature } from '../api/signatureProvider/GetSignature';
 
 type ISendVariantToBlockchainProviderProps = {
-  readonly deliverVariant: DeliverVariant;
+  readonly deliverVariant: DeliverVariantModel;
   readonly projectId: string;
 };
 
@@ -79,16 +79,19 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
     setLoading(true);
     setFirstMessage(messages.retrievingSignature);
 
-    const localHash = hash(deliverVariant);
+    const deliverVariantHash = hash(deliverVariant);
 
     getSignature(deliverVariant)
       .then((response: KontentSignature | null | void) => {
         if (response) {
           setKontentSignature(response);
           setSecondMessage(
-            'Local variant hash:\n' + localHash + '\nKontent variant hash:\n' + response.hash
+            'Deliver variant hash:\n' +
+              deliverVariantHash +
+              '\nKontent variant hash:\n' +
+              response.hash
           );
-          if (localHash === response.hash) {
+          if (deliverVariantHash === response.hash) {
             setState(State.Sending);
           } else {
             setFirstMessage(messages.hashCompareFail);

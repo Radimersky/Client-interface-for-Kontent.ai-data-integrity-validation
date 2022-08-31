@@ -2,17 +2,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
-import { DeliverVariant } from '../../models/Variant';
+import { DeliverVariantModel } from '../../models/Variant';
 import SendVariantToBlockchainProvider from '../SendVariantToBlockchainProvider';
 
-type ILocalVariantCardDetailProps = {
+type IDeliverVariantCardDetailProps = {
   readonly open: boolean;
   readonly handleClose: () => void;
-  readonly deliverVariant: DeliverVariant;
+  readonly deliverVariant: DeliverVariantModel;
   readonly projectId: string;
 };
 
-const LocalVariantCardDetail: React.FC<ILocalVariantCardDetailProps> = ({
+const DeliverVariantCardDetail: React.FC<IDeliverVariantCardDetailProps> = ({
   open,
   handleClose,
   deliverVariant,
@@ -38,4 +38,4 @@ const LocalVariantCardDetail: React.FC<ILocalVariantCardDetailProps> = ({
   );
 };
 
-export default LocalVariantCardDetail;
+export default DeliverVariantCardDetail;

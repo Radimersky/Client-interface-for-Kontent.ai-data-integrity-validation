@@ -1,7 +1,7 @@
 import { Grid, Paper, Box, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
-import { LocalVariant } from '../../models/Variant';
+import { DeliverVariant } from '../../models/Variant';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import CircularProgress from '@mui/material/CircularProgress';
 import StyledCardRow from '../StyledCardRow';
@@ -14,7 +14,7 @@ import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase'
 import { PublicKey } from '@solana/web3.js';
 
 interface ISolanaVariantCardProps {
-  readonly variant: LocalVariant;
+  readonly variant: DeliverVariant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
   readonly isIntegrityViolated: boolean;

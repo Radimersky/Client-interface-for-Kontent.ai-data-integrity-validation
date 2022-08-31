@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
-import { DeliverVariant, LocalVariant } from '../models/Variant';
+import { DeliverVariantModel, DeliverVariant } from '../models/Variant';
 import SolanaVariantDialog, {
   DialogContent
 } from '../components/solanaVariantCard/SolanaVariantDialog';
@@ -22,7 +22,7 @@ export enum SolanaVariantIntegrityState {
 }
 
 export const useSolanaVariantCardStateManager = (
-  variant: LocalVariant,
+  variant: DeliverVariant,
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {
@@ -96,7 +96,7 @@ export const useSolanaVariantCardStateManager = (
     if (databaseMetaData) handleRemove();
   };
 
-  const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariant) => {
+  const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariantModel) => {
     const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
     const solanaVariantLastModified = new Date(variant.lastModified);
 

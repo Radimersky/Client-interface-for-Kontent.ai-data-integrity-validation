@@ -2,16 +2,16 @@ import { Grid, Paper, Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from '../StyledCardRow';
-import LocalVariantCardDetail from './LocalVariantCardDetail';
+import DeliverVariantCardDetail from './DeliverVariantCardDetail';
 import React from 'react';
-import { DeliverVariant } from '../../models/Variant';
+import { DeliverVariantModel } from '../../models/Variant';
 
-export type ILocalVariantCardProps = {
-  readonly deliverVariant: DeliverVariant;
+export type IDeliverVariantCardProps = {
+  readonly deliverVariant: DeliverVariantModel;
   readonly projectId: string;
 };
 
-const LocalVariantCard: React.FC<ILocalVariantCardProps> = ({ deliverVariant, projectId }) => {
+const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({ deliverVariant, projectId }) => {
   const [open, setOpen] = React.useState(false);
   const { system } = { ...deliverVariant };
 
@@ -49,7 +49,7 @@ const LocalVariantCard: React.FC<ILocalVariantCardProps> = ({ deliverVariant, pr
           </Box>
         </Paper>
       </Grid>
-      <LocalVariantCardDetail
+      <DeliverVariantCardDetail
         open={open}
         handleClose={handleClose}
         deliverVariant={deliverVariant}
@@ -59,4 +59,4 @@ const LocalVariantCard: React.FC<ILocalVariantCardProps> = ({ deliverVariant, pr
   );
 };
 
-export default LocalVariantCard;
+export default DeliverVariantCard;

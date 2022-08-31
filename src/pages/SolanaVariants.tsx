@@ -83,7 +83,7 @@ const SolanaVariants = () => {
     // // Move variant card to new array
     // setViolatedVariantCards((previousCards) => {
     //   console.log('moving');
-    //   return previousCards.concat(variant);
+    //   return previousCards.concFat(variant);
     // });
     // // Remove variant card from previous array
     // handleRemoveVariantCard(publicKey);
@@ -91,38 +91,71 @@ const SolanaVariants = () => {
 
   return (
     <Container maxWidth={false}>
-      <Button
-        disabled={isFetching}
-        variant="contained"
-        startIcon={<CloudSyncIcon />}
-        onClick={handleCheckConsistency}>
-        Check consistency
-      </Button>
-      <Box marginY={3}>
+      <Box
+        marginY={3}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          textAlign: 'center'
+        }}>
         <h1>Variants stored on Solana blockchain</h1>
+        <Box marginTop={3}>
+          <Button
+            disabled={isFetching}
+            variant="contained"
+            startIcon={<CloudSyncIcon />}
+            onClick={handleCheckConsistency}>
+            Check consistency of all variants
+          </Button>
+        </Box>
+        <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
+        {connected ? (
+          <>
+            {isFetching && <Loader />}
+
+            <Box marginY={3}>
+              <h2>Integrity violated variants</h2>
+            </Box>
+            <Grid container spacing={4}>
+              {violatedVariantCards.length === 0 ? (
+                <Box
+                  style={{
+                    textAlign: 'center',
+                    margin: 'auto',
+                    paddingLeft: '30px',
+                    marginTop: '20px'
+                  }}>
+                  There are no integrity violated variants
+                </Box>
+              ) : (
+                violatedVariantCards
+              )}
+            </Grid>
+
+            <Box marginY={3}>
+              <h2>Proper variants</h2>
+            </Box>
+            <Grid container spacing={4}>
+              {variantCards.length === 0 ? (
+                <Box
+                  style={{
+                    textAlign: 'center',
+                    margin: 'auto',
+                    paddingLeft: '30px',
+                    marginTop: '20px'
+                  }}>
+                  There are no proper variants. Send some variants to blockchain first.
+                </Box>
+              ) : (
+                variantCards
+              )}
+            </Grid>
+          </>
+        ) : (
+          <h2 style={{ textAlign: 'center' }}>Please connect your wallet.</h2>
+        )}
       </Box>
-      <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
-      {connected ? (
-        <>
-          {isFetching && <Loader />}
-
-          <Box marginY={3}>
-            <h2>Integrity violated variants</h2>
-          </Box>
-          <Grid container spacing={4}>
-            {violatedVariantCards}
-          </Grid>
-
-          <Box marginY={3}>
-            <h2>Proper variants</h2>
-          </Box>
-          <Grid container spacing={4}>
-            {variantCards}
-          </Grid>
-        </>
-      ) : (
-        <h2 style={{ textAlign: 'center' }}>Please connect your wallet.</h2>
-      )}
     </Container>
   );
 };

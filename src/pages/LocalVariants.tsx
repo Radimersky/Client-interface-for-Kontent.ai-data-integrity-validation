@@ -1,6 +1,5 @@
-import { Button, Container, Divider, Grid } from '@mui/material';
+import { Container, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
-import { Link as RouterLink } from 'react-router-dom';
 import DeliverVariantImport from '../components/DeliverVariantImport';
 import { useState } from 'react';
 import React from 'react';
@@ -37,10 +36,6 @@ const LocalVariants = () => {
           </React.Fragment>
         );
       })}
-
-      <RouterLink to="/blockchain">
-        <Button variant="contained">Blockchain</Button>
-      </RouterLink>
     </Container>
   );
 };

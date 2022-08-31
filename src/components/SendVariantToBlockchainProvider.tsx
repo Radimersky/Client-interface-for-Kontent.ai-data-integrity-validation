@@ -5,11 +5,9 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import useWorkspace from '../hooks/useWorkspace';
-// eslint-disable-next-line no-unused-vars
 import { sendVariant } from '../api/solana/SendVariant';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
-// eslint-disable-next-line no-unused-vars
 import { DtoVariant, DeliverVariant, KontentSignature, Variant } from '../models/Variant';
 import { getSignature } from '../api/signatureProvider/GetSignature';
 
@@ -122,11 +120,11 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
         setState(State.Completed);
       })
       .catch((err) => {
-        console.error(err);
         setFirstMessage(messages.sendingToBlockchainFailed);
         setSecondMessage(err?.message);
         setLoading(false);
         setState(State.Failed);
+        console.error(err);
       });
   };
 

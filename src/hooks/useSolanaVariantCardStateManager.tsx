@@ -5,7 +5,7 @@ import { DeliverVariant, LocalVariant } from '../models/Variant';
 import SolanaVariantDialog, {
   DialogContent
 } from '../components/solanaVariantCard/SolanaVariantDialog';
-import { deliverVariantNotFound, obsoleteSolanaVariant } from '../templates/dialogTemplates';
+import { deliverVariantNotFound, obsoleteSolanaVariant } from '../templates/DialogTemplates';
 import {
   areStringsEqual,
   issueTypeToSolanaVariantIntegrityMapper,

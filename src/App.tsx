@@ -58,15 +58,15 @@ function App() {
         <CssBaseline />
         <NavigationMenu />
         <Routes>
-          <Route path={localVariantsPage} element={<LocalVariants />} />
-          <Route path={blockchainVariantsPage} element={<SolanaVariants />} />
+          <Route path={deliverVariantsPage} element={<LocalVariants />} />
+          <Route path={solanaVariantsPage} element={<SolanaVariants />} />
         </Routes>
       </WalletProvider>
     </ConnectionProvider>
   );
 }
 
-export const blockchainVariantsPage = '/blockchainVariants';
-export const localVariantsPage = '/';
+export const solanaVariantsPage = '/solanaVariants';
+export const deliverVariantsPage = '/';
 
 export default App;

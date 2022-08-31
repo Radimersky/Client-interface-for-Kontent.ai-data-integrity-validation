@@ -13,7 +13,7 @@ export const deliverVariantNotFound: DialogContent = {
   )
 };
 
-export const obsoleteBlockchainVariant = (
+export const obsoleteSolanaVariant = (
   deliverLastModified: Date,
   solanaLastModified: Date
 ): DialogContent => ({

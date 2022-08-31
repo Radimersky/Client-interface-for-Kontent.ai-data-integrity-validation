@@ -13,7 +13,7 @@ import { tryRemoveDatabaseVariantByPublicKey } from '../utils/firebase';
 
 const SolanaVariants = () => {
   const { connected } = useWallet();
-  const { isFetching, errorMessage, blockchainVariants } = useFetchSolanaVariants();
+  const { isFetching, errorMessage, solanaVariants } = useFetchSolanaVariants();
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
@@ -25,7 +25,7 @@ const SolanaVariants = () => {
   // }, []);
 
   useEffect(() => {
-    const newVariantCards = blockchainVariants.map((variant) => {
+    const newVariantCards = solanaVariants.map((variant) => {
       const mappedVariant = Variant.fromSolanaAccount(variant.account, variant.publicKey);
       return (
         <SolanaVariantCard
@@ -39,7 +39,7 @@ const SolanaVariants = () => {
       );
     });
     setVariantCards(newVariantCards);
-  }, [blockchainVariants]);
+  }, [solanaVariants]);
 
   // useEffect(() => {
   //   // Call onSnapshot() to listen to changes
@@ -99,7 +99,7 @@ const SolanaVariants = () => {
         Check consistency
       </Button>
       <Box marginY={3}>
-        <h1>Blockchain variants</h1>
+        <h1>Variants stored on Solana blockchain</h1>
       </Box>
       <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
       {connected ? (

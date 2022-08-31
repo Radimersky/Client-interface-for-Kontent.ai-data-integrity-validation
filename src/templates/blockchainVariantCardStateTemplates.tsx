@@ -16,9 +16,9 @@ export const hashCompareMissmatchMessageTemplate = (
   </>
 );
 
-export const obsoleteBlockchainVariant = (
+export const obsoleteSolanaVariant = (
   deliverLastModified: Date,
-  blockchainLastModified: Date
+  solanaLastModified: Date
 ): DialogContent => ({
   title: 'Newer Deliver variant found',
   body: (
@@ -26,7 +26,7 @@ export const obsoleteBlockchainVariant = (
       <p>It looks like the Deliver variant was updated since it was uploaded to blockchain.</p>
       <p>
         The variant on Deliver was last modified {deliverLastModified.toUTCString()} but the version
-        of variant on blockchain was last modified {blockchainLastModified.toUTCString()}.
+        of variant on blockchain was last modified {solanaLastModified.toUTCString()}.
       </p>
       <p>
         It may also mean that integrity of the variant&quot;s property &quot;last_modified&quot; was

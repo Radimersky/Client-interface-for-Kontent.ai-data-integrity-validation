@@ -107,15 +107,15 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
   };
 
   const handleSendingState = () => {
-    const sendVariantToBlockchain = async (blockchainVariant: DtoVariant) => {
-      await sendVariant(program, provider, blockchainVariant);
+    const sendVariantToBlockchain = async (solanaVariant: DtoVariant) => {
+      await sendVariant(program, provider, solanaVariant);
     };
 
     setFirstMessage(messages.sendingToBlockchain);
 
-    const blockchainVariant = Variant.toDtoModel(deliverVariant, projectId, kontentSignature);
+    const solanaVariant = Variant.toDtoModel(deliverVariant, projectId, kontentSignature);
 
-    sendVariantToBlockchain(blockchainVariant)
+    sendVariantToBlockchain(solanaVariant)
       .then(() => {
         setState(State.Completed);
       })

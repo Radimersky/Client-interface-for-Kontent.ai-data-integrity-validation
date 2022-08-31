@@ -5,7 +5,7 @@ import { DeliverVariant, LocalVariant } from '../models/Variant';
 import SolanaVariantDialog, {
   DialogContent
 } from '../components/solanaVariantCard/SolanaVariantDialog';
-import { deliverVariantNotFound, obsoleteBlockchainVariant } from '../templates/dialogTemplates';
+import { deliverVariantNotFound, obsoleteSolanaVariant } from '../templates/dialogTemplates';
 import {
   areStringsEqual,
   issueTypeToSolanaVariantIntegrityMapper,
@@ -62,9 +62,7 @@ export const useSolanaVariantCardStateManager = (
     deliverVariantLastModified: Date,
     solanaVariantLastModified: Date
   ) => {
-    setDialogContent(
-      obsoleteBlockchainVariant(deliverVariantLastModified, solanaVariantLastModified)
-    );
+    setDialogContent(obsoleteSolanaVariant(deliverVariantLastModified, solanaVariantLastModified));
     setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
     setShowDialog(true);
   };
@@ -100,18 +98,18 @@ export const useSolanaVariantCardStateManager = (
 
   const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariant) => {
     const deliverVariantLastModified = new Date(deliverVariant.system.last_modified);
-    const blockchainVariantLastModified = new Date(variant.lastModified);
+    const solanaVariantLastModified = new Date(variant.lastModified);
 
-    // We need to remove millis from the date, because they were lost when blockchainVariantLastModified was converted from byte array (BN library) to date object.
+    // We need to remove millis from the date, because they were lost when solanaVariantLastModified was converted from byte array (BN library) to date object.
     const areLastModifiedDatesEqual =
       deliverVariantLastModified.getTime() - deliverVariantLastModified.getMilliseconds() ===
-      blockchainVariantLastModified.getTime();
+      solanaVariantLastModified.getTime();
 
     const deliverVariantHash = hash(deliverVariant);
     const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
 
     if (!areLastModifiedDatesEqual) {
-      notifyVariantIsObsolete(deliverVariantLastModified, blockchainVariantLastModified);
+      notifyVariantIsObsolete(deliverVariantLastModified, solanaVariantLastModified);
     } else if (!areVariantHashesEqual) {
       //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
       moveToCompromisedState();

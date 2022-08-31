@@ -1,6 +1,6 @@
 import { AppBar, Container, Toolbar, Box, Typography, MenuItem, Button } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { blockchainVariantsPage, localVariantsPage } from '../App';
+import { solanaVariantsPage, deliverVariantsPage } from '../App';
 import MyWallet from './MyWallet';
 import { useNavigate } from 'react-router';
 
@@ -9,8 +9,8 @@ const NavigationMenu = () => {
   const navigate = useNavigate();
 
   const pages = [
-    { name: 'Local variants', path: localVariantsPage },
-    { name: 'Blockchain variants', path: blockchainVariantsPage }
+    { name: 'Deliver variants', path: deliverVariantsPage },
+    { name: 'Solana variants', path: solanaVariantsPage }
   ];
 
   return (

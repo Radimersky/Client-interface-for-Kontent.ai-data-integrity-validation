@@ -9,8 +9,8 @@ import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types'
 const useFetchSolanaVariants = () => {
   const { program, provider } = useWorkspace();
   const { connected } = useWallet();
-  // Type <BlockchainVariantCard[]>
-  const [blockchainVariants, setBlockchainVariants] = useState<
+  // Type <SolanaVariantCard[]>
+  const [solanaVariants, setSolanaVariants] = useState<
     ProgramAccount<TypeDef<IdlAccountDef, IdlTypes<Idl>>>[]
   >([]);
   const [fetching, setFetching] = useState(true);
@@ -28,7 +28,7 @@ const useFetchSolanaVariants = () => {
 
     fetchVariants(program, filter)
       .then((fetchedVariants) => {
-        setBlockchainVariants(fetchedVariants);
+        setSolanaVariants(fetchedVariants);
       })
       .catch((e) => {
         setErrorMessage('Error: ' + e.message);
@@ -39,7 +39,7 @@ const useFetchSolanaVariants = () => {
       });
   }, [connected]);
 
-  return { blockchainVariants, isFetching: fetching, errorMessage };
+  return { solanaVariants, isFetching: fetching, errorMessage };
 };
 
 export default useFetchSolanaVariants;

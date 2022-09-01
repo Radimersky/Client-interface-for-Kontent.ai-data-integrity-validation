@@ -5,10 +5,16 @@ import StyledCardRow from '../StyledCardRow';
 import DeliverVariantCardDetail from './DeliverVariantCardDetail';
 import React from 'react';
 import { DeliverVariantModel } from '../../models/Variant';
+import { BN } from '@project-serum/anchor';
+import dayjs from 'dayjs';
 
 export type IDeliverVariantCardProps = {
   readonly deliverVariant: DeliverVariantModel;
   readonly projectId: string;
+};
+
+const formatIsoString = (isoString: string): string => {
+  return dayjs(isoString).toString();
 };
 
 const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({ deliverVariant, projectId }) => {
@@ -34,9 +40,11 @@ const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({ deliverVariant
             <Box marginY={1}>
               <StyledCardRow name="Item ID" value={system.id} />
               <StyledCardRow name="Codename" value={system.codename} />
-              <StyledCardRow name="Last modified" value={system.last_modified} />
-              <StyledCardRow name="Type" value={system.type} />
+              <StyledCardRow name="Last Modified" value={formatIsoString(system.last_modified)} />
+              <StyledCardRow name="Content Type" value={system.type} />
               <StyledCardRow name="Language" value={system.language} />
+              <StyledCardRow name="Collection" value={system.collection} />
+              <StyledCardRow name="Workflow Step" value={system.workflow_step} />
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>

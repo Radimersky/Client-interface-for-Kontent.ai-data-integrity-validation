@@ -9,7 +9,7 @@ import {
   useSolanaVariantCardStateManager,
   SolanaVariantIntegrityState
 } from '../../hooks/useSolanaVariantCardStateManager';
-import { solanaVariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
+import { formatIsoString, solanaVariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
 import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/Firebase';
 import { PublicKey } from '@solana/web3.js';
 
@@ -96,11 +96,11 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
               <b>On-chain pubkey: {variant.publicKey}</b>
             </Typography>
             <Box marginY={1}>
-              <StyledCardRow name="Created" value={variant.accountCreated} />
+              <StyledCardRow name="Created" value={formatIsoString(variant.accountCreated)} />
               <StyledCardRow name="Project ID" value={variant.projectId} />
-              <StyledCardRow name="Item ID" value={variant.itemId} />
-              <StyledCardRow name="Item code name" value={variant.itemCodename} />
               <StyledCardRow name="Variant ID" value={variant.variantId} />
+              <StyledCardRow name="Item ID" value={variant.itemId} />
+              <StyledCardRow name="Codename" value={variant.itemCodename} />
               <StyledCardRow name="Last modified" value={variant.lastModifiedPretty} />
               <StyledCardRow name="Hash" value={variant.variantHash} />
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />

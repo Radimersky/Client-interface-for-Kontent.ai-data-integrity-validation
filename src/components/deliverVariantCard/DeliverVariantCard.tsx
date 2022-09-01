@@ -5,16 +5,11 @@ import StyledCardRow from '../StyledCardRow';
 import DeliverVariantCardDetail from './DeliverVariantCardDetail';
 import React from 'react';
 import { DeliverVariantModel } from '../../models/Variant';
-import { BN } from '@project-serum/anchor';
-import dayjs from 'dayjs';
+import { formatIsoString } from '../../utils/Utils';
 
 export type IDeliverVariantCardProps = {
   readonly deliverVariant: DeliverVariantModel;
   readonly projectId: string;
-};
-
-const formatIsoString = (isoString: string): string => {
-  return dayjs(isoString).toString();
 };
 
 const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({ deliverVariant, projectId }) => {

@@ -90,7 +90,7 @@ export const Variant = {
       author: author,
       shortAuthor: author.slice(0, 4) + '..' + author.slice(-4),
       lastModified: dayjs.unix(account.lastModified.toNumber()).toISOString(),
-      lastModifiedPretty: dayjs.unix(account.lastModified.toNumber()).format('YYYY-MM-DDTHH:mmZ'),
+      lastModifiedPretty: dayjs.unix(account.lastModified.toNumber()).toString(),
       accountCreated: dayjs.unix(account.accountCreated).format('YYYY-MM-DDTHH:mmZ')
     };
   },

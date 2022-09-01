@@ -14,8 +14,28 @@ import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
 const cardsContainerStyle = {
   textAlign: 'center',
   margin: 'auto',
-  paddingLeft: '30px',
   marginTop: '20px'
+};
+
+const createVariantCardDataGridBlock = (
+  variantCards: JSX.Element[],
+  emptyMessage: string,
+  header: string
+) => {
+  return (
+    <>
+      <Box marginY={3}>
+        <h2>{header}</h2>
+      </Box>
+      {variantCards.length === 0 ? (
+        <Box sx={cardsContainerStyle}>{emptyMessage}</Box>
+      ) : (
+        <Grid container spacing={4} sx={{ textAlign: 'left' }}>
+          {variantCards}
+        </Grid>
+      )}
+    </>
+  );
 };
 
 const SolanaVariants = () => {
@@ -96,6 +116,18 @@ const SolanaVariants = () => {
     // handleRemoveVariantCard(publicKey);
   };
 
+  const properVariantCards = createVariantCardDataGridBlock(
+    variantCards,
+    'There are no proper variants. Send some variants to blockchain first.',
+    'Proper variants'
+  );
+
+  const vilatedVariantCards = createVariantCardDataGridBlock(
+    violatedVariantCards,
+    'There are no integrity violated variants.',
+    'Integrity violated variants'
+  );
+
   return (
     <Container maxWidth={false}>
       <Box
@@ -120,30 +152,8 @@ const SolanaVariants = () => {
         {connected ? (
           <>
             {isFetching && <Loader />}
-
-            <Box marginY={3}>
-              <h2>Integrity violated variants</h2>
-            </Box>
-            <Grid container spacing={4}>
-              {violatedVariantCards.length === 0 ? (
-                <Box sx={cardsContainerStyle}>There are no integrity violated variants</Box>
-              ) : (
-                violatedVariantCards
-              )}
-            </Grid>
-
-            <Box marginY={3}>
-              <h2>Proper variants</h2>
-            </Box>
-            <Grid container spacing={4}>
-              {variantCards.length === 0 ? (
-                <Box sx={cardsContainerStyle}>
-                  There are no proper variants. Send some variants to blockchain first.
-                </Box>
-              ) : (
-                variantCards
-              )}
-            </Grid>
+            {vilatedVariantCards}
+            {properVariantCards}
           </>
         ) : (
           <h2 style={{ textAlign: 'center' }}>Please connect your wallet.</h2>

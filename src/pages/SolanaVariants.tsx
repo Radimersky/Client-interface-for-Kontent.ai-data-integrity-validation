@@ -11,6 +11,13 @@ import { deleteVariant } from '../api/solana/DeleteVariant';
 import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
 // import { User } from 'firebase/auth';
 
+const cardsContainerStyle = {
+  textAlign: 'center',
+  margin: 'auto',
+  paddingLeft: '30px',
+  marginTop: '20px'
+};
+
 const SolanaVariants = () => {
   const { connected } = useWallet();
   const { isFetching, errorMessage, solanaVariants } = useFetchSolanaVariants();
@@ -119,15 +126,7 @@ const SolanaVariants = () => {
             </Box>
             <Grid container spacing={4}>
               {violatedVariantCards.length === 0 ? (
-                <Box
-                  style={{
-                    textAlign: 'center',
-                    margin: 'auto',
-                    paddingLeft: '30px',
-                    marginTop: '20px'
-                  }}>
-                  There are no integrity violated variants
-                </Box>
+                <Box sx={cardsContainerStyle}>There are no integrity violated variants</Box>
               ) : (
                 violatedVariantCards
               )}
@@ -138,13 +137,7 @@ const SolanaVariants = () => {
             </Box>
             <Grid container spacing={4}>
               {variantCards.length === 0 ? (
-                <Box
-                  style={{
-                    textAlign: 'center',
-                    margin: 'auto',
-                    paddingLeft: '30px',
-                    marginTop: '20px'
-                  }}>
+                <Box sx={cardsContainerStyle}>
                   There are no proper variants. Send some variants to blockchain first.
                 </Box>
               ) : (

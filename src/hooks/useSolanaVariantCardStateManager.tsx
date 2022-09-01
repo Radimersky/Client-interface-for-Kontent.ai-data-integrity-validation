@@ -11,7 +11,7 @@ import {
   issueTypeToSolanaVariantIntegrityMapper,
   makeSentence
 } from '../utils/Utils';
-import { DatabaseVariantWithId, getDatabaseVariantOrNull } from '../utils/firebase';
+import { DatabaseVariantWithId, getDatabaseVariantOrNull } from '../utils/Firebase';
 
 export enum SolanaVariantIntegrityState {
   Compromised,

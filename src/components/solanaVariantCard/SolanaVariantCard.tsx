@@ -10,7 +10,7 @@ import {
   SolanaVariantIntegrityState
 } from '../../hooks/useSolanaVariantCardStateManager';
 import { solanaVariantIntegritytoIssueTypeMapper } from '../../utils/Utils';
-import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/firebase';
+import { DatabaseVariant, submitDocumentToDatabase } from '../../utils/Firebase';
 import { PublicKey } from '@solana/web3.js';
 
 interface ISolanaVariantCardProps {

@@ -18,7 +18,7 @@ import {
 import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
-import { signIn } from './utils/firebase';
+import { signIn } from './utils/Firebase';
 import DeliverVariants from './pages/DeliverVariants';
 require('@solana/wallet-adapter-react-ui/styles.css');
 

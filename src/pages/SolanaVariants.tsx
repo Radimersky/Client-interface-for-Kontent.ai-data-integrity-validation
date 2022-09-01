@@ -8,7 +8,7 @@ import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard
 import { Variant } from '../models/Variant';
 import useWorkspace from '../hooks/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
-import { tryRemoveDatabaseVariantByPublicKey } from '../utils/firebase';
+import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
 // import { User } from 'firebase/auth';
 
 const SolanaVariants = () => {

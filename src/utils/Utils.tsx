@@ -1,5 +1,5 @@
 import { SolanaVariantIntegrityState } from '../hooks/useSolanaVariantCardStateManager';
-import { IssueType } from './firebase';
+import { IssueType } from './Firebase';
 
 export const areStringsEqual = (a: string, b: string) => {
   return a.localeCompare(b) === 0;

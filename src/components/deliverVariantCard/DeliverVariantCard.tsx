@@ -1,5 +1,4 @@
 import { Grid, Paper, Box, Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import StyledCardRow from '../StyledCardRow';
 import DeliverVariantCardDetail from './DeliverVariantCardDetail';
@@ -41,12 +40,13 @@ const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({ deliverVariant
               <StyledCardRow name="Collection" value={system.collection} />
               <StyledCardRow name="Workflow Step" value={system.workflow_step} />
             </Box>
-            <Box display={'flex'} justifyContent={'space-between'}>
-              <Button variant="contained" startIcon={<ReadMoreIcon />} onClick={handleClickOpen}>
+            <Box display={'flex'} justifyContent={'center'}>
+              <Button
+                variant="contained"
+                sx={{ width: '100%' }}
+                startIcon={<ReadMoreIcon />}
+                onClick={handleClickOpen}>
                 Detail
-              </Button>
-              <Button variant="contained" color="error" startIcon={<DeleteIcon />}>
-                Delete
               </Button>
             </Box>
           </Box>

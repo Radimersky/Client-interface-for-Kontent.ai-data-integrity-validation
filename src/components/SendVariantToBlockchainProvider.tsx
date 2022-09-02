@@ -30,10 +30,10 @@ const boxStyling = {
   flexDirection: 'column',
   alignItems: 'center',
   minHeight: '150px',
-  backgroundColor: '#C5C5C5',
+  backgroundColor: '#C5C5C550',
   borderRadius: '8px',
   padding: '15px',
-  minWidth: '100px'
+  minWidth: '400px'
 };
 
 const messages = {
@@ -42,7 +42,7 @@ const messages = {
   hashCompareFail: 'Hash comparison mismatch. Please contant Kontent.ai support service',
   sendingToBlockchain: 'Please approve the transaction',
   sendingToBlockchainFailed: 'Transaction failed',
-  completed: 'Variant successfully sent to blockchain',
+  completed: 'Variant has been successfully sent to blockchain',
   failedToRetrieveSignature: 'Cannot get signature from Kontent signature provider server'
 };
 
@@ -158,7 +158,7 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
           variant="contained"
           startIcon={<CloudUploadIcon />}
           onClick={startProcedure}>
-          Send to blockchain
+          Send variant data to blockchain
         </Button>
       )}
       {loading && <CircularProgress />}

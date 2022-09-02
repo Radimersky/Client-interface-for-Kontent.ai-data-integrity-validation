@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid, Divider } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import useFetchSolanaVariants from '../hooks/useFetchSolanaVariants';
@@ -33,6 +33,7 @@ const createVariantCardDataGridBlock = (
           {variantCards}
         </Grid>
       )}
+      <Divider style={{ width: '100%', paddingTop: '50px' }} />
     </>
   );
 };

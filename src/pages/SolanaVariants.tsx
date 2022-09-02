@@ -13,8 +13,7 @@ import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
 
 const cardsContainerStyle = {
   textAlign: 'center',
-  margin: 'auto',
-  marginTop: '20px'
+  margin: 'auto'
 };
 
 const createVariantCardDataGridBlock = (

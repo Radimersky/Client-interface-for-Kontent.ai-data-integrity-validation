@@ -17,7 +17,7 @@ type ISendVariantToBlockchainProviderProps = {
 };
 
 enum State {
-  Started,
+  Beginning,
   Signing,
   Sending,
   Completed,
@@ -38,12 +38,27 @@ const boxStyling = {
 
 const messages = {
   connectWallet: 'Connect your wallet to send variant to blockchain',
-  retrievingSignature: 'Retrieving signature from Kontent',
-  hashCompareFail: 'Hash comparison mismatch',
+  retrievingSignature: 'Retrieving signature from Kontent signature provider',
+  hashCompareFail: 'Hash comparison mismatch. Please contant Kontent.ai support service',
   sendingToBlockchain: 'Please approve the transaction',
   sendingToBlockchainFailed: 'Transaction failed',
   completed: 'Variant successfully sent to blockchain',
-  failedToRetrieveSignature: 'Cannot get signature from Kontent server'
+  failedToRetrieveSignature: 'Cannot get signature from Kontent signature provider server'
+};
+
+const createSendingStateMessage = (localHash: string, providerHash: string): JSX.Element => {
+  return (
+    <>
+      <p>
+        <b>Variant hash signed localy:</b>
+      </p>
+      <p>{localHash}</p>
+      <p>
+        <b>Variant hash signed by Kontent signature provider:</b>
+      </p>
+      <p>{providerHash}</p>
+    </>
+  );
 };
 
 const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProviderProps> = ({
@@ -53,12 +68,12 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
   const { connected } = useWallet();
   const [loading, setLoading] = useState(false);
   const [firstMessage, setFirstMessage] = useState(!connected ? messages.connectWallet : '');
-  const [secondMessage, setSecondMessage] = useState('');
+  const [secondMessage, setSecondMessage] = useState(<></>);
   const [kontentSignature, setKontentSignature] = useState<KontentSignature>({
     signature: '',
     hash: ''
   });
-  const [state, setState] = useState(State.Started);
+  const [state, setState] = useState(State.Beginning);
   const { program, provider } = useWorkspace();
 
   useEffect(() => {
@@ -85,12 +100,7 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
       .then((response: KontentSignature | null | void) => {
         if (response) {
           setKontentSignature(response);
-          setSecondMessage(
-            'Deliver variant hash:\n' +
-              deliverVariantHash +
-              '\nKontent variant hash:\n' +
-              response.hash
-          );
+          setSecondMessage(createSendingStateMessage(deliverVariantHash, response.hash));
           if (deliverVariantHash === response.hash) {
             setState(State.Sending);
           } else {
@@ -136,18 +146,18 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
     setLoading(false);
   };
 
-  const startProcess = () => {
+  const startProcedure = () => {
     setState(State.Signing);
   };
 
   return (
     <Box sx={boxStyling}>
-      {connected && state === State.Started && (
+      {connected && state === State.Beginning && (
         <Button
           sx={{ height: '40px' }}
           variant="contained"
           startIcon={<CloudUploadIcon />}
-          onClick={startProcess}>
+          onClick={startProcedure}>
           Send to blockchain
         </Button>
       )}

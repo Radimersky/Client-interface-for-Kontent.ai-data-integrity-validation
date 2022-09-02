@@ -1,4 +1,4 @@
-import { AppBar, Container, Toolbar, Box, Typography, MenuItem, Button } from '@mui/material';
+import { AppBar, Container, Toolbar, Box, Typography, MenuItem } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { solanaVariantsPage, deliverVariantsPage } from '../App';
 import MyWallet from './MyWallet';
@@ -27,9 +27,6 @@ const NavigationMenu = () => {
                 </MenuItem>
               ))}
             <Box sx={{ flexGrow: 1 }}></Box>
-            <MenuItem>
-              <Button variant="contained">Sync variants</Button>
-            </MenuItem>
             <MenuItem>
               <MyWallet />
             </MenuItem>

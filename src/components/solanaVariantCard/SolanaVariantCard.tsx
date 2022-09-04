@@ -30,7 +30,9 @@ const boxStyling = {
   marginTop: '10px',
   backgroundColor: '#C5C5C5',
   borderRadius: '8px',
-  padding: '15px'
+  padding: '15px',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-word'
 };
 
 const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
@@ -46,7 +48,8 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
     checkingIntegrity,
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
-    variantIntegrityInfoMessage
+    variantIntegrityInfoMessage,
+    deliverVariantHash
   } = useSolanaVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
 
   // Submit state changes to variant database
@@ -64,7 +67,8 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
       const dbVariant: DatabaseVariant = {
         issueType,
         variantPublicKey: variant.publicKey,
-        wallet: walletKey.toString()
+        wallet: walletKey.toString(),
+        compromisedHash: deliverVariantHash
       };
 
       submitDocumentToDatabase(dbVariant);
@@ -93,7 +97,12 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
         <Paper elevation={3} sx={{ borderColor: { borderColor }, borderStyle: 'solid' }}>
           <Box padding={2}>
             <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
-              <b>On-chain pubkey: {variant.publicKey}</b>
+              <b>
+                On-chain pubkey:{' '}
+                <a href={'https://explorer.solana.com/address/' + variant.publicKey}>
+                  {variant.publicKey}
+                </a>
+              </b>
             </Typography>
             <Box marginY={1}>
               <StyledCardRow name="Created" value={formatIsoString(variant.accountCreated)} />

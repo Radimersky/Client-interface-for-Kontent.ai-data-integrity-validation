@@ -31,6 +31,7 @@ export type DatabaseVariant = {
   wallet: string;
   variantPublicKey: string;
   issueType: IssueType;
+  compromisedHash: string | null;
 };
 
 export type DatabaseVariantWithId = {
@@ -75,14 +76,16 @@ export const databaseVariantsCollection = collection(
 const databaseVariantsDocument = (id: string) =>
   doc(db, databaseVariantsTable, id) as DocumentReference<DatabaseVariant>;
 
-export const submitDocumentToDatabase = async (databaseVariant: DatabaseVariant) => {
+export const submitDocumentToDatabase = async (variantToSubmit: DatabaseVariant) => {
   try {
-    const dbVariant = await getDatabaseVariantOrNull(databaseVariant.variantPublicKey);
+    const dbVariant = await getDatabaseVariantOrNull(variantToSubmit.variantPublicKey);
 
     if (dbVariant) {
-      updateDatabaseVariant(dbVariant.id, databaseVariant);
+      if (dbVariant.databaseVariant.issueType !== variantToSubmit.issueType) {
+        updateDatabaseVariant(dbVariant.id, variantToSubmit);
+      }
     } else {
-      addDoc(databaseVariantsCollection, databaseVariant);
+      addDoc(databaseVariantsCollection, variantToSubmit);
     }
   } catch (err) {
     console.error((err as { message?: string })?.message ?? 'Unknown error occurred');

@@ -5,13 +5,16 @@ import { DeliverVariantModel, DeliverVariant } from '../models/Variant';
 import SolanaVariantDialog, {
   DialogContent
 } from '../components/solanaVariantCard/SolanaVariantDialog';
-import { deliverVariantNotFound, obsoleteSolanaVariant } from '../templates/DialogTemplates';
+import {
+  deliverVariantNotFoundTemplate,
+  obsoleteSolanaVariantTemplate
+} from '../templates/DialogTemplates';
 import {
   areStringsEqual,
   issueTypeToSolanaVariantIntegrityMapper,
   makeSentence
 } from '../utils/Utils';
-import { DatabaseVariantWithId, getDatabaseVariantOrNull } from '../utils/Firebase';
+import { DatabaseVariantWithId, getDatabaseVariantOrNull, IssueType } from '../utils/Firebase';
 
 export enum SolanaVariantIntegrityState {
   Compromised,
@@ -27,8 +30,9 @@ export const useSolanaVariantCardStateManager = (
   handleRemove: () => void
 ) => {
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
-  const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState('');
+  const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState(<></>);
   const [showDialog, setShowDialog] = useState(false);
+  const [deliverVariantHash, setDeliverVariantHash] = useState('');
   const [databaseMetaData, setDatabaseMetaData] = useState<DatabaseVariantWithId | null>(null);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
     title: '',
@@ -51,7 +55,22 @@ export const useSolanaVariantCardStateManager = (
         const persistedState = issueTypeToSolanaVariantIntegrityMapper(issueType);
         setVariantIntegrityState(persistedState);
 
-        if (issueType) setVariantIntegrityInfoMessage(makeSentence(issueType));
+        if (issueType) {
+          if (issueType === IssueType.Compromised) {
+            setVariantIntegrityInfoMessage(
+              <>
+                <p>
+                  <b>Compromised variant.</b>
+                </p>
+                <br></br>
+                <p>Deliver variant hash:</p>
+                <p>{databaseMetaData?.databaseVariant.compromisedHash}</p>
+              </>
+            );
+          } else {
+            setVariantIntegrityInfoMessage(<p>{makeSentence(issueType)}</p>);
+          }
+        }
       })
       .catch((e) => {
         console.error(e);
@@ -62,13 +81,15 @@ export const useSolanaVariantCardStateManager = (
     deliverVariantLastModified: Date,
     solanaVariantLastModified: Date
   ) => {
-    setDialogContent(obsoleteSolanaVariant(deliverVariantLastModified, solanaVariantLastModified));
+    setDialogContent(
+      obsoleteSolanaVariantTemplate(deliverVariantLastModified, solanaVariantLastModified)
+    );
     setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
     setShowDialog(true);
   };
 
   const notifyVariantNotFound = () => {
-    setDialogContent(deliverVariantNotFound);
+    setDialogContent(deliverVariantNotFoundTemplate);
     setVariantIntegrityState(SolanaVariantIntegrityState.NotFound);
     setShowDialog(true);
   };
@@ -76,24 +97,39 @@ export const useSolanaVariantCardStateManager = (
   const moveToObsoleteState = () => {
     setShowDialog(false);
     if (SolanaVariantIntegrityState.Obsolete) {
-      setVariantIntegrityInfoMessage('Variant is obsolete.');
+      setVariantIntegrityInfoMessage(
+        <p>
+          Deliver contains updated version of this variant. You can remove this variant as it is
+          obsolete.
+        </p>
+      );
     } else if (SolanaVariantIntegrityState.NotFound) {
-      setVariantIntegrityInfoMessage('Deliver variant was not found.');
+      setVariantIntegrityInfoMessage(<p>Deliver variant was not found.</p>);
     }
 
     setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
   };
 
-  const moveToCompromisedState = () => {
-    setVariantIntegrityInfoMessage('Variant hash mismatch!');
+  const moveToCompromisedState = (deliverHash: string) => {
+    setVariantIntegrityInfoMessage(
+      <>
+        <p>Variant hash mismatch!</p>
+        <p>The data of your variant has been changed by Kontent.ai without your permission.</p>
+        <br></br>
+        <p>
+          <b>Current hash of Deliver variant is:</b>
+        </p>
+        <p>{deliverHash}</p>
+      </>
+    );
     setVariantIntegrityState(SolanaVariantIntegrityState.Compromised);
     handleIntegrityViolation();
   };
 
   const removeVariant = () => {
-    setVariantIntegrityInfoMessage('Variant can be removed.');
+    setVariantIntegrityInfoMessage(<p>Variant can be removed.</p>);
     setShowDialog(false);
-    if (databaseMetaData) handleRemove();
+    if (databaseMetaData !== null) handleRemove();
   };
 
   const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariantModel) => {
@@ -107,12 +143,12 @@ export const useSolanaVariantCardStateManager = (
 
     const deliverVariantHash = hash(deliverVariant);
     const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
+    setDeliverVariantHash(deliverVariantHash);
 
-    if (!areLastModifiedDatesEqual) {
+    if (areLastModifiedDatesEqual) {
       notifyVariantIsObsolete(deliverVariantLastModified, solanaVariantLastModified);
     } else if (!areVariantHashesEqual) {
-      //hashCompareMissmatchMessageTemplate(deliverVariantHash, variant.variantHash)
-      moveToCompromisedState();
+      moveToCompromisedState(deliverVariantHash);
     } else {
       setVariantIntegrityState(SolanaVariantIntegrityState.Intact);
     }
@@ -120,8 +156,8 @@ export const useSolanaVariantCardStateManager = (
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
-    setVariantIntegrityInfoMessage('Checking integrity.');
     setVariantIntegrityState(SolanaVariantIntegrityState.Unknown);
+    setVariantIntegrityInfoMessage(<p>Checking integrity.</p>);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {
@@ -157,6 +193,7 @@ export const useSolanaVariantCardStateManager = (
     checkingIntegrity,
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
-    variantIntegrityInfoMessage
+    variantIntegrityInfoMessage,
+    deliverVariantHash
   };
 };

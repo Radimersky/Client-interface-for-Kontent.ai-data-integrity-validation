@@ -1,14 +1,13 @@
-import { Box, Button, Container, Grid, Divider } from '@mui/material';
+import { Box, Container, Grid, Divider } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import useFetchSolanaVariants from '../hooks/useFetchSolanaVariants';
 import { Loader } from '../components/Loader';
 import { useEffect, useState } from 'react';
-import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard';
 import { Variant } from '../models/Variant';
 import useWorkspace from '../hooks/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
 import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
+import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard';
 // import { User } from 'firebase/auth';
 
 const cardsContainerStyle = {
@@ -59,7 +58,6 @@ const SolanaVariants = () => {
           handleRemove={() => removeVariantFromBlockchain(mappedVariant.publicKey)}
           handleIntegrityViolation={() => handleIntegrityViolation(mappedVariant.publicKey)}
           variant={mappedVariant}
-          isIntegrityViolated={false}
           walletKey={provider.wallet.publicKey}
           key={mappedVariant.publicKey}
         />
@@ -87,7 +85,7 @@ const SolanaVariants = () => {
         tryRemoveDatabaseVariantByPublicKey(publicKey);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
   };
 
@@ -96,8 +94,6 @@ const SolanaVariants = () => {
       return prevCards.filter((item: any) => item.key !== publicKey);
     });
   };
-
-  const handleCheckConsistency = () => {};
 
   const handleIntegrityViolation = (publicKey: any) => {
     if (publicKey) setViolatedVariantCards((prev) => prev);
@@ -139,15 +135,6 @@ const SolanaVariants = () => {
           textAlign: 'center'
         }}>
         <h1>Variants stored on Solana blockchain</h1>
-        <Box marginTop={3}>
-          <Button
-            disabled={isFetching}
-            variant="contained"
-            startIcon={<CloudSyncIcon />}
-            onClick={handleCheckConsistency}>
-            Check consistency of all variants
-          </Button>
-        </Box>
         <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
         {connected ? (
           <>

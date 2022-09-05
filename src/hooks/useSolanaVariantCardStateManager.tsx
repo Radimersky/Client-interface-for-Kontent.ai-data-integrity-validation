@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
 import { DeliverVariantModel, DeliverVariant } from '../models/Variant';
@@ -29,6 +29,7 @@ export const useSolanaVariantCardStateManager = (
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {
+  const firstRender = useRef(true);
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
   const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState(<></>);
   const [showDialog, setShowDialog] = useState(false);
@@ -76,6 +77,14 @@ export const useSolanaVariantCardStateManager = (
         console.error(e);
       });
   }, []);
+
+  useEffect(() => {
+    firstRender.current = false;
+    if (firstRender) {
+      console.log('putin');
+      checkIntegrity();
+    }
+  }, [firstRender]);
 
   const notifyVariantIsObsolete = (
     deliverVariantLastModified: Date,
@@ -126,10 +135,19 @@ export const useSolanaVariantCardStateManager = (
     handleIntegrityViolation();
   };
 
+  const moveToIntactState = () => {
+    setVariantIntegrityState(SolanaVariantIntegrityState.Intact);
+    setVariantIntegrityInfoMessage(
+      <>
+        <p>Deliver variant is consistent with the variant on Solana blockchain</p>
+      </>
+    );
+  };
+
   const removeVariant = () => {
     setVariantIntegrityInfoMessage(<p>Variant can be removed.</p>);
     setShowDialog(false);
-    if (databaseMetaData !== null) handleRemove();
+    handleRemove();
   };
 
   const evaluateStateFromDeliverVariant = (deliverVariant: DeliverVariantModel) => {
@@ -145,12 +163,12 @@ export const useSolanaVariantCardStateManager = (
     const areVariantHashesEqual = areStringsEqual(deliverVariantHash, variant.variantHash);
     setDeliverVariantHash(deliverVariantHash);
 
-    if (areLastModifiedDatesEqual) {
+    if (!areLastModifiedDatesEqual) {
       notifyVariantIsObsolete(deliverVariantLastModified, solanaVariantLastModified);
     } else if (!areVariantHashesEqual) {
       moveToCompromisedState(deliverVariantHash);
     } else {
-      setVariantIntegrityState(SolanaVariantIntegrityState.Intact);
+      moveToIntactState();
     }
   };
 

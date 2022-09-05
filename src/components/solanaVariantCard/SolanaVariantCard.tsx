@@ -17,7 +17,6 @@ interface ISolanaVariantCardProps {
   readonly variant: DeliverVariant;
   readonly handleRemove: () => void;
   readonly handleIntegrityViolation: () => void;
-  readonly isIntegrityViolated: boolean;
   readonly walletKey: PublicKey;
 }
 
@@ -141,5 +140,5 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
     </>
   );
 };
-
+SolanaVariantCard.displayName = 'SolanaVariantCard';
 export default SolanaVariantCard;

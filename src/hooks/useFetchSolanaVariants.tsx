@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import useWorkspace from './useWorkspace';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { authorFilter, fetchVariants } from '../api/solana/FetchVariants';
+import { authorFilter, fetchVariants, variantFilter } from '../api/solana/FetchVariants';
 import { ProgramAccount, IdlTypes, Idl } from '@project-serum/anchor';
 import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
 import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
+import { bs58 } from '@project-serum/anchor/dist/cjs/utils/bytes';
 
 const useFetchSolanaVariants = () => {
   const { program, provider } = useWorkspace();
@@ -25,6 +26,7 @@ const useFetchSolanaVariants = () => {
 
     // Filter variants by connected wallet pubkey
     const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
+    //const filter = [variantFilter(bs58.encode(Buffer.from('en-US')))];
 
     fetchVariants(program, filter)
       .then((fetchedVariants) => {

@@ -12,3 +12,10 @@ export const authorFilter = (authorBase58PublicKey: any) => ({
     bytes: authorBase58PublicKey
   }
 });
+
+export const variantFilter = (authorBase58PublicKey: any) => ({
+  memcmp: {
+    offset: 8 + 36, // Discriminator.
+    bytes: authorBase58PublicKey
+  }
+});

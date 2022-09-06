@@ -75,6 +75,7 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
   }, [variantIntegrityState]);
 
   useEffect(() => {
+    console.log(variantIntegrityState);
     switch (variantIntegrityState) {
       case SolanaVariantIntegrityState.Intact:
         setBorderColor('green');

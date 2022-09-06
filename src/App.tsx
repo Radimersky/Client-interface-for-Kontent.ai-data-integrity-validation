@@ -20,11 +20,12 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { signIn } from './utils/Firebase';
 import DeliverVariants from './pages/DeliverVariants';
+import { WalletAdapterNetworkUrl } from './AppSettingConstants';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 function App() {
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-  const network = WalletAdapterNetwork.Testnet;
+  const network = WalletAdapterNetworkUrl;
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 

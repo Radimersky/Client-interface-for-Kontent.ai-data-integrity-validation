@@ -169,7 +169,7 @@ const SendVariantToBlockchainProvider: React.FC<ISendVariantToBlockchainProvider
       <Typography marginBottom={1}>
         <b>{firstMessage}</b>
       </Typography>
-      <Typography>{secondMessage}</Typography>
+      {secondMessage}
     </Box>
   );
 };

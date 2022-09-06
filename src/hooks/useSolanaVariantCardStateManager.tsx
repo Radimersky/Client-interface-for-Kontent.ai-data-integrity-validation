@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import hash from 'object-hash';
 import { getVariant } from '../api/deliver/GetVariant';
 import { DeliverVariantModel, DeliverVariant } from '../models/Variant';
@@ -29,7 +29,6 @@ export const useSolanaVariantCardStateManager = (
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {
-  const firstRender = useRef(true);
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
   const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState(<></>);
   const [showDialog, setShowDialog] = useState(false);
@@ -77,14 +76,6 @@ export const useSolanaVariantCardStateManager = (
         console.error(e);
       });
   }, []);
-
-  useEffect(() => {
-    firstRender.current = false;
-    if (firstRender) {
-      console.log('putin');
-      checkIntegrity();
-    }
-  }, [firstRender]);
 
   const notifyVariantIsObsolete = (
     deliverVariantLastModified: Date,

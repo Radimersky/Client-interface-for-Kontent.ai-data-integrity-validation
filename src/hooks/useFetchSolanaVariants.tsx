@@ -30,12 +30,7 @@ const useFetchSolanaVariants = () => {
     setFetching(true);
 
     // Filter variants by connected wallet pubkey
-    // const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
-    const filter = [
-      variantIdFilter('aeropress', 'default'),
-      projectIdFilter('907fc3c7-7aec-480e-9ada-da55d12e5779'),
-      itemCodenameFilter('aeropress')
-    ];
+    const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
 
     fetchVariants(program, filter)
       .then((fetchedVariants) => {

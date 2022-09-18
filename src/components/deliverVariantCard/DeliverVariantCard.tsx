@@ -67,7 +67,7 @@ const DeliverVariantCard: React.FC<IDeliverVariantCardProps> = ({
               <StyledCardRow name="Codename" value={system.codename} />
               <StyledCardRow name="Last Modified" value={formatIsoString(system.last_modified)} />
               <StyledCardRow name="Content Type" value={system.type} />
-              <StyledCardRow name="Language" value={system.language} />
+              <StyledCardRow name="Language Codename" value={system.language} />
               <StyledCardRow name="Collection" value={system.collection} />
               <StyledCardRow name="Workflow Step" value={system.workflow_step} />
             </Box>

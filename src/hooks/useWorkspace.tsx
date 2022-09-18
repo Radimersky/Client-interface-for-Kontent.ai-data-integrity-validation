@@ -2,7 +2,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import idl from '../solana_idl.json';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Program, AnchorProvider, Wallet, Idl } from '@project-serum/anchor';
-import { SolanaNetworkUrl } from '../AppSettingConstants';
+import { SolanaNetworkUrl } from '../AppConfig';
 
 interface IWorkspaceProps {
   readonly provider: AnchorProvider;

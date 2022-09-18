@@ -20,7 +20,7 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { signIn } from './utils/Firebase';
 import DeliverVariants from './pages/DeliverVariants';
-import { WalletAdapterNetworkUrl } from './AppSettingConstants';
+import { WalletAdapterNetworkUrl } from './AppConfig';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 function App() {

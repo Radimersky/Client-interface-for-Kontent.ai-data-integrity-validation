@@ -23,11 +23,7 @@
       ],
       "args": [
         {
-          "name": "variantId",
-          "type": "string"
-        },
-        {
-          "name": "itemId",
+          "name": "projectId",
           "type": "string"
         },
         {
@@ -35,7 +31,11 @@
           "type": "string"
         },
         {
-          "name": "projectId",
+          "name": "variantId",
+          "type": "string"
+        },
+        {
+          "name": "itemId",
           "type": "string"
         },
         {
@@ -80,11 +80,7 @@
             "type": "publicKey"
           },
           {
-            "name": "variantId",
-            "type": "string"
-          },
-          {
-            "name": "itemId",
+            "name": "projectId",
             "type": "string"
           },
           {
@@ -92,7 +88,11 @@
             "type": "string"
           },
           {
-            "name": "projectId",
+            "name": "variantId",
+            "type": "string"
+          },
+          {
+            "name": "itemId",
             "type": "string"
           },
           {

@@ -12,10 +12,10 @@ export const sendVariant = async (
   const variant = web3.Keypair.generate();
 
   await program.rpc.saveVariant(
+    variantProps.projectId,
+    variantProps.itemCodename,
     variantProps.variantId,
     variantProps.itemId,
-    variantProps.itemCodename,
-    variantProps.projectId,
     variantProps.variantHash,
     variantProps.variantHashSignature,
     variantProps.lastModified,

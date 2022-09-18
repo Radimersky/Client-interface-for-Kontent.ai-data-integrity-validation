@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import useWorkspace from './useWorkspace';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { authorFilter, fetchVariants, variantFilter } from '../api/solana/FetchVariants';
+import {
+  authorFilter,
+  fetchVariants,
+  itemCodenameFilter,
+  projectIdFilter,
+  variantIdFilter
+} from '../api/solana/FetchVariants';
 import { ProgramAccount, IdlTypes, Idl } from '@project-serum/anchor';
 import { IdlAccountDef } from '@project-serum/anchor/dist/cjs/idl';
 import { TypeDef } from '@project-serum/anchor/dist/cjs/program/namespace/types';
-import { bs58 } from '@project-serum/anchor/dist/cjs/utils/bytes';
 
 const useFetchSolanaVariants = () => {
   const { program, provider } = useWorkspace();
@@ -25,8 +30,12 @@ const useFetchSolanaVariants = () => {
     setFetching(true);
 
     // Filter variants by connected wallet pubkey
-    const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
-    //const filter = [variantFilter(bs58.encode(Buffer.from('en-US')))];
+    // const filter = [authorFilter(provider.wallet.publicKey.toBase58())];
+    const filter = [
+      variantIdFilter('aeropress', 'default'),
+      projectIdFilter('907fc3c7-7aec-480e-9ada-da55d12e5779'),
+      itemCodenameFilter('aeropress')
+    ];
 
     fetchVariants(program, filter)
       .then((fetchedVariants) => {
@@ -38,6 +47,7 @@ const useFetchSolanaVariants = () => {
       })
       .finally(() => {
         setFetching(false);
+        console.log(solanaVariants);
       });
   }, [connected]);
 

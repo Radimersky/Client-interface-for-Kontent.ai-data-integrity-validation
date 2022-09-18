@@ -165,12 +165,14 @@ export const useSolanaVariantCardStateManager = (
 
   const checkIntegrity = () => {
     setCheckingIntegrity(true);
-    console.log('cehcking');
+
     setVariantIntegrityState(SolanaVariantIntegrityState.Unknown);
     setVariantIntegrityInfoMessage(<p>Checking integrity.</p>);
+    console.log(variant.projectId);
 
     getVariant(variant.projectId, variant.itemCodename, variant.variantId)
       .then((response) => {
+        console.log(response.url);
         if (response.ok) {
           return response.json();
         } else {

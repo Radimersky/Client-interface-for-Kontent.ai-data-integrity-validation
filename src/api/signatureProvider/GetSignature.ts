@@ -1,4 +1,4 @@
-import { signatureProviderAPIBaseUrl } from '../../AppSettingConstants';
+import { signatureProviderAPIBaseUrl } from '../../AppConfig';
 import { DeliverVariantModel } from '../../models/Variant';
 
 export const getSignature = async (deliverVariant: DeliverVariantModel) => {

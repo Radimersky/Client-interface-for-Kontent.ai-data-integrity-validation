@@ -37,18 +37,23 @@ const useFetchDeliverVariants = (projectId: string) => {
               throw response;
             })
             .then((data) => {
-              const cards = data.items.map((variantData: DeliverVariantModel) => (
-                <DeliverVariantCard
-                  deliverVariant={variantData}
-                  projectId={projectId}
-                  key={variantData.system.id}
-                />
-              ));
+              const cards = data.items.map((variantData: DeliverVariantModel) => {
+                return (
+                  <DeliverVariantCard
+                    deliverVariant={variantData}
+                    projectId={projectId}
+                    itemCodename={variantData.system.codename}
+                    variantLanguage={variantData.system.language}
+                    key={variantData.system.id}
+                  />
+                );
+              });
 
               const variantCardWithLanguage: DeliverVariantCards = {
                 language: language.name,
                 variantCards: cards
               };
+
               setVariantCards((prev) => prev.concat(variantCardWithLanguage));
               resetErrorMessage();
             });

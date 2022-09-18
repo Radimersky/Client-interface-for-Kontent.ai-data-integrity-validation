@@ -1,4 +1,4 @@
-import { deliverAPIBaseUrl } from '../../AppSettingConstants';
+import { deliverAPIBaseUrl } from '../../AppConfig';
 
 type DeliverLanguages = {
   readonly languages: Languages[];

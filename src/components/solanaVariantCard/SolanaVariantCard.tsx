@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Button, Typography } from '@mui/material';
+import { Grid, Paper, Box, Button, Typography, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 import { DeliverVariant } from '../../models/Variant';
@@ -41,6 +41,7 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
   handleIntegrityViolation
 }) => {
   const [borderColor, setBorderColor] = useState('snow');
+  const [bearer, setBearer] = useState('');
 
   const {
     checkIntegrity,
@@ -48,8 +49,9 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
     variantIntegrityInfoMessage,
-    deliverVariantHash
-  } = useSolanaVariantCardStateManager(variant, handleIntegrityViolation, handleRemove);
+    deliverVariantHash,
+    authRequired
+  } = useSolanaVariantCardStateManager(variant, bearer, handleIntegrityViolation, handleRemove);
 
   // Submit state changes to variant database
   useEffect(() => {
@@ -115,6 +117,20 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
               <StyledCardRow name="Hash signature" value={variant.variantHashSignature} />
             </Box>
             <Box sx={boxStyling}>{variantIntegrityInfoMessage}</Box>
+            {authRequired && (
+              <TextField
+                id="filled-basic"
+                label="Bearer token"
+                variant="filled"
+                onChange={(e) => setBearer(e.target.value)}
+                disabled={checkingIntegrity}
+                sx={{
+                  width: '100%',
+                  marginBottom: '25px',
+                  borderRadius: '15px'
+                }}
+              />
+            )}
             <Box display={'flex'} justifyContent={'space-between'}>
               <Button
                 disabled={

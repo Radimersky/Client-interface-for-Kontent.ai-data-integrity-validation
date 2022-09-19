@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
 
 interface IDeliverVariantImportProps {
-  readonly onSubmit: (projectId: string) => void;
+  readonly onSubmit: (projectId: string, bearer: string) => void;
   readonly error: boolean;
   readonly importing: boolean;
 }
@@ -15,6 +15,7 @@ const DeliverVariantImport: React.FC<IDeliverVariantImportProps> = ({
   importing
 }) => {
   const [projectId, setProjectId] = useState('');
+  const [bearer, setBearer] = useState('');
 
   return (
     <Box
@@ -47,10 +48,22 @@ const DeliverVariantImport: React.FC<IDeliverVariantImportProps> = ({
             width: '350px'
           }}
         />
+        <TextField
+          id="filled-basic"
+          label="Bearer token (optional)"
+          variant="filled"
+          onChange={(e) => setBearer(e.target.value)}
+          error={error}
+          helperText={error ? 'Failed to import variants' : ' '}
+          disabled={importing}
+          sx={{
+            width: '350px'
+          }}
+        />
         <Button
           variant="contained"
           startIcon={importing ? <CircularProgress size={20} /> : <AddIcon />}
-          onClick={() => onSubmit(projectId)}
+          onClick={() => onSubmit(projectId, bearer)}
           disabled={importing}>
           Import variants
         </Button>

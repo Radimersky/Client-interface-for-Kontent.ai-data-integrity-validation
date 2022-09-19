@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import SolanaVariants from './pages/SolanaVariants';
@@ -58,6 +58,7 @@ function App() {
       <WalletProvider wallets={wallets} autoConnect>
         <CssBaseline />
         <NavigationMenu />
+
         <Routes>
           <Route path={deliverVariantsPage} element={<DeliverVariants />} />
           <Route path={solanaVariantsPage} element={<SolanaVariants />} />

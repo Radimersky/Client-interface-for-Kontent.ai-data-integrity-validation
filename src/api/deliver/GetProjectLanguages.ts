@@ -15,9 +15,11 @@ type LanguagesSystem = {
   readonly codename: string;
 };
 
-export const getProjectLanguages = (projectId: string) => {
+export const getProjectLanguages = (projectId: string, token?: string) => {
   // Get all languages of project
-  return fetch(deliverAPIBaseUrl + projectId + '/languages')
+  return fetch(deliverAPIBaseUrl + projectId + '/languages', {
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+  })
     .then((response) => {
       if (response.ok) {
         return response.json();

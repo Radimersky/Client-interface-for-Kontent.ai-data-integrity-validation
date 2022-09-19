@@ -26,12 +26,14 @@ export enum SolanaVariantIntegrityState {
 
 export const useSolanaVariantCardStateManager = (
   variant: DeliverVariant,
+  bearer: string,
   handleIntegrityViolation: () => void,
   handleRemove: () => void
 ) => {
   const [checkingIntegrity, setCheckingIntegrity] = useState(false);
   const [variantIntegrityInfoMessage, setVariantIntegrityInfoMessage] = useState(<></>);
   const [showDialog, setShowDialog] = useState(false);
+  const [authRequired, setAuthRequired] = useState(false);
   const [deliverVariantHash, setDeliverVariantHash] = useState('');
   const [databaseMetaData, setDatabaseMetaData] = useState<DatabaseVariantWithId | null>(null);
   const [dialogContent, setDialogContent] = useState<DialogContent>({
@@ -88,10 +90,16 @@ export const useSolanaVariantCardStateManager = (
     setShowDialog(true);
   };
 
-  const notifyVariantNotFound = () => {
-    setDialogContent(deliverVariantNotFoundTemplate);
+  const notifyVariantNotFound = (responseStatus: number) => {
     setVariantIntegrityState(SolanaVariantIntegrityState.NotFound);
-    setShowDialog(true);
+
+    if (responseStatus === 401) {
+      setVariantIntegrityInfoMessage(<p>Please enter bearer token to Deliver API</p>);
+      setAuthRequired(true);
+    } else {
+      setDialogContent(deliverVariantNotFoundTemplate);
+      setShowDialog(true);
+    }
   };
 
   const moveToObsoleteState = () => {
@@ -168,15 +176,13 @@ export const useSolanaVariantCardStateManager = (
 
     setVariantIntegrityState(SolanaVariantIntegrityState.Unknown);
     setVariantIntegrityInfoMessage(<p>Checking integrity.</p>);
-    console.log(variant.projectId);
 
-    getVariant(variant.projectId, variant.itemCodename, variant.variantId)
+    getVariant(variant.projectId, variant.itemCodename, variant.variantId, bearer)
       .then((response) => {
-        console.log(response.url);
         if (response.ok) {
           return response.json();
         } else {
-          notifyVariantNotFound();
+          notifyVariantNotFound(response.status);
           throw response;
         }
       })
@@ -206,6 +212,7 @@ export const useSolanaVariantCardStateManager = (
     variantIntegrityState,
     IntegrityCompromisationCheckDialog,
     variantIntegrityInfoMessage,
-    deliverVariantHash
+    deliverVariantHash,
+    authRequired
   };
 };

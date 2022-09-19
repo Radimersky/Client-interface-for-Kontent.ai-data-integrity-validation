@@ -9,7 +9,7 @@ export type DeliverVariantCards = {
   readonly variantCards: JSX.Element[];
 };
 
-const useFetchDeliverVariants = (projectId: string) => {
+const useFetchDeliverVariants = (projectId: string, bearerToken: string) => {
   const [variantCards, setVariantCards] = useState<DeliverVariantCards[]>([]);
   const [fetching, setFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,10 +28,10 @@ const useFetchDeliverVariants = (projectId: string) => {
     setFetching(true);
     setVariantCards([]);
 
-    getProjectLanguages(projectId)
+    getProjectLanguages(projectId, bearerToken === '' ? undefined : bearerToken)
       .then((languages) => {
         languages?.map((language) => {
-          getVariants(projectId, language.codename)
+          getVariants(projectId, language.codename, bearerToken === '' ? undefined : bearerToken)
             .then((response) => {
               if (response.ok) return response.json();
               throw response;
@@ -72,7 +72,7 @@ const useFetchDeliverVariants = (projectId: string) => {
       .finally(() => {
         setFetching(false);
       });
-  }, [projectId]);
+  }, [projectId, bearerToken]);
 
   return { variantCards, isFetching: fetching, errorMessage };
 };

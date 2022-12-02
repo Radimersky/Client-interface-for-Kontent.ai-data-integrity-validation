@@ -7,7 +7,6 @@ import { BN } from '@project-serum/anchor';
 
 export type DeliverVariant = {
   readonly projectId: string;
-  readonly itemId: string;
   readonly itemCodename: string;
   readonly variantId: string;
   readonly variantHash: string;
@@ -22,7 +21,6 @@ export type DeliverVariant = {
 
 export type SolanaAccountVariant = {
   readonly projectId: string;
-  readonly itemId: string;
   readonly itemCodename: string;
   readonly variantId: string;
   readonly variantHash: string;
@@ -36,7 +34,6 @@ export type SolanaAccountVariant = {
 export type DtoVariant = {
   readonly lastModified: BN;
   readonly variantId: string;
-  readonly itemId: string;
   readonly itemCodename: string;
   readonly projectId: string;
   readonly variantHash: string;
@@ -81,7 +78,6 @@ export const Variant = {
 
     return {
       projectId: account.projectId,
-      itemId: account.itemId,
       itemCodename: account.itemCodename,
       variantId: account.variantId,
       variantHash: account.variantHash,
@@ -104,7 +100,6 @@ export const Variant = {
     const variantData: DtoVariant = {
       lastModified: new BN(lastModifiedTimestamp),
       variantId: deliverVariant.system.language,
-      itemId: deliverVariant.system.id,
       itemCodename: deliverVariant.system.codename,
       projectId: projectId,
       variantHash: signatureData.hash,

@@ -15,7 +15,6 @@ export const sendVariant = async (
     variantProps.projectId,
     variantProps.itemCodename,
     variantProps.variantId,
-    variantProps.itemId,
     variantProps.variantHash,
     variantProps.variantHashSignature,
     variantProps.lastModified,

@@ -62,10 +62,10 @@ export const useSolanaVariantCardStateManager = (
             setVariantIntegrityInfoMessage(
               <>
                 <p>
-                  <b>Compromised variant.</b>
+                  <b>Compromised content item variant.</b>
                 </p>
                 <br></br>
-                <p>Deliver variant hash:</p>
+                <p>Delivery content item variant hash:</p>
                 <p>{databaseMetaData?.databaseVariant.compromisedHash}</p>
               </>
             );
@@ -94,7 +94,7 @@ export const useSolanaVariantCardStateManager = (
     setVariantIntegrityState(SolanaVariantIntegrityState.NotFound);
 
     if (responseStatus === 401) {
-      setVariantIntegrityInfoMessage(<p>Please enter bearer token to Deliver API</p>);
+      setVariantIntegrityInfoMessage(<p>Please enter bearer token to Delivery API</p>);
       setAuthRequired(true);
     } else {
       setDialogContent(deliverVariantNotFoundTemplate);
@@ -107,12 +107,12 @@ export const useSolanaVariantCardStateManager = (
     if (SolanaVariantIntegrityState.Obsolete) {
       setVariantIntegrityInfoMessage(
         <p>
-          Deliver contains updated version of this variant. You can remove this variant as it is
-          obsolete.
+          Delivery contains updated version of this content item variant. You can remove this
+          variant because it is obsolete.
         </p>
       );
     } else if (SolanaVariantIntegrityState.NotFound) {
-      setVariantIntegrityInfoMessage(<p>Deliver variant was not found.</p>);
+      setVariantIntegrityInfoMessage(<p>Delivery content item variant was not found.</p>);
     }
 
     setVariantIntegrityState(SolanaVariantIntegrityState.Obsolete);
@@ -122,10 +122,13 @@ export const useSolanaVariantCardStateManager = (
     setVariantIntegrityInfoMessage(
       <>
         <p>Variant hash mismatch!</p>
-        <p>The data of your variant has been changed by Kontent.ai without your permission.</p>
+        <p>
+          The content item variant is inconsistent. Its data hash does not match the one saved on
+          blockchain.
+        </p>
         <br></br>
         <p>
-          <b>Current hash of Deliver variant is:</b>
+          <b>Current hash of Delivery variant is:</b>
         </p>
         <p>{deliverHash}</p>
       </>
@@ -138,13 +141,13 @@ export const useSolanaVariantCardStateManager = (
     setVariantIntegrityState(SolanaVariantIntegrityState.Intact);
     setVariantIntegrityInfoMessage(
       <>
-        <p>Deliver variant is consistent with the variant on Solana blockchain</p>
+        <p>Delivery content item variant is consistent with the one on Solana blockchain</p>
       </>
     );
   };
 
   const removeVariant = () => {
-    setVariantIntegrityInfoMessage(<p>Variant can be removed.</p>);
+    setVariantIntegrityInfoMessage(<p>Content item variant can be removed.</p>);
     setShowDialog(false);
     handleRemove();
   };
@@ -177,7 +180,12 @@ export const useSolanaVariantCardStateManager = (
     setVariantIntegrityState(SolanaVariantIntegrityState.Unknown);
     setVariantIntegrityInfoMessage(<p>Checking integrity.</p>);
 
-    getVariant(variant.projectId, variant.itemCodename, variant.variantId, bearer)
+    getVariant(
+      variant.projectId,
+      variant.itemCodename,
+      variant.variantId,
+      bearer === '' ? undefined : bearer
+    )
       .then((response) => {
         if (response.ok) {
           return response.json();

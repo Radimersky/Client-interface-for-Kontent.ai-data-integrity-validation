@@ -42,7 +42,7 @@ const messages = {
   hashCompareFail: 'Hash comparison mismatch. Please contant Kontent.ai support service',
   sendingToBlockchain: 'Please approve the transaction',
   sendingToBlockchainFailed: 'Transaction failed',
-  completed: 'Variant has been successfully sent to blockchain',
+  completed: 'Content item variant has been successfully sent to blockchain',
   failedToRetrieveSignature: 'Cannot get signature from Kontent signature provider server'
 };
 
@@ -50,11 +50,11 @@ const createSendingStateMessage = (localHash: string, providerHash: string): JSX
   return (
     <>
       <p>
-        <b>Variant hash signed localy:</b>
+        <b>Content item variant hash signed localy:</b>
       </p>
       <p>{localHash}</p>
       <p>
-        <b>Variant hash signed by Kontent signature provider:</b>
+        <b>Content item variant hash signed by Kontent signature provider:</b>
       </p>
       <p>{providerHash}</p>
     </>

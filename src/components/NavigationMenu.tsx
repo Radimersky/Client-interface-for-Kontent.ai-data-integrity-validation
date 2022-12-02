@@ -9,8 +9,8 @@ const NavigationMenu = () => {
   const navigate = useNavigate();
 
   const pages = [
-    { name: 'Deliver variants', path: deliverVariantsPage },
-    { name: 'Solana variants', path: solanaVariantsPage }
+    { name: 'Delivery content items', path: deliverVariantsPage },
+    { name: 'Solana content items', path: solanaVariantsPage }
   ];
 
   return (

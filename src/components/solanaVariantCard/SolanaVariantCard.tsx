@@ -110,7 +110,6 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
               <StyledCardRow name="Created" value={formatIsoString(variant.accountCreated)} />
               <StyledCardRow name="Project ID" value={variant.projectId} />
               <StyledCardRow name="Variant ID" value={variant.variantId} />
-              <StyledCardRow name="Item ID" value={variant.itemId} />
               <StyledCardRow name="Item codename" value={variant.itemCodename} />
               <StyledCardRow name="Last modified" value={variant.lastModifiedPretty} />
               <StyledCardRow name="Hash" value={variant.variantHash} />

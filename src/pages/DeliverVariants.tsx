@@ -24,7 +24,7 @@ const DeliverVariants = () => {
   return (
     <Container maxWidth={false}>
       <Box marginTop={3} sx={flexCenterStyle}>
-        <h1>Variants from Deliver</h1>
+        <h1>Delivery content items</h1>
       </Box>
       <DeliverVariantImport onSubmit={loadVariants} error={false} importing={isFetching} />
       <Box color={'red'}>{errorMessage}</Box>

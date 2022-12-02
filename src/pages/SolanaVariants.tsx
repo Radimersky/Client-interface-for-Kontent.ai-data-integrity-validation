@@ -8,23 +8,15 @@ import useWorkspace from '../hooks/useWorkspace';
 import { deleteVariant } from '../api/solana/DeleteVariant';
 import { tryRemoveDatabaseVariantByPublicKey } from '../utils/Firebase';
 import SolanaVariantCard from '../components/solanaVariantCard/SolanaVariantCard';
-// import { User } from 'firebase/auth';
 
 const cardsContainerStyle = {
   textAlign: 'center',
   margin: 'auto'
 };
 
-const createVariantCardDataGridBlock = (
-  variantCards: JSX.Element[],
-  emptyMessage: string,
-  header: string
-) => {
+const createVariantCardDataGridBlock = (variantCards: JSX.Element[], emptyMessage: string) => {
   return (
     <>
-      <Box marginY={3}>
-        <h2>{header}</h2>
-      </Box>
       {variantCards.length === 0 ? (
         <Box sx={cardsContainerStyle}>{emptyMessage}</Box>
       ) : (
@@ -43,12 +35,6 @@ const SolanaVariants = () => {
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
   const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
-  //const [databaseVariants, setDatabaseVariants] = useState<DatabaseVariant[]>([]);
-  // const [user, setUser] = useState<User>();
-
-  // useEffect(() => {
-  //   onAuthChanged((u) => setUser(u ?? undefined));
-  // }, []);
 
   useEffect(() => {
     const newVariantCards = solanaVariants.map((variant) => {
@@ -65,18 +51,6 @@ const SolanaVariants = () => {
     });
     setVariantCards(newVariantCards);
   }, [solanaVariants]);
-
-  // useEffect(() => {
-  //   // Call onSnapshot() to listen to changes
-  //   const unsubscribe = onSnapshot(databaseVariantsCollection, (snapshot) => {
-  //     // Access .docs property of snapshot
-  //     setDatabaseVariants(snapshot.docs.map((doc) => doc.data()));
-  //   });
-  //   // Unsubscribe from listening to changes
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
 
   const removeVariantFromBlockchain = (publicKey: string) => {
     deleteVariant(program, provider, publicKey)
@@ -97,31 +71,11 @@ const SolanaVariants = () => {
 
   const handleIntegrityViolation = (publicKey: any) => {
     if (publicKey) setViolatedVariantCards((prev) => prev);
-    // console.log(variantCards);
-    // const variant = variantCards.find((item) => item.key === publicKey);
-    // console.log(variant);
-    // if (!variant) {
-    //   return;
-    // }
-    // // Move variant card to new array
-    // setViolatedVariantCards((previousCards) => {
-    //   console.log('moving');
-    //   return previousCards.concFat(variant);
-    // });
-    // // Remove variant card from previous array
-    // handleRemoveVariantCard(publicKey);
   };
 
-  const properVariantCards = createVariantCardDataGridBlock(
+  const accountVariantCards = createVariantCardDataGridBlock(
     variantCards,
-    'There are no proper variants. Send some variants to blockchain first.',
-    'Proper variants'
-  );
-
-  const vilatedVariantCards = createVariantCardDataGridBlock(
-    violatedVariantCards,
-    'There are no integrity violated variants.',
-    'Integrity violated variants'
+    'There are no content item variants. Send some content item variants to blockchain first.'
   );
 
   return (
@@ -134,13 +88,12 @@ const SolanaVariants = () => {
           flexDirection: 'column',
           textAlign: 'center'
         }}>
-        <h1>Variants stored on Solana blockchain</h1>
+        <h1>Solana content item variants</h1>
         <h2 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h2>
         {connected ? (
           <>
             {isFetching && <Loader />}
-            {vilatedVariantCards}
-            {properVariantCards}
+            {accountVariantCards}
           </>
         ) : (
           <h2 style={{ textAlign: 'center' }}>Please connect your wallet.</h2>

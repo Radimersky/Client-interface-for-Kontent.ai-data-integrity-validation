@@ -35,10 +35,6 @@
           "type": "string"
         },
         {
-          "name": "itemId",
-          "type": "string"
-        },
-        {
           "name": "variantHash",
           "type": "string"
         },
@@ -92,10 +88,6 @@
             "type": "string"
           },
           {
-            "name": "itemId",
-            "type": "string"
-          },
-          {
             "name": "variantHash",
             "type": "string"
           },
@@ -118,13 +110,28 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidHash",
-      "msg": "The hash should be 66 chracters long."
+      "name": "InvalidVariantId",
+      "msg": "The variant id should be max 60 chracters long."
     },
     {
       "code": 6001,
-      "name": "InvalidGuid",
-      "msg": "The GUID should be 36 characters long."
+      "name": "InvalidProjectId",
+      "msg": "The project id should be exactly 36 chracters long."
+    },
+    {
+      "code": 6002,
+      "name": "InvalidItemCodename",
+      "msg": "The item codename should be max 60 chracters long."
+    },
+    {
+      "code": 6003,
+      "name": "InvalidHash",
+      "msg": "The variant hash should be exactly 40 characters long."
+    },
+    {
+      "code": 6004,
+      "name": "InvalidHashSignature",
+      "msg": "The variant hash signature should be exactly 96 characters long."
     }
   ],
   "metadata": {

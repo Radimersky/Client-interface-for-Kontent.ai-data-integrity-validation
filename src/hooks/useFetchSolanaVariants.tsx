@@ -42,7 +42,6 @@ const useFetchSolanaVariants = () => {
       })
       .finally(() => {
         setFetching(false);
-        console.log(solanaVariants);
       });
   }, [connected]);
 

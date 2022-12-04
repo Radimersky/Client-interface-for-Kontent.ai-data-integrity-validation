@@ -1,22 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import SolanaVariants from './pages/SolanaVariants';
 import { CssBaseline } from '@mui/material';
 import NavigationMenu from './components/NavigationMenu';
-import {
-  ExodusWalletAdapter,
-  GlowWalletAdapter,
-  MathWalletAdapter,
-  PhantomWalletAdapter,
-  SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolletWalletAdapter,
-  SolongWalletAdapter,
-  TorusWalletAdapter
-} from '@solana/wallet-adapter-wallets';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import { signIn } from './utils/Firebase';
 import DeliverVariants from './pages/DeliverVariants';
@@ -29,20 +18,7 @@ function App() {
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new GlowWalletAdapter(),
-      new SlopeWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-      new TorusWalletAdapter(),
-      new SolletWalletAdapter(),
-      new SolongWalletAdapter(),
-      new ExodusWalletAdapter(),
-      new MathWalletAdapter()
-    ],
-    [network]
-  );
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
 
   // Login to firestore and initialize blockchain workspace
   useEffect(() => {

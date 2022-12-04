@@ -77,7 +77,6 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
   }, [variantIntegrityState]);
 
   useEffect(() => {
-    console.log(variantIntegrityState);
     switch (variantIntegrityState) {
       case SolanaVariantIntegrityState.Intact:
         setBorderColor('green');
@@ -101,7 +100,10 @@ const SolanaVariantCard: React.FC<ISolanaVariantCardProps> = ({
             <Typography variant="body1" style={{ wordWrap: 'break-word' }}>
               <b>
                 On-chain pubkey:{' '}
-                <a href={'https://explorer.solana.com/address/' + variant.publicKey}>
+                <a
+                  href={
+                    'https://explorer.solana.com/address/' + variant.publicKey + '?cluster=devnet'
+                  }>
                   {variant.publicKey}
                 </a>
               </b>

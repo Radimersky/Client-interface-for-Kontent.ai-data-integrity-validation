@@ -33,7 +33,6 @@ const SolanaVariants = () => {
   const { connected } = useWallet();
   const { isFetching, errorMessage, solanaVariants } = useFetchSolanaVariants();
   const [variantCards, setVariantCards] = useState<JSX.Element[]>([]);
-  const [violatedVariantCards, setViolatedVariantCards] = useState<JSX.Element[]>([]);
   const { program, provider } = useWorkspace();
 
   useEffect(() => {
@@ -70,7 +69,7 @@ const SolanaVariants = () => {
   };
 
   const handleIntegrityViolation = (publicKey: any) => {
-    if (publicKey) setViolatedVariantCards((prev) => prev);
+    console.log('Account with public key: ' + publicKey + ' is inconsistent.');
   };
 
   const accountVariantCards = createVariantCardDataGridBlock(

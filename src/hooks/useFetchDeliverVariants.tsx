@@ -37,7 +37,6 @@ const useFetchDeliverVariants = (projectId: string, bearerToken: string) => {
               throw response;
             })
             .then((data) => {
-              console.log(data);
               const cards = data.items.map((variantData: DeliverVariantModel) => {
                 if (variantData.system.language !== language.codename) {
                   return;
@@ -58,7 +57,6 @@ const useFetchDeliverVariants = (projectId: string, bearerToken: string) => {
                 variantCards: cards
               };
 
-              console.log(variantCardWithLanguage);
               setVariantCards((prev) => prev.concat(variantCardWithLanguage));
               resetErrorMessage();
             });

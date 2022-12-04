@@ -27,7 +27,6 @@ export const getProjectLanguages = (projectId: string, token?: string) => {
       throw response;
     })
     .then((deliverLanguages: DeliverLanguages) => {
-      console.log(deliverLanguages);
       const languages: LanguagesSystem[] = deliverLanguages.languages.map((item) => {
         return item.system;
       });

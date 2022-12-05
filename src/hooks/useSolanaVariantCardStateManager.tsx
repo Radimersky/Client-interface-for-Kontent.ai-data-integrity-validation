@@ -11,7 +11,10 @@ import {
   makeSentence
 } from '../utils/Utils';
 import { DatabaseVariantWithId, getDatabaseVariantOrNull, IssueType } from '../utils/Firebase';
-import { obsoleteSolanaVariantTemplate, deliverVariantNotFoundTemplate } from '../templates/DialogTemplates';
+import {
+  obsoleteSolanaVariantTemplate,
+  deliverVariantNotFoundTemplate
+} from '../templates/DialogTemplates';
 
 export enum SolanaVariantIntegrityState {
   Compromised,

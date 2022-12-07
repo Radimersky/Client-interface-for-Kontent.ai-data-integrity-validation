@@ -1,4 +1,4 @@
-# Kontent.ai data integrity validation
+# Client interface for Kontent.ai Delivery API data integrity validation
 
 This project contains client interface that loads content item variants from Kontent.ai Delivery API. Using Phantom wallet they can be send to Solana blockchain. These variants on blockchain then can be used to perform data integrity validation against the variants in Delivery API.
 
